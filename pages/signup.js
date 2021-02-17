@@ -20,16 +20,17 @@ function SignUpPage() {
                     labelText='Email' 
                 />
                 <InputField 
-                    inputType='text' 
+                    inputType='password' 
                     labelText='Password' 
                 />
                 <InputField 
-                    inputType='text' 
+                    inputType='password' 
                     labelText='Confirm Password' 
                 />
                 <Btn 
                     btnText='Sign Up' 
-                    btnType='submit' 
+                    btnType='submit'
+                    style={{ color: 'blue' }}
                 />
             </FormBlock>
         </main>
