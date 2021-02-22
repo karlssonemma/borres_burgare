@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from 'react';
 
 const StyledBtn = styled.button`
     width: max-content;
@@ -10,10 +11,10 @@ const StyledBtn = styled.button`
     cursor: pointer;
 `;
 
-function Btn({ btnText, btnType }) {
+function Btn({ btnText, btnType, onBtnClickHandler }) {
 
     return(
-        <StyledBtn type={btnType}>{btnText}</StyledBtn>
+        <StyledBtn onClick={() => onBtnClickHandler()} type={btnType}>{btnText}</StyledBtn>
     )
 }
 

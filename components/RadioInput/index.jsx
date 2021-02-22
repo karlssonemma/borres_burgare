@@ -13,7 +13,6 @@ const StyledInput = styled.input`
 `;
 
 const StyledLabel = styled.label`
-    width: 50px;
     padding-left: 2em;
     display: block;
     position: relative;
@@ -34,16 +33,15 @@ const StyledRadioBtn = styled.span`
     left: 0;
 `;
 
-function RadioInput() {
+function RadioInput({ radioValue, radioName }) {
 
     return(
         <>
-            <StyledLabel>Cow
-                    <StyledInput type='radio' />
-                    <StyledRadioBtn />
-            </StyledLabel>
-            <StyledLabel>Cow
-                    <StyledInput type='radio' />
+            <StyledLabel>{radioValue}
+                    <StyledInput 
+                        type='radio' 
+                        name={radioName} 
+                        value={radioValue} />
                     <StyledRadioBtn />
             </StyledLabel>
         </>
