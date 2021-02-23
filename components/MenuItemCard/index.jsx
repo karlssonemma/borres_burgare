@@ -29,24 +29,23 @@ const StyledListItem = styled.li`
 
 
 function MenuItemCard({ 
-    itemTitle, 
-    price, 
-    description, 
-    allergens, 
-    patty, 
-    item, 
-    onClickHandler, 
+    // itemTitle, 
+    // price, 
+    // description, 
+    // allergens, 
+    // patty, 
+    item,  
     onBtnClickHandler, 
     onChangeRadioHandler }) {
 
 
     return(
-        <StyledSection onClick={() => onClickHandler(item)}>
-                <StyledTitle>{itemTitle}</StyledTitle>
-                <p>{description}</p>
+        <StyledSection>
+                <StyledTitle>{item.itemTitle}</StyledTitle>
+                <p>{item.description}</p>
                 <StyledList>Allergens:
                     {
-                        allergens.map(item => {
+                        item.allergens.map(item => {
                             return(
                                 <StyledListItem key={item}>
                                     {item}
@@ -57,7 +56,7 @@ function MenuItemCard({
                 </StyledList>
                 <form onChange={e => onChangeRadioHandler(e)}>
                     {
-                        patty.map(item => {
+                        item.patty.map(item => {
                             return(
                                 <RadioInput radioValue={item} key={item} radioName='Patty' />
                             )
@@ -65,7 +64,7 @@ function MenuItemCard({
                     }
                 </form>
                 <div>
-                    <h4>{price}</h4>
+                    <h4>{item.price}</h4>
                 </div>
                 <Btn onBtnClickHandler={() => onBtnClickHandler(item)} btnText='add to cart' />
 
