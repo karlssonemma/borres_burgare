@@ -13,8 +13,8 @@ function Cart({ cart, onBtnClickHandler }) {
 
             for (let i = 0; i < cart.length; i++) {
 
-                cart[i].quantity > 1 
-                    ? amount += cart[i].quantity * cart[i].price
+                cart[i].count > 1 
+                    ? amount += cart[i].count * cart[i].price
                     : amount += cart[i].price
             };
         };
@@ -28,11 +28,11 @@ function Cart({ cart, onBtnClickHandler }) {
             <h3>Your Order</h3>
             {
                 (cart !== null) 
-                    ? cart.map(cartItem => {
+                    ? cart.map(item => {
                         return(
                             <section key={Math.random()}>
-                                <p>{cartItem.quantity} x {cartItem.title}</p>
-                                <Btn btnText='X' onBtnClickHandler={() => onBtnClickHandler(cartItem)} />
+                                <p>{item.count} x {item.title}</p>
+                                <Btn btnText='X' onBtnClickHandler={() => onBtnClickHandler(item)} />
                             </section>
                         )
                     })

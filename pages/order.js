@@ -7,14 +7,13 @@ import Cart from '../components/Cart';
 
 
 
-function OrderPage({ burgers }) {
+function OrderPage({ arr }) {
 
     const [chosen, setChosen] = useState(null);
-    const [cart, setCart] = useState(null);
-    let chosenPatty;
+    const [cart, setCart] = useState([]);
+    const burgers = [...arr];
 
     const current_cart = firebaseInstance.firestore().collection('current_cart');
-    
 
     // useEffect(() => {
     //     if (current_cart.get() === null) {
@@ -40,6 +39,7 @@ function OrderPage({ burgers }) {
     //     }
     // }, [cart])
 
+
     function addToCart(item) {
         console.log(item)
 
@@ -48,6 +48,7 @@ function OrderPage({ burgers }) {
             const found = cart.find(el => el.id === item.id);
 
             if (found) {
+                console.log(found)
                 let newArray = [];
 
                 for (let i = 0; i < cart.length; i++) {
@@ -64,7 +65,7 @@ function OrderPage({ burgers }) {
                 let newArray2 = [];
                 console.log(item)
                 newArray2.push(...cart, item);
-                setCart(newArray2);
+                setCart([...newArray2]);
             }
         } else {
             let newArray = [];
@@ -73,33 +74,59 @@ function OrderPage({ burgers }) {
         }
     };
 
+    function addItem(id) {
+        let tempCart = [...cart];
+        let tempProducts = [...burgers];
+        let tempItem = tempCart.find(item => item.id === id);
+        if (!tempItem) {
+            tempItem = tempProducts.find(item => item.id === id);
+            let newItem = {
+                            ...tempItem, 
+                            count: 1, 
+                            total: tempItem.price
+                          }
+            tempCart.push(newItem);
+            setCart(tempCart);
+        } else {
+            let index = tempCart.indexOf(tempItem);
+            tempCart.splice(index, 1);
+            let newCount = tempItem.count += 1;
+            let newItem = {
+                            ...tempItem, 
+                            count: newCount,
+                            total: tempItem.price * newCount
+                          }
+            tempCart.push(newItem);
+            setCart(tempCart);
+        }
+    };
+
     // function pattyValue(e) {
     //     chosenPatty = e.value;
     // }
 
-    function removeItem(cartItem) {
-        let arr = cart;
-
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i].id === cartItem.id) {
-                let index = arr.indexOf(arr[i]);
-                arr.splice(index, 1);
-            };   
+    function removeItem(id) {
+        let tempCart = [...cart];
+        let tempItem = tempCart.find(item => item.id === id);
+        if(tempItem) {
+            let index = tempCart.indexOf(tempItem);
+            tempCart.splice(index, 1)
         };
-        setCart([...arr]);
+        setCart([...tempCart]);
     };
 
     return(
         <main>
             <Container>
                 {
-                    burgers.map(item => {
+                    burgers && burgers.map(item => {
                         return(
                             <MenuItemCard
-                                onBtnClickHandler={item => addToCart(item)}
-                                // onClickHandler={item => setChosen(item)}
+                                handleChange={e => console.log(e.target.value)}
+                                onBtnClickHandler={() => addItem(item.id)}
+                                onClickHandler={item => setChosen(item)}
                                 onChangeRadioHandler={e => pattyValue(e)}
-                                item={item}
+                                // item={item}
                                 quantity={item.quantity}
                                 key={item.id}
                                 itemTitle={item.title}
@@ -111,11 +138,22 @@ function OrderPage({ burgers }) {
                         )
                     })
                 }
+
+                {/* {
+                    burgers && burgers.map(item => {
+                        return(
+                            <section key={Math.floor(Math.random() * 100)}>
+                                <p>{item.title}</p>
+                                <button onClick={() => addItem(item.id)}>Add</button>
+                            </section>
+                            )
+                    })
+                } */}
             </Container>
             <Container>
                 <Cart 
                     cart={cart}
-                    onBtnClickHandler={cartItem => removeItem(cartItem)}
+                    onBtnClickHandler={item => removeItem(item.id)}
                 />
             </Container>
         </main>
@@ -127,16 +165,16 @@ OrderPage.getInitialProps = async () => {
         const collection = await firebaseInstance.firestore().collection('burgers');
         const dataCollection = await collection.get();
 
-        let burgers = [];
+        const arr = [];
 
         dataCollection.forEach(burg => {
-            burgers.push({
+            arr.push({
                 id: burg.id,
                 ...burg.data()
             });
         });
         
-        return { burgers }
+        return { arr }
 
     } catch (error) {
         return {

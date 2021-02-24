@@ -5,5 +5,5 @@ export const Container = styled.section`
     height: auto;
     padding: 2em;
     border-radius: 10px;
-    background-color: lightgreen;
+    background-color: lightgray;
 `;
