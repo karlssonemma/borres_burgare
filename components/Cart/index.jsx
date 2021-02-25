@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import InputField from '../InputField';
 import Btn from '../Btn';
 
-function Cart({ cart, onBtnClickHandler }) {
+function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
 
     const [total, setTotal] = useState(0);
 
@@ -38,7 +38,13 @@ function Cart({ cart, onBtnClickHandler }) {
                     })
                     : <p>Empty</p>
             }
-            <InputField inputType='text' inputId='comment' inputName='comment' labelText='Comment' />
+            <InputField 
+                inputType='text' 
+                inputId='comment' 
+                inputName='comment' 
+                labelText='Comment'
+                inputChangeHandler={e => inputChangeHandler(e)}
+            />
             <h3>Total: {total}</h3>
         </section>
     )

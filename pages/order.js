@@ -11,33 +11,14 @@ function OrderPage({ arr }) {
 
     const [chosen, setChosen] = useState(null);
     const [cart, setCart] = useState([]);
+    const [comment, setComment] = useState('');
     const burgers = [...arr];
 
     const current_cart = firebaseInstance.firestore().collection('current_cart');
 
-    // useEffect(() => {
-    //     if (current_cart.get() === null) {
-    //         current_cart.get()
-    //         .then(query => {
-    //             query.forEach(doc => {
-    //                 console.log(doc.data())
-    //             });
-    //         });
-    //     } else {
-    //         console.log('empty')
-    //     }
-    // }, [])
-
-
-    // useEffect(() => {
-    //     if (cart !== null) {
-    //         cart.forEach(item => {
-    //             current_cart.doc(`${item.id}`).set(item)
-    //         })
-    //     } else {
-
-    //     }
-    // }, [cart])
+    useEffect(() => {
+        console.log('update');
+    }, [cart, comment])
 
 
     function addToCart(item) {
@@ -115,6 +96,10 @@ function OrderPage({ arr }) {
         setCart([...tempCart]);
     };
 
+    function handleComment(e) {
+        setComment(e.target.value);
+    };
+
     return(
         <main>
             <Container>
@@ -154,6 +139,7 @@ function OrderPage({ arr }) {
                 <Cart 
                     cart={cart}
                     onBtnClickHandler={item => removeItem(item.id)}
+                    inputChangeHandler={e => handleComment(e)}
                 />
             </Container>
         </main>

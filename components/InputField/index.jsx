@@ -14,7 +14,14 @@ const StyledLabel = styled.label`
     font-size: .8rem;
 `;
 
-function InputField({ inputType, inputPlaceholder, labelText, inputName, inputId }) {
+function InputField({ 
+    inputType, 
+    inputPlaceholder, 
+    labelText, 
+    inputName, 
+    inputId, 
+    inputChangeHandler 
+}) {
 
     return(
         <>
@@ -24,6 +31,7 @@ function InputField({ inputType, inputPlaceholder, labelText, inputName, inputId
                 placeholder={inputPlaceholder}
                 id={inputId}
                 name={inputName}
+                onChange={e => inputChangeHandler(e)}
             />
         </>
     )
