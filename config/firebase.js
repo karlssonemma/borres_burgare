@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import 'firebase/auth'
 
 let firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -19,3 +20,4 @@ let firebaseConfig = {
 
   const firebaseInstance = firebase;
   export default firebaseInstance;
+  export const auth = firebase.auth()

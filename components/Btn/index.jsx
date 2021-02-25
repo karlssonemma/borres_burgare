@@ -11,10 +11,23 @@ const StyledBtn = styled.button`
     cursor: pointer;
 `;
 
-function Btn({ btnText, btnType, onBtnClickHandler }) {
+function Btn({ 
+    btnText, 
+    btnType, 
+    onBtnClickHandler, 
+    setDisabled 
+}) {
 
     return(
-        <StyledBtn onClick={() => onBtnClickHandler()} type={btnType}>{btnText}</StyledBtn>
+        <>
+        {
+            setDisabled 
+            ?
+            <StyledBtn onClick={() => onBtnClickHandler()} type={btnType} disabled>{btnText}</StyledBtn>
+            :
+            <StyledBtn onClick={() => onBtnClickHandler()} type={btnType}>{btnText}</StyledBtn>
+        }
+        </>
     )
 }
 

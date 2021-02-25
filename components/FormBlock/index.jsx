@@ -15,14 +15,22 @@ const StyledForm = styled.form`
     } */
 `;
 
-function FormBlock({ formAction, formMethod, formId, formName, children }) {
+function FormBlock({ 
+    formAction, 
+    formMethod, 
+    formId, 
+    formName,
+    handleFormSubmit, 
+    children 
+}) {
 
     return(
         <StyledForm 
             action={formAction} 
             method={formMethod} 
             name={formName} 
-            id={formId} 
+            id={formId}
+            onSubmit={(e) => handleFormSubmit(e)}
         >
             {children}
         </StyledForm>
