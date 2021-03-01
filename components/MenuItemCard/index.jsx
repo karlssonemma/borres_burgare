@@ -36,14 +36,11 @@ function MenuItemCard({
     allergens, 
     patty, 
     item,  
-    onBtnClickHandler, 
-    onChangeRadioHandler,
-    handleChange
+    onBtnClickHandler,
+    handleChange,
     }) {
 
-    // function handleChange(e) {
-    //     console.log(e.target.value)
-    // };
+ 
 
     return(
         <StyledSection>
@@ -65,7 +62,6 @@ function MenuItemCard({
                         patty.map(item => {
                             return(
                                 <RadioInput
-                                    // onChange={() => handleSubmit()}
                                     radioValue={item} 
                                     key={item} 
                                     radioName='Patty' 

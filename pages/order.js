@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import firebaseInstance from '../config/firebase';
 import { Container } from '../components/Container';
 import readCollection from '../database/readCollection';
@@ -64,12 +64,12 @@ function OrderPage({ arr }) {
         }
     };
 
-    function addItem(id) {
+    function addItem(id, item) {
         let tempCart = [...cart];
         let tempProducts = [...burgers];
-        let tempItem = tempCart.find(item => item.id === id);
+        let tempItem = tempCart.find(el => el.id === id && el.chosen_patty === item.chosen_patty);
         if (!tempItem) {
-            tempItem = tempProducts.find(item => item.id === id);
+            tempItem = tempProducts.find(el => el.id === id && el.chosen_patty === item.chosen_patty);
             let newItem = {
                             ...tempItem, 
                             count: 1, 
@@ -110,6 +110,12 @@ function OrderPage({ arr }) {
         setComment(e.target.value);
     };
 
+   function changePat(e, item) {
+       console.log(e.target.value)
+       item.chosen_patty = e.target.value;
+       console.log(item)
+   }
+
     return(
         <main>
             <Container>
@@ -117,10 +123,9 @@ function OrderPage({ arr }) {
                     burgers && burgers.map(item => {
                         return(
                             <MenuItemCard
-                                handleChange={e => console.log(e.target.value)}
-                                onBtnClickHandler={() => addItem(item.id)}
+                                handleChange={(e) => changePat(e, item)}
+                                onBtnClickHandler={() => addItem(item.id, item)}
                                 onClickHandler={item => setChosen(item)}
-                                onChangeRadioHandler={e => pattyValue(e)}
                                 // item={item}
                                 quantity={item.quantity}
                                 key={item.id}
