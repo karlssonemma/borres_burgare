@@ -14,11 +14,20 @@ function OrderPage({ arr }) {
     const [comment, setComment] = useState('');
     const burgers = [...arr];
 
-    const current_cart = firebaseInstance.firestore().collection('current_cart');
+    const currentCart = firebaseInstance.firestore().collection('cart');
 
     useEffect(() => {
-        console.log('update');
-    }, [cart, comment])
+        let data = localStorage.getItem('cart');
+        let returned = JSON.parse(data);
+        if (data) {
+            setCart(returned);
+        };    
+    }, [])
+
+    useEffect(() => {
+        let cartString = JSON.stringify(cart);
+        localStorage.setItem('cart', cartString);
+    }, [cart])
 
 
     function addToCart(item) {
@@ -94,6 +103,7 @@ function OrderPage({ arr }) {
             tempCart.splice(index, 1)
         };
         setCart([...tempCart]);
+        currentCart.doc(id).delete()
     };
 
     function handleComment(e) {

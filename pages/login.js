@@ -24,6 +24,7 @@ function LogInPage() {
             setLoading(true);
             await login(emailRef.current.value, passwordRef.current.value)
             router.push('/order')
+            console.log(currentUser)
         } catch {
             setError('Failed to log in');
         }
