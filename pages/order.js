@@ -4,17 +4,46 @@ import { Container } from '../components/Container';
 import readCollection from '../database/readCollection';
 import MenuItemCard from '../components/MenuItemCard';
 import Cart from '../components/Cart';
+import styled from 'styled-components';
 
+const StyledMain = styled.main`
+    margin-top: 1em;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 10% auto 20%;
+`;
+
+const StyledLink = styled.a`
+    display: block;
+    cursor: pointer;
+`;
 
 
 function OrderPage({ arr }) {
 
-    const [chosen, setChosen] = useState(null);
     const [cart, setCart] = useState([]);
     const [comment, setComment] = useState('');
     const burgers = [...arr];
+    const [fries, setFries] = useState(null);
+    const [activeMenu, setActiveMenu] = useState(burgers);
 
     const currentCart = firebaseInstance.firestore().collection('cart');
+    const friesColl = firebaseInstance.firestore().collection('fries');
+
+    useEffect(() => {
+        let friesArr = [];
+        friesColl.get()
+        .then(query => {
+            query.forEach(doc => {
+                friesArr.push({
+                    id: doc.id,
+                    ...doc.data()
+                })
+            });
+            console.log(friesArr);
+            setFries(friesArr);
+        })
+    }, [])
 
     useEffect(() => {
         let data = localStorage.getItem('cart');
@@ -30,43 +59,9 @@ function OrderPage({ arr }) {
     }, [cart])
 
 
-    function addToCart(item) {
-        console.log(item)
-
-        if (cart !== null) {
-
-            const found = cart.find(el => el.id === item.id);
-
-            if (found) {
-                console.log(found)
-                let newArray = [];
-
-                for (let i = 0; i < cart.length; i++) {
-                    if (cart[i].id === item.id) {
-                        let newObj = cart[i];
-                        newObj.quantity += 1;
-                        newArray.push(newObj);
-                    } else {
-                        newArray.push(cart[i])
-                    };
-                };
-                setCart(newArray);
-            } else {
-                let newArray2 = [];
-                console.log(item)
-                newArray2.push(...cart, item);
-                setCart([...newArray2]);
-            }
-        } else {
-            let newArray = [];
-            newArray.push(item);
-            setCart(newArray);
-        }
-    };
-
     function addItem(id, item) {
         let tempCart = [...cart];
-        let tempProducts = [...burgers];
+        let tempProducts = [...activeMenu];
         let tempItem = tempCart.find(el => el.id === id && el.chosen_patty === item.chosen_patty);
         if (!tempItem) {
             tempItem = tempProducts.find(el => el.id === id && el.chosen_patty === item.chosen_patty);
@@ -91,10 +86,6 @@ function OrderPage({ arr }) {
         }
     };
 
-    // function pattyValue(e) {
-    //     chosenPatty = e.value;
-    // }
-
     function removeItem(id) {
         let tempCart = [...cart];
         let tempItem = tempCart.find(item => item.id === id);
@@ -114,20 +105,31 @@ function OrderPage({ arr }) {
        console.log(e.target.value)
        item.chosen_patty = e.target.value;
        console.log(item)
-   }
+   };
+
+   function setMenu(e) {
+       if(e.target.text === 'Fries') {
+           setActiveMenu(fries)
+       }
+       if(e.target.text === 'Burgers') {
+           setActiveMenu(burgers)
+       }
+   };
 
     return(
-        <main>
+        <StyledMain>
             <Container>
+                <StyledLink onClick={e => setMenu(e)}>Burgers</StyledLink>
+                <StyledLink onClick={e => setMenu(e)}>Fries</StyledLink>
+            </Container>
+            <Container style={{borderLeft: '1px solid black', borderRight: '1px solid black'}}>
                 {
-                    burgers && burgers.map(item => {
+                   activeMenu && activeMenu.map(item => {
                         return(
                             <MenuItemCard
                                 handleChange={(e) => changePat(e, item)}
                                 onBtnClickHandler={() => addItem(item.id, item)}
-                                onClickHandler={item => setChosen(item)}
                                 // item={item}
-                                quantity={item.quantity}
                                 key={item.id}
                                 itemTitle={item.title}
                                 price={item.price}
@@ -138,15 +140,18 @@ function OrderPage({ arr }) {
                         )
                     })
                 }
-
                 {/* {
-                    burgers && burgers.map(item => {
+                    fries && fries.map(item => {
                         return(
-                            <section key={Math.floor(Math.random() * 100)}>
-                                <p>{item.title}</p>
-                                <button onClick={() => addItem(item.id)}>Add</button>
-                            </section>
-                            )
+                            <MenuItemCard 
+                                onBtnClickHandler={() => addItem(item.id, item)}
+                                key={item.id}
+                                itemTitle={item.title}
+                                price={item.price}
+                                description={item.description}
+                                allergens={item.allergens}
+                            />
+                        )
                     })
                 } */}
             </Container>
@@ -157,7 +162,7 @@ function OrderPage({ arr }) {
                     inputChangeHandler={e => handleComment(e)}
                 />
             </Container>
-        </main>
+        </StyledMain>
     )
 }
 

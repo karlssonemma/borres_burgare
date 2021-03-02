@@ -31,7 +31,7 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                     ? cart.map(item => {
                         return(
                             <section key={Math.random()}>
-                                <p>{item.count} x {item.title}</p>
+                                <p>{item.count} x {item.title} {item.chosen_patty}</p>
                                 <Btn btnText='X' onBtnClickHandler={() => onBtnClickHandler(item)} />
                             </section>
                         )

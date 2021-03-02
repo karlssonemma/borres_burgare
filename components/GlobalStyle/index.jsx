@@ -11,13 +11,13 @@ const GlobalStyle = createGlobalStyle`
         font-size: 14px;
     }
 
-    main {
+    /* main {
         width: 100vw;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
-    }
+    } */
 `;
 
 export default GlobalStyle;

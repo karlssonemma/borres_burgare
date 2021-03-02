@@ -5,19 +5,20 @@ import RadioInput from '../RadioInput';
 import Btn from '../Btn';
 
 const StyledSection = styled.section`
-    width: 50%;
-    height: max-content;
-    margin: 1em 0;
-    padding: 1em 1em;
+    width: 100%;
+    height: 250px;
+    margin: 1em;
+
+    display: flex;
     border-radius: 10px;
     /* box-shadow: 0px 0px 10px 2px #888888; */
-    border: 3px solid black;
-    background-color: #f1f1f1;
+    border: 1px solid #a3a3a3;
     cursor: pointer;
+    overflow: hidden;
 `;
 
 const StyledTitle = styled.h3`
-    padding-bottom: .5em;
+    padding: .5em 0;
 `;
 
 const StyledList = styled.ul`
@@ -26,6 +27,12 @@ const StyledList = styled.ul`
 
 const StyledListItem = styled.li`
     display: inline-block;
+`;
+
+const StyledImg = styled.img`
+    height: 100%;
+    margin-right: 1em;
+    object-fit: contain;
 `;
 
 
@@ -44,39 +51,42 @@ function MenuItemCard({
 
     return(
         <StyledSection>
-                <StyledTitle>{itemTitle}</StyledTitle>
-                <p>{description}</p>
-                <StyledList>Allergens:
-                    {
-                        allergens.map(item => {
-                            return(
-                                <StyledListItem key={item}>
-                                    {item}
-                                </StyledListItem>
-                            )
-                        })
-                    }
-                </StyledList>
-                <form className='choosePatty' onChange={e => handleChange(e)}>
-                    {
-                        patty.map(item => {
-                            return(
-                                <RadioInput
-                                    radioValue={item} 
-                                    key={item} 
-                                    radioName='Patty' 
-                                />
-                            )
-                        })
-                    }
-                </form>
+                <StyledImg src={'https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok'} />
                 <div>
-                    <h4>{price} NOK</h4>
+                    <StyledTitle>{itemTitle}</StyledTitle>
+                    <p>{description}</p>
+                    <form className='choosePatty' onChange={e => handleChange(e)}>
+                        {
+                            patty && patty.map(item => {
+                                return(
+                                    <RadioInput
+                                        radioValue={item} 
+                                        key={item} 
+                                        radioName='Patty' 
+                                    />
+                                )
+                            })
+                        }
+                    </form>
+                    <div>
+                        <h4>{price} NOK</h4>
+                    </div>
+                    <Btn 
+                        onBtnClickHandler={() => onBtnClickHandler(item)} 
+                        btnText='Add to cart' 
+                    />
+                    <StyledList>Allergens:
+                        {
+                            allergens && allergens.map(item => {
+                                return(
+                                    <StyledListItem key={item}>
+                                        {item}
+                                    </StyledListItem>
+                                )
+                            })
+                        }
+                    </StyledList>
                 </div>
-                <Btn 
-                    onBtnClickHandler={() => onBtnClickHandler(item)} 
-                    btnText='add to cart' 
-                />
 
         </StyledSection>
     )
