@@ -21,7 +21,8 @@ function InputField({
     inputName, 
     inputId, 
     inputChangeHandler,
-    refHandler
+    refHandler,
+    inputValue
 }) {
 
     return(
@@ -32,8 +33,9 @@ function InputField({
                 placeholder={inputPlaceholder}
                 id={inputId}
                 name={inputName}
-                onChange={e => inputChangeHandler(e)}
+                // onChange={e => inputChangeHandler(e)}
                 ref={refHandler}
+                value={inputValue}
             />
         </>
     )

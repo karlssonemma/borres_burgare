@@ -19,31 +19,34 @@ const StyledLink = styled.a`
 `;
 
 
-function OrderPage({ arr }) {
+function OrderPage({ menuArr, extrasArr }) {
 
     const [cart, setCart] = useState([]);
     const [comment, setComment] = useState('');
-    const burgers = [...arr];
+    const burgers = [...menuArr];
+    const extras = [...extrasArr];
     const [fries, setFries] = useState(null);
-    const [activeMenu, setActiveMenu] = useState(burgers);
+    const [activeMenu, setActiveMenu] = useState(burgers.filter(item => item.category === 'burger'));
 
     const currentCart = firebaseInstance.firestore().collection('cart');
     const friesColl = firebaseInstance.firestore().collection('fries');
 
-    useEffect(() => {
-        let friesArr = [];
-        friesColl.get()
-        .then(query => {
-            query.forEach(doc => {
-                friesArr.push({
-                    id: doc.id,
-                    ...doc.data()
-                })
-            });
-            console.log(friesArr);
-            setFries(friesArr);
-        })
-    }, [])
+    console.log(extras)
+
+    // useEffect(() => {
+    //     let friesArr = [];
+    //     friesColl.get()
+    //     .then(query => {
+    //         query.forEach(doc => {
+    //             friesArr.push({
+    //                 id: doc.id,
+    //                 ...doc.data()
+    //             })
+    //         });
+    //         console.log(friesArr);
+    //         setFries(friesArr);
+    //     })
+    // }, [])
 
     useEffect(() => {
         let data = localStorage.getItem('cart');
@@ -107,12 +110,42 @@ function OrderPage({ arr }) {
        console.log(item)
    };
 
+   function changeExtras(e, item) {
+    let tempChecked = item.extras;
+    if (e.target.checked) {
+        if (!tempChecked) {
+            let newExtra = extras.find(item => item.title === e.target.name);
+            item.extras = [newExtra];
+        } else {
+            let newExtra = extras.find(item => item.title === e.target.name);
+            item.extras = [...tempChecked, newExtra];
+        };
+    } else {
+        let newChecked = tempChecked.find(item => item.title === e.target.name);
+        let index = tempChecked.indexOf(newChecked);
+        tempChecked.splice(index, 1);
+        item.extras = tempChecked;
+    };
+   
+
+    // console.log(e.target.checked)
+    // item.extras = e.target.name;
+    console.log(item)
+    // console.log(e.target.value)
+   };
+
    function setMenu(e) {
        if(e.target.text === 'Fries') {
-           setActiveMenu(fries)
+           let tempArr = burgers.filter(item => item.category === 'fries');
+           setActiveMenu(tempArr);
        }
        if(e.target.text === 'Burgers') {
-           setActiveMenu(burgers)
+        let tempArr = burgers.filter(item => item.category === 'burger');
+        setActiveMenu(tempArr);
+       }
+       if(e.target.text === 'Drinks') {
+        let tempArr = burgers.filter(item => item.category === 'drink');
+        setActiveMenu(tempArr);
        }
    };
 
@@ -121,6 +154,7 @@ function OrderPage({ arr }) {
             <Container>
                 <StyledLink onClick={e => setMenu(e)}>Burgers</StyledLink>
                 <StyledLink onClick={e => setMenu(e)}>Fries</StyledLink>
+                <StyledLink onClick={e => setMenu(e)}>Drinks</StyledLink>
             </Container>
             <Container style={{borderLeft: '1px solid black', borderRight: '1px solid black'}}>
                 {
@@ -136,6 +170,9 @@ function OrderPage({ arr }) {
                                 description={item.description}
                                 allergens={item.allergens}
                                 patty={item.patty}
+                                category={item.category}
+                                extras={extras}
+                                handleExtras={e => changeExtras(e, item)}
                             />
                         )
                     })
@@ -169,18 +206,29 @@ function OrderPage({ arr }) {
 OrderPage.getInitialProps = async () => {
     try {
         const collection = await firebaseInstance.firestore().collection('burgers');
-        const dataCollection = await collection.get();
+        const collection2 = await firebaseInstance.firestore().collection('extras');
+        const menuCollection = await collection.get();
+        const extrasCollection = await collection2.get();
 
-        const arr = [];
+        const menuArr = [];
 
-        dataCollection.forEach(burg => {
-            arr.push({
-                id: burg.id,
-                ...burg.data()
+        menuCollection.forEach(item => {
+            menuArr.push({
+                id: item.id,
+                ...item.data()
+            });
+        });
+
+        const extrasArr = [];
+
+        extrasCollection.forEach(item => {
+            extrasArr.push({
+                id: item.id,
+                ...item.data()
             });
         });
         
-        return { arr }
+        return { menuArr, extrasArr }
 
     } catch (error) {
         return {
