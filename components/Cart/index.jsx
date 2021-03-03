@@ -10,12 +10,12 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
     useEffect(() => {
         let amount = 0;
         if (cart !== null) {
-
             for (let i = 0; i < cart.length; i++) {
-
-                cart[i].count > 1 
-                    ? amount += cart[i].count * cart[i].price
-                    : amount += cart[i].price
+                if (cart[i].count) {
+                    amount += cart[i].count * cart[i].price
+                } else {
+                    amount += cart[i].price
+                };
             };
         };
        setTotal(amount);
@@ -32,6 +32,9 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                         return(
                             <section key={Math.random()}>
                                 <p>{item.count} x {item.title} {item.chosen_patty}</p>
+                                {
+                                    item.extras && item.extras.map(item => <p>{item.title}</p>)
+                                }
                                 <Btn btnText='X' onBtnClickHandler={() => onBtnClickHandler(item)} />
                             </section>
                         )
