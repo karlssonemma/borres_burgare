@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from 'react';
 
 const StyledInput = styled.input`
     width: auto;
@@ -22,7 +23,8 @@ function InputField({
     inputId, 
     inputChangeHandler,
     refHandler,
-    inputValue
+    inputValue, 
+    formRef
 }) {
 
     return(
@@ -34,7 +36,7 @@ function InputField({
                 id={inputId}
                 name={inputName}
                 // onChange={e => inputChangeHandler(e)}
-                ref={refHandler}
+                ref={formRef}
                 value={inputValue}
             />
         </>

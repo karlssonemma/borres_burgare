@@ -32,9 +32,9 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                         return(
                             <section key={Math.random()}>
                                 <p>{item.count} x {item.title} {item.chosen_patty}</p>
-                                {
+                                {/* {
                                     item.extras && item.extras.map(item => <p>{item.title}</p>)
-                                }
+                                } */}
                                 <Btn btnText='X' onBtnClickHandler={() => onBtnClickHandler(item)} />
                             </section>
                         )

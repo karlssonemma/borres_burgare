@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useState } from 'react';
 
 const StyledInput = styled.input`
     position: absolute;
@@ -33,15 +33,18 @@ const StyledRadioBtn = styled.span`
     left: 0;
 `;
 
-function RadioInput({ radioValue, radioName }) {
+function RadioInput({ radioValue, radioName, formRef }) {
+
 
     return(
         <>
             <StyledLabel>{radioValue}
-                    <StyledInput 
-                        type='radio' 
-                        name={radioName} 
-                        value={radioValue} />
+                <StyledInput 
+                    type='radio' 
+                    name={radioName} 
+                    value={radioValue} 
+                    ref={formRef}
+                />
                     <StyledRadioBtn />
             </StyledLabel>
         </>

@@ -1,72 +1,75 @@
 import React, { useRef, useState } from 'react';
-import styled from 'styled-components';
-import Btn from '../components/Btn';
-import FormBlock from '../components/FormBlock';
 import InputField from '../components/InputField';
 import { PageTitle } from '../components/PageTitle';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { StyledBtn } from '../components/StyledBtn';
+import { useForm } from 'react-hook-form';
+import { StyledForm } from '../components/StyledForm';
+
 
 function SignUpPage() {
 
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const passwordConfirmRef = useRef();
+    const { register, handleSubmit, errors } = useForm();
     const { signup, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
  
-    async function handleSubmit(e) {
-        e.preventDefault();
-
-        if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+    const onSubmit = async (data) => {
+        console.log(data.confirm_password)
+        if(data.password !== data.confirm_password) {
             return setError('Passwords do not match');
         };
 
         try {
             setError('');
             setLoading(true);
-            await signup(emailRef.current.value, passwordRef.current.value)
+            await signup(data.email, data.password)
         } catch {
-            setError('Failed to create an account');
-        }
-        setLoading(false)
-    }
+            setError('Failed to create account')
+        };
+
+        setLoading(false);
+        
+    };
 
     return(
         <main>
             <PageTitle>Sign up</PageTitle>
             {currentUser.email}
             {error && <p>{error}</p>}
-            <FormBlock 
-                formName='signup' 
-                formId='signup' 
-                formAction='/' 
-                formMethod='GET'
-                handleFormSubmit={e => handleSubmit(e)}
+            <StyledForm 
+                name='signup' 
+                id='signup' 
+                // action='/' 
+                // method='GET'
+                onSubmit={handleSubmit(onSubmit)}
             >
                 <InputField 
                     inputType='email' 
+                    inputName='email' 
                     labelText='Email'
-                    refHandler={emailRef}
+                    formRef={register}
                 />
                 <InputField 
                     inputType='password' 
+                    inputName='password' 
                     labelText='Password'
-                    refHandler={passwordRef} 
+                    formRef={register} 
                 />
                 <InputField 
-                    inputType='password' 
+                    inputType='password'
+                    inputName='confirm_password'
                     labelText='Confirm Password'
-                    refHandler={passwordConfirmRef} 
+                    formRef={register} 
                 />
-                <Btn 
-                    btnText='Sign Up' 
-                    btnType='submit'
-                    style={{ color: 'blue' }}
-                    setDisabled={loading}
-                    onBtnClickHandler={() => console.log('submitted')}
-                />
-            </FormBlock>
+                <StyledBtn
+                    type='submit'
+                    disabled={loading}
+                    onClick={console.log('submitted')}
+                >
+                    Sign Up
+                </StyledBtn>
+            </StyledForm>
         </main>
     )
 }

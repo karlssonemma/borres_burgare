@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import InputField from '../InputField';
 import RadioInput from '../RadioInput';
 import Btn from '../Btn';
+import { StyledBtn } from '../StyledBtn';
 import firebaseInstance from '../../config/firebase';
 
 const StyledSection = styled.section`
@@ -16,6 +17,14 @@ const StyledSection = styled.section`
     border: 1px solid #a3a3a3;
     cursor: pointer;
     overflow: hidden;
+
+    & .show {
+        display: none;
+    }
+
+    & .chosen.show {
+        display: block;
+    }
 `;
 
 const StyledTitle = styled.h3`
@@ -38,65 +47,64 @@ const StyledImg = styled.img`
 
 
 function MenuItemCard({ 
-    itemTitle, 
-    price, 
-    description, 
-    allergens, 
-    patty, 
+    menu_item,
     item,  
-    onBtnClickHandler,
-    handleChange,
-    handleExtras,
     extras,
-    category
+    formRef,
+    runSubmit,
+    handleClick
     }) {
 
+    console.log('re-rendered component')
  
 
     return(
         <StyledSection>
                 <StyledImg src={'https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok'} />
                 <div>
-                    <StyledTitle>{itemTitle}</StyledTitle>
-                    <p>{description}</p>
-                    <form className='choosePatty' onChange={e => handleChange(e)}>
+                    <StyledTitle>{menu_item.title}</StyledTitle>
+                    <p>{menu_item.description}</p>
+                    <form className='choosePatty' onSubmit={onSubmit => runSubmit(onSubmit)}>
                         {
-                            patty && patty.map(item => {
-                                return(
-                                    <RadioInput
-                                        radioValue={item} 
-                                        key={item} 
-                                        radioName='Patty' 
-                                    />
-                                )
+                            menu_item.patty && menu_item.patty.map(item => {
+                                    return(
+                                        <RadioInput
+                                            radioValue={item} 
+                                            key={item}
+                                            radioName='Patty'
+                                            formRef={formRef}
+                                        />
+                                    ) 
                             })
                         }
-                    </form>
                     <div>
-                        <h4>{price} NOK</h4>
+                        <h4>{menu_item.price} NOK</h4>
                     </div>
-                    <form className='chooseExtras' onChange={e => handleExtras(e)}>
                     {
-                        (category === 'burger' && extras) && extras.map(item => {
+                        (menu_item.category === 'burger' && extras) && extras.map(item => {
                             return(
-                                <InputField 
-                                    inputType='checkbox'
-                                    inputId={Math.floor(Math.random() * 1000)}
-                                    labelText={item.title + ' + ' + item.price + ' NOK'}
-                                    inputName={item.title}
-                                    inputValue={item.title}
-                                />
+                                    <InputField 
+                                        inputType='checkbox'
+                                        inputId={Math.floor(Math.random() * 1000)}
+                                        labelText={item.title + ' + ' + item.price + ' NOK'}
+                                        inputName='extra'
+                                        inputValue={item.title}
+                                        formRef={formRef}
+                                        key={Math.floor(Math.random() * 1000)}
+                                    />
                             )
                         })
                     }
+                    <StyledBtn 
+                        type='submit' 
+                        key={Math.floor(Math.random() * 1000)} 
+                        onClick={() => handleClick()}
+                    >Add
+                    </StyledBtn>
                     </form>
-                    <Btn 
-                        onBtnClickHandler={() => onBtnClickHandler(item)} 
-                        btnText='Add to cart' 
-                    />
                     <StyledList>Allergens:
                         {
-                            allergens && allergens.map(item => {
+                            menu_item.allergens && menu_item.allergens.map(item => {
                                 return(
                                     <StyledListItem key={item}>
                                         {item}
