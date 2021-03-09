@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { StyledBtn } from '../components/StyledBtn';
 import { useForm } from 'react-hook-form';
 import { StyledForm } from '../components/StyledForm';
+import firebaseInstance from '../config/firebase';
 
 
 function SignUpPage() {
@@ -13,6 +14,8 @@ function SignUpPage() {
     const { signup, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const userColl = firebaseInstance.firestore().collection('users');
  
     const onSubmit = async (data) => {
         console.log(data.confirm_password)
@@ -23,9 +26,14 @@ function SignUpPage() {
         try {
             setError('');
             setLoading(true);
-            await signup(data.email, data.password)
-        } catch {
-            setError('Failed to create account')
+            const user = await signup(data.email, data.password);
+            console.log(user.user.uid);
+            userColl.doc(user.user.uid).set({
+                email: user.user.email,
+                user_id: user.user.uid
+            })
+        } catch (error){
+            setError('Failed to create account', error)
         };
 
         setLoading(false);

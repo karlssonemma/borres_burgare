@@ -7,6 +7,7 @@ import Cart from '../../components/Cart';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
+import { useBasket } from '../../contexts/AuthContext';
 
 const StyledMain = styled.main`
     margin-top: 1em;
