@@ -7,11 +7,11 @@ const BasketContext = createContext({
 });
 
 export const Basket = ({ children }) => {
-    
+
     const [products, setProducts] = useState([]);
     const [total, setTotal] = useState(0);
 
-    const addProduct = () => {
+    const addProduct = (product) => {
         setProducts([...products, product]);
     };
 
@@ -24,7 +24,7 @@ export const Basket = ({ children }) => {
 
     return(
         <BasketContext.Provider value={{products, addProduct, total}}>
-            { children }
+            {children}
         </BasketContext.Provider>
     )
 }

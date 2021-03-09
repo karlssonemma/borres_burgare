@@ -7,7 +7,8 @@ import Cart from '../../components/Cart';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { useBasket } from '../../contexts/AuthContext';
+import { useBasket } from '../../contexts/BasketContext';
+import ProductCard from '../../components/ProductCard';
 
 const StyledMain = styled.main`
     margin-top: 1em;
@@ -32,6 +33,7 @@ function OrderPage({ menuArr }) {
 
     const { register, handleSubmit, errors } = useForm();
 
+    const basket = useBasket();
     const [chosen, setChosen] = useState(null);
     const [cart, setCart] = useState([]);
     const [comment, setComment] = useState('');
@@ -52,7 +54,7 @@ function OrderPage({ menuArr }) {
         setAddOns(data)
     };
 
-    useEffect(() => {
+    useEffect(() => {  
         if (extras === null) {
             let extrasArr = [];
             extrasColl.get()
@@ -188,12 +190,14 @@ function OrderPage({ menuArr }) {
                 {
                     activeMenu && activeMenu.map(item => {
                         return(
-                           <Link href={'/order/' + item.id} key={item.id}>
-                                <a>{item.title}</a>
-                           </Link>
+                           <ProductCard 
+                                product={item}
+                                key={item.id}
+                           />
                         )
                     })
                 }
+               
             </Container>
             <Container>
                 <Cart 
