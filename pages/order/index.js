@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { useBasket } from '../../contexts/BasketContext';
 import ProductCard from '../../components/ProductCard';
+import { ProductGrid } from '../../components/ProductGrid';
 
 const StyledMain = styled.main`
     margin-top: 1em;
@@ -175,18 +176,7 @@ function OrderPage({ menuArr }) {
                 <StyledLink onClick={e => setMenu(e)}>Fries</StyledLink>
                 <StyledLink onClick={e => setMenu(e)}>Drinks</StyledLink>
             </Container>
-            <Container style={{borderLeft: '1px solid black', borderRight: '1px solid black'}}>
-                {/* {
-                    <MenuItemCard
-                        // item={item}
-                        menu_item={chosen}
-                        extras={extras}
-                        runSubmit={handleSubmit(onSubmit)}
-                        formRef={register}
-                        handleClick={() => addItem(chosen.id, chosen)}
-                        key={chosen.id}
-                    />
-                } */}
+            <ProductGrid style={{borderLeft: '1px solid black', borderRight: '1px solid black'}}>
                 {
                     activeMenu && activeMenu.map(item => {
                         return(
@@ -197,11 +187,10 @@ function OrderPage({ menuArr }) {
                         )
                     })
                 }
-               
-            </Container>
+            </ProductGrid>
             <Container>
                 <Cart 
-                    cart={cart}
+                    cart={basket.products}
                     onBtnClickHandler={item => removeItem(item.id)}
                     inputChangeHandler={e => handleComment(e)}
                 />

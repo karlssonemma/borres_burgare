@@ -1,26 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import InputField from '../InputField';
-import Btn from '../Btn';
+import { StyledBtn } from '../../components/StyledBtn';
+import { useBasket } from '../../contexts/BasketContext';
 
 function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
 
-    const [total, setTotal] = useState(0);
-
-    useEffect(() => {
-        let amount = 0;
-        if (cart !== null) {
-            for (let i = 0; i < cart.length; i++) {
-                if (cart[i].count) {
-                    amount += cart[i].count * cart[i].price
-                } else {
-                    amount += cart[i].price
-                };
-            };
-        };
-       setTotal(amount);
-       console.log('updated')
-    }, [cart])
+    const basket = useBasket();
 
 
     return(
@@ -35,7 +21,9 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                                 {/* {
                                     item.extras && item.extras.map(item => <p>{item.title}</p>)
                                 } */}
-                                <Btn btnText='X' onBtnClickHandler={() => onBtnClickHandler(item)} />
+                                <StyledBtn>
+
+                                </StyledBtn>
                             </section>
                         )
                     })
@@ -48,7 +36,7 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                 labelText='Comment'
                 inputChangeHandler={e => inputChangeHandler(e)}
             />
-            <h3>Total: {total}</h3>
+            <h3>Total: {basket.total}</h3>
         </section>
     )
 }

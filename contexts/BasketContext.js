@@ -12,18 +12,48 @@ export const Basket = ({ children }) => {
     const [total, setTotal] = useState(0);
 
     const addProduct = (product) => {
-        setProducts([...products, product]);
+        let tempCart = [...products];
+        let tempProduct = tempCart.find(el => el.id === product.id);
+        if (!tempProduct) {
+            setProducts([...products, product]);
+        } else {
+            addToCount(product)
+        };
+    };
+
+    const addToCount = (product) => {
+        let tempCart = [...products];
+        let updatedProduct = tempCart.find(el => el.id === product.id);
+        let index = tempCart.indexOf(product);
+        tempCart.splice(index, 1);
+        updatedProduct.count += 1;
+        updatedProduct.total = updatedProduct.count * updatedProduct.price;
+        tempCart.push(updatedProduct);
+        setProducts(tempCart);
     };
 
     useEffect(() => {
+        let data = localStorage.getItem('cart');
+        let returned = JSON.parse(data);
+        if (data) {
+            setProducts(returned);
+        };    
+    }, [])
+
+    useEffect(() => {
+        let cartString = JSON.stringify(products);
+        localStorage.setItem('cart', cartString);
+    }, [products])
+
+    useEffect(() => {
         let price = products.reduce((prev, cur) => {
-            return prev + cur.price;
+            return prev + cur.total;
         }, 0)
         setTotal(price);
     }, [products])
 
     return(
-        <BasketContext.Provider value={{products, addProduct, total}}>
+        <BasketContext.Provider value={{products, addProduct, total, addToCount}}>
             {children}
         </BasketContext.Provider>
     )
