@@ -8,21 +8,24 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
 
     const basket = useBasket();
 
+    const handleDelete = (item) => {
+        basket.deleteProduct(item);
+    };
 
     return(
         <section>
             <h3>Your Order</h3>
             {
-                (cart !== null) 
-                    ? cart.map(item => {
+                (basket.products !== null) 
+                    ? basket.products.map(item => {
                         return(
                             <section key={Math.random()}>
                                 <p>{item.count} x {item.title} {item.chosen_patty}</p>
                                 {/* {
                                     item.extras && item.extras.map(item => <p>{item.title}</p>)
                                 } */}
-                                <StyledBtn>
-
+                                <StyledBtn onClick={() => handleDelete(item)}>
+                                    Remove
                                 </StyledBtn>
                             </section>
                         )

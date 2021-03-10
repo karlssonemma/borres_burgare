@@ -24,12 +24,22 @@ export const Basket = ({ children }) => {
     const addToCount = (product) => {
         let tempCart = [...products];
         let updatedProduct = tempCart.find(el => el.id === product.id);
-        let index = tempCart.indexOf(product);
+        let index = tempCart.indexOf(updatedProduct);
         tempCart.splice(index, 1);
         updatedProduct.count += 1;
         updatedProduct.total = updatedProduct.count * updatedProduct.price;
         tempCart.push(updatedProduct);
         setProducts(tempCart);
+    };
+
+    const deleteProduct = (product) => {
+        let tempCart = [...products];
+        let tempItem = tempCart.find(item => item.id === product.id);
+        if(tempItem) {
+            let index = tempCart.indexOf(tempItem);
+            tempCart.splice(index, 1)
+        };
+        setProducts([...tempCart]);
     };
 
     useEffect(() => {
@@ -53,7 +63,7 @@ export const Basket = ({ children }) => {
     }, [products])
 
     return(
-        <BasketContext.Provider value={{products, addProduct, total, addToCount}}>
+        <BasketContext.Provider value={{products, addProduct, total, addToCount, deleteProduct}}>
             {children}
         </BasketContext.Provider>
     )

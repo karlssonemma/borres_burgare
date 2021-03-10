@@ -15,7 +15,7 @@ const StyledMain = styled.main`
     margin-top: 1em;
     width: 100vw;
     display: grid;
-    grid-template-columns: 10% auto 20%;
+    grid-template-columns: 10% auto 15vw;
 `;
 
 const StyledLink = styled.a`
@@ -32,7 +32,7 @@ const StyledP = styled.p`
 
 function OrderPage({ menuArr }) {
 
-    const { register, handleSubmit, errors } = useForm();
+    // const { register, handleSubmit, errors } = useForm();
 
     const basket = useBasket();
     const [chosen, setChosen] = useState(null);
@@ -40,68 +40,16 @@ function OrderPage({ menuArr }) {
     const [comment, setComment] = useState('');
     // const [burgers, setBurgers] = useState(null);
     const burgers = [...menuArr];
-    const [extras, setExtras] = useState(null);
     const [activeMenu, setActiveMenu] = useState(burgers);
-    // const [checkedExtras, setCheckedExtras] = useState(null);
-    const [addOns, setAddOns] = useState(null);
     
 
     const currentCart = firebaseInstance.firestore().collection('cart');
     const menuColl = firebaseInstance.firestore().collection('burgers');
-    const extrasColl = firebaseInstance.firestore().collection('extras');
 
     const onSubmit = (data) => {
         console.log(data);
         setAddOns(data)
     };
-
-    useEffect(() => {  
-        if (extras === null) {
-            let extrasArr = [];
-            extrasColl.get()
-            .then(query => {
-                query.forEach(doc => {
-                    extrasArr.push({
-                        id: doc.id,
-                        ...doc.data()
-                    })
-                })
-            setExtras(extrasArr)
-            console.log('updated extra state')
-            })
-        }
-    }, [])
-
-    // useEffect(() => {
-    //     let menuArr = [];
-    //     menuColl.get()
-    //     .then(query => {
-    //         query.forEach(doc => {
-    //             menuArr.push({
-    //                 id: doc.id,
-    //                 ...doc.data()
-    //             });
-    //         });
-    //         setBurgers(menuArr);
-    //     });
-    // }, [])
-
-    // useEffect(() => {
-    //     setActiveMenu(burgers);
-    // }, [burgers])
-
-    useEffect(() => {
-        let data = localStorage.getItem('cart');
-        let returned = JSON.parse(data);
-        if (data) {
-            setCart(returned);
-        };    
-    }, [])
-
-    useEffect(() => {
-        let cartString = JSON.stringify(cart);
-        localStorage.setItem('cart', cartString);
-    }, [cart])
 
     const addItem = async (id, item) => {
         
@@ -169,6 +117,11 @@ function OrderPage({ menuArr }) {
        }
    };
 
+   const handleSetChosen = (item) => {
+    setActiveMenu(null);
+    setChosen(item);
+   };
+   
     return(
         <StyledMain>
             <Container>
@@ -183,17 +136,17 @@ function OrderPage({ menuArr }) {
                            <ProductCard 
                                 product={item}
                                 key={item.id}
+                                onBtnClick={() => handleSetChosen(item)}
                            />
                         )
                     })
                 }
+                {
+                    (activeMenu === null && chosen) && <MenuItemCard menu_item={chosen} />
+                }
             </ProductGrid>
             <Container>
-                <Cart 
-                    cart={basket.products}
-                    onBtnClickHandler={item => removeItem(item.id)}
-                    inputChangeHandler={e => handleComment(e)}
-                />
+                <Cart />
             </Container>
         </StyledMain>
     )

@@ -33,7 +33,7 @@ const StyledTitle = styled.h3`
 `;
 
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onBtnClick }) => {
 
     const basket = useBasket();
     console.log(basket)
@@ -59,16 +59,17 @@ const ProductCard = ({ product }) => {
                     <span className='product-price'>{product.price}</span>
                 </StyledTitle>
                 <ButtonField>
-                    {
+                    {/* {
                         product.category === 'burger' ? 
                             <Link href={'/order/' + product.id}>
                                 <a>Modify</a>
                             </Link> 
                             : ''
+                    } */}
+                    {
+                        product.category === 'burger' && <StyledBtn onClick={() => onBtnClick()}>Modify</StyledBtn>
                     }
-                    <StyledBtn onClick={() => handleClick(product)}>
-                        Add
-                    </StyledBtn>
+                    <StyledBtn onClick={() => handleClick(product)}>Add</StyledBtn>
                 </ButtonField>
             
         </StyledSection>

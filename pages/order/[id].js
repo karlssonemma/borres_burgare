@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import firebaseInstance from '../../config/firebase';
 import { useRouter } from 'next/router';
+import { Container } from '../../components/Container';
+import Cart from '../../components/Cart';
+import { useBasket } from '../../contexts/BasketContext';
 
 // export const getStaticPaths = async () => {
 //     const res = await firebaseInstance.firestore().collection('burgers');
@@ -39,11 +42,19 @@ import { useRouter } from 'next/router';
 //     return { props: { menu_item: menu_item } }
 // }
 
+const StyledMain = styled.main`
+    margin-top: 1em;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: auto 15vw;
+`;
+
 function ModifyPage() {
 
+    const router = useRouter();
+    const basket = useBasket();
     const [burger, setBurger] = useState(null);
 
-    const router = useRouter();
     console.log(router)
 
     useEffect(async () => {
@@ -58,11 +69,16 @@ function ModifyPage() {
     }, [])
 
     return(
-        <div>
-            {
-                burger && <p>{burger.title}</p>
-            }
-        </div>
+        <StyledMain>
+            <Container>
+                {
+                    burger && <p>{burger.title}</p>
+                }
+            </Container>
+            <Container>
+                <Cart />
+            </Container>
+        </StyledMain>
     )
 }
 
