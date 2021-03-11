@@ -7,19 +7,19 @@ const StyledInput = styled.input`
     opacity: 0;
     cursor: pointer;
 
-    &:checked ~ span {
+    &:checked ~ .check {
         background-image: url(./img/check);
         background-size: fill;
-        /* background-color: yellow; */
+        background-color: yellow;
     }
 `;
 
 const StyledLabel = styled.label`
-    padding-top: 1em;
-    padding-left: 2em;
-    display: block;
     position: relative;
     cursor: pointer;
+    height: 40px;
+    display: flex;
+    align-items: center;
 
     /* & :hover ~ span {
         background-color: pink;
@@ -32,26 +32,33 @@ const StyledRadioBtn = styled.span`
     border-radius: 50%;
     background-color: #d8d8d8;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    right: 0;
     border: 1px solid black;
 
 `;
 
-function StyledCheckbox({ inputValue, inputName, formRef }) {
+const StyledInputText = styled.span`
+    width: auto;
+`;
+
+function StyledCheckbox({ inputValue, inputName, formRef, inputType, price }) {
 
 
     return(
         <>
-            <StyledLabel>{inputValue}
+            <StyledLabel>
+                <StyledInputText>{inputValue}</StyledInputText>
                 <StyledInput 
-                    type='checkbox' 
+                    type={inputType} 
                     name={inputName} 
                     value={inputValue} 
                     ref={formRef}
                     id={inputValue}
                 />
-                    <StyledRadioBtn />
+                {
+                    price && <span>{'+' + price}</span>
+                }
+                <StyledRadioBtn className='check' />
             </StyledLabel>
         </>
     )

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import InputField from '../InputField';
 import { StyledBtn } from '../../components/StyledBtn';
 import { useBasket } from '../../contexts/BasketContext';
+import { SecondaryTitle } from '../../components/SecondaryTitle';
 
 function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
 
@@ -14,16 +15,16 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
 
     return(
         <section>
-            <h3>Your Order</h3>
+            <SecondaryTitle>Your Order</SecondaryTitle>
             {
                 (basket.products !== null) 
                     ? basket.products.map(item => {
                         return(
                             <section key={Math.random()}>
-                                <p>{item.count} x {item.title} {item.chosen_patty}</p>
-                                {/* {
-                                    item.extras && item.extras.map(item => <p>{item.title}</p>)
-                                } */}
+                                <p>{item.count} x {item.title} {item.patty}</p>
+                                {
+                                    item.extras && item.extras.map(item => <p>{'+ ' + item}</p>)
+                                }
                                 <StyledBtn onClick={() => handleDelete(item)}>
                                     Remove
                                 </StyledBtn>
@@ -40,6 +41,7 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                 inputChangeHandler={e => inputChangeHandler(e)}
             />
             <h3>Total: {basket.total}</h3>
+            <StyledBtn>Order</StyledBtn>
         </section>
     )
 }

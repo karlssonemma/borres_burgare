@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React from 'react'; 
+import { PageTitle } from '../PageTitle';
 
 const StyledNav = styled.nav`
     height: 100px;
@@ -11,7 +12,7 @@ function Nav() {
 
     return(
         <StyledNav>
-            <h4>BB</h4>
+            <PageTitle>BB</PageTitle>
         </StyledNav>
     )
 }

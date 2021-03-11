@@ -5,6 +5,7 @@ import Link from 'next/link';
 import MenuItemCard from '../MenuItemCard';
 import { useBasket } from '../../contexts/BasketContext';
 import { StyledBtn } from '../../components/StyledBtn';
+import { SecondaryTitle } from '../SecondaryTitle';
  
 const StyledSection = styled.section`
     background: url('https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok');
@@ -22,16 +23,6 @@ const ButtonField = styled.section`
     padding: 1em;
 `;
 
-const StyledTitle = styled.h3`
-    width: 100%;
-    padding: 0.3em;
-    font-size: 2rem;
-    display: grid;
-    grid-template-columns: auto max-content;
-
-    color: white;
-`;
-
 
 const ProductCard = ({ product, onBtnClick }) => {
 
@@ -44,7 +35,8 @@ const ProductCard = ({ product, onBtnClick }) => {
                 price: product.price,
                 id: product.id,
                 count: 1,
-                total: product.price
+                total: product.price,
+                patty: 'Beef'
             });
         console.log('data', basket.products)
     };
@@ -54,10 +46,10 @@ const ProductCard = ({ product, onBtnClick }) => {
         <StyledSection>
             <img />
             
-                <StyledTitle>
+                <SecondaryTitle>
                     <span className='product-title'>{product.title}</span>
                     <span className='product-price'>{product.price}</span>
-                </StyledTitle>
+                </SecondaryTitle>
                 <ButtonField>
                     {/* {
                         product.category === 'burger' ? 

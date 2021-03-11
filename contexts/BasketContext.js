@@ -13,11 +13,11 @@ export const Basket = ({ children }) => {
 
     const addProduct = (product) => {
         let tempCart = [...products];
-        let tempProduct = tempCart.find(el => el.id === product.id);
+        let tempProduct = tempCart.find(el => el.id === product.id && el.extras === product.extras && el.patty === product.patty);
         if (!tempProduct) {
             setProducts([...products, product]);
         } else {
-            addToCount(product)
+            addToCount(product);
         };
     };
 

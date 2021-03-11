@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useBasket } from '../../contexts/BasketContext';
 import ProductCard from '../../components/ProductCard';
 import { ProductGrid } from '../../components/ProductGrid';
+import theme from '../../utils/theme';
 
 const StyledMain = styled.main`
     margin-top: 1em;
@@ -21,6 +22,10 @@ const StyledMain = styled.main`
 const StyledLink = styled.a`
     display: block;
     cursor: pointer;
+    font-size: ${props => props.theme.fontSizes.lg};
+    & :hover {
+        color: green;
+    }
 `;
 
 const StyledP = styled.p`
@@ -41,10 +46,46 @@ function OrderPage({ menuArr }) {
     // const [burgers, setBurgers] = useState(null);
     const burgers = [...menuArr];
     const [activeMenu, setActiveMenu] = useState(burgers);
+    const [extras, setExtras] = useState(null);
+    const [patties, setPatties] = useState(null);
     
 
     const currentCart = firebaseInstance.firestore().collection('cart');
     const menuColl = firebaseInstance.firestore().collection('burgers');
+    const extrasColl = firebaseInstance.firestore().collection('extras');
+    const pattiesColl = firebaseInstance.firestore().collection('patties');
+
+    useEffect(() => {  
+        if (extras === null) {
+            let extrasArr = [];
+            extrasColl.get()
+            .then(query => {
+                query.forEach(doc => {
+                    extrasArr.push({
+                        id: doc.id,
+                        ...doc.data()
+                    })
+                })
+            setExtras(extrasArr)
+            })
+        }
+    }, [])
+
+    useEffect(() => {  
+        if (patties === null) {
+            let pattiesArr = [];
+            pattiesColl.get()
+            .then(query => {
+                query.forEach(doc => {
+                    pattiesArr.push({
+                        id: doc.id,
+                        ...doc.data()
+                    })
+                });           
+            setPatties(pattiesArr)
+            })
+        }
+    }, [])
 
     const onSubmit = (data) => {
         console.log(data);
@@ -129,7 +170,7 @@ function OrderPage({ menuArr }) {
                 <StyledLink onClick={e => setMenu(e)}>Fries</StyledLink>
                 <StyledLink onClick={e => setMenu(e)}>Drinks</StyledLink>
             </Container>
-            <ProductGrid style={{borderLeft: '1px solid black', borderRight: '1px solid black'}}>
+            <ProductGrid>
                 {
                     activeMenu && activeMenu.map(item => {
                         return(
@@ -142,7 +183,7 @@ function OrderPage({ menuArr }) {
                     })
                 }
                 {
-                    (activeMenu === null && chosen) && <MenuItemCard menu_item={chosen} />
+                    (activeMenu === null && chosen) && <MenuItemCard extras={extras} patties={patties} menu_item={chosen} />
                 }
             </ProductGrid>
             <Container>
