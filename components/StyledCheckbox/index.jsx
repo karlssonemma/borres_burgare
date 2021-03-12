@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 // import check from './img/check.png';
+import theme from '../../utils/theme';
 
 const StyledInput = styled.input`
     position: absolute;
@@ -8,9 +9,11 @@ const StyledInput = styled.input`
     cursor: pointer;
 
     &:checked ~ .check {
-        background-image: url(./img/check);
-        background-size: fill;
-        background-color: yellow;
+        background-image: url('/check.png');
+        background-size: 15px;
+        background-position: center;
+        background-repeat: no-repeat;
+        /* background-color: yellow; */
     }
 `;
 
@@ -20,6 +23,7 @@ const StyledLabel = styled.label`
     height: 40px;
     display: flex;
     align-items: center;
+    font-size: ${props => props.theme.fontSizes.m};
 
     /* & :hover ~ span {
         background-color: pink;
@@ -27,14 +31,13 @@ const StyledLabel = styled.label`
 `;
 
 const StyledRadioBtn = styled.span`
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
+    margin: 1em;
     border-radius: 50%;
     background-color: #d8d8d8;
     position: absolute;
     right: 0;
-    border: 1px solid black;
-
 `;
 
 const StyledInputText = styled.span`

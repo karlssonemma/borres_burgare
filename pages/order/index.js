@@ -13,10 +13,14 @@ import { ProductGrid } from '../../components/ProductGrid';
 import theme from '../../utils/theme';
 
 const StyledMain = styled.main`
-    margin-top: 1em;
+    padding: 1em;
     width: 100vw;
     display: grid;
-    grid-template-columns: 10% auto 15vw;
+    grid-template-columns: 17% auto;
+
+    @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
+        grid-template-columns: 10% auto 15vw;
+    }
 `;
 
 const StyledLink = styled.a`
@@ -25,12 +29,6 @@ const StyledLink = styled.a`
     font-size: ${props => props.theme.fontSizes.lg};
     & :hover {
         color: green;
-    }
-`;
-
-const StyledP = styled.p`
-    &.chosen {
-        color: blue;
     }
 `;
 
@@ -162,6 +160,7 @@ function OrderPage({ menuArr }) {
     setActiveMenu(null);
     setChosen(item);
    };
+
    
     return(
         <StyledMain>
@@ -186,9 +185,7 @@ function OrderPage({ menuArr }) {
                     (activeMenu === null && chosen) && <MenuItemCard extras={extras} patties={patties} menu_item={chosen} />
                 }
             </ProductGrid>
-            <Container>
-                <Cart />
-            </Container>
+            <Cart />
         </StyledMain>
     )
 }

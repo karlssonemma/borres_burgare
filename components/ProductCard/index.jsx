@@ -6,6 +6,7 @@ import MenuItemCard from '../MenuItemCard';
 import { useBasket } from '../../contexts/BasketContext';
 import { StyledBtn } from '../../components/StyledBtn';
 import { SecondaryTitle } from '../SecondaryTitle';
+import Overlay from '../../components/Overlay';
  
 const StyledSection = styled.section`
     background: url('https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok');
@@ -21,10 +22,12 @@ const StyledSection = styled.section`
 const ButtonField = styled.section`
     background-color: rgba(255, 255, 255, 0.6);
     padding: 1em;
+    display: flex;
+    justify-content: space-between;
 `;
 
 
-const ProductCard = ({ product, onBtnClick }) => {
+const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
 
     const basket = useBasket();
     console.log(basket)
@@ -41,29 +44,29 @@ const ProductCard = ({ product, onBtnClick }) => {
         console.log('data', basket.products)
     };
 
+    const showInfo = (e) => {
+        console.log(e.target)
+    };
 
     return(
-        <StyledSection>
-            <img />
-            
-                <SecondaryTitle>
-                    <span className='product-title'>{product.title}</span>
-                    <span className='product-price'>{product.price}</span>
-                </SecondaryTitle>
-                <ButtonField>
-                    {/* {
-                        product.category === 'burger' ? 
-                            <Link href={'/order/' + product.id}>
-                                <a>Modify</a>
-                            </Link> 
-                            : ''
-                    } */}
-                    {
-                        product.category === 'burger' && <StyledBtn onClick={() => onBtnClick()}>Modify</StyledBtn>
-                    }
-                    <StyledBtn onClick={() => handleClick(product)}>Add</StyledBtn>
-                </ButtonField>
-            
+        <StyledSection onClick={e => showInfo(e)}>
+            <SecondaryTitle className='product-card-title' style={{padding: '0 0.5em'}}>
+                <span className='product-title'>{product.title}</span>
+                <span className='product-price'>{product.price + ' NOK'}</span>
+            </SecondaryTitle>
+            <ButtonField>
+                {/* {
+                    product.category === 'burger' ? 
+                        <Link href={'/order/' + product.id}>
+                            <a>Modify</a>
+                        </Link> 
+                        : ''
+                } */}
+                <StyledBtn onClick={() => handleClick(product)}>Add</StyledBtn>
+                {
+                    product.category === 'burger' && <StyledBtn onClick={() => onBtnClick()}>Modify</StyledBtn>
+                }
+            </ButtonField>
         </StyledSection>
     )
 }

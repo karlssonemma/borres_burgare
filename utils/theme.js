@@ -1,4 +1,5 @@
 const theme = {
+    breakpoints: ['20em', '40em', '60em'],
     colors: {
         gray: '#edeff2',
         buttons: {

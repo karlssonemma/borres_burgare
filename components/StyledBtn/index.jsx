@@ -11,4 +11,14 @@ export const StyledBtn = styled.button`
     cursor: pointer;
     background-color: ${props => props.theme.colors.buttons.background};
     color: ${props => props.theme.colors.buttons.text};
+
+    &.cart-btn {
+        z-index: 10; 
+        position: relative;
+        display: inline-block;
+
+        @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
+            display: none;
+        }
+    }
 `;

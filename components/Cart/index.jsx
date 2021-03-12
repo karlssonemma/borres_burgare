@@ -4,6 +4,8 @@ import InputField from '../InputField';
 import { StyledBtn } from '../../components/StyledBtn';
 import { useBasket } from '../../contexts/BasketContext';
 import { SecondaryTitle } from '../../components/SecondaryTitle';
+import { Container } from '../../components/Container';
+import { ThirdTitle } from '../../components/ThirdTitle';
 
 function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
 
@@ -14,10 +16,10 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
     };
 
     return(
-        <section>
+        <Container className='cart'>
             <SecondaryTitle>Your Order</SecondaryTitle>
             {
-                (basket.products !== null) 
+                (basket.products.length > 0) 
                     ? basket.products.map(item => {
                         return(
                             <section key={Math.random()}>
@@ -40,9 +42,9 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                 labelText='Comment'
                 inputChangeHandler={e => inputChangeHandler(e)}
             />
-            <h3>Total: {basket.total}</h3>
+            <ThirdTitle>Total: {basket.total}</ThirdTitle>
             <StyledBtn>Order</StyledBtn>
-        </section>
+        </Container>
     )
 }
 
