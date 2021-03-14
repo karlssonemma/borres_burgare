@@ -12,6 +12,11 @@ export const StyledBtn = styled.button`
     background-color: ${props => props.theme.colors.buttons.background};
     color: ${props => props.theme.colors.buttons.text};
 
+    &:hover {
+        background-color: ${props => props.theme.colors.buttons.hover.background};
+        color: ${props => props.theme.colors.buttons.hover.text};
+    };
+
     &.cart-btn {
         z-index: 10; 
         position: relative;

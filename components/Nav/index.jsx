@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import React from 'react'; 
 import { PageTitle } from '../PageTitle';
 import { StyledBtn } from '../../components/StyledBtn';
+import { useAuth } from '../../contexts/AuthContext';
+import { useRouter } from 'next/router'; 
 
 const StyledNav = styled.nav`
     height: 100px;
@@ -15,6 +17,18 @@ const StyledNav = styled.nav`
 
 function Nav() {
 
+const router = useRouter();
+const { logout, isAuthenticated } = useAuth();
+
+const handleSignOut = async () => {
+    try {
+        await logout();
+        router.push('/login');
+    } catch(error) {
+        console.log('ERROR', error);
+    }
+};
+
 const findEl = () => {
     let cart = document.querySelector('.cart');
     cart.classList.toggle('show-cart');
@@ -24,7 +38,9 @@ const findEl = () => {
         <StyledNav>
             <PageTitle>BB</PageTitle>
             <div>
-                <StyledBtn>Log Out</StyledBtn>
+                {
+                    isAuthenticated && <StyledBtn onClick={handleSignOut}>Log Out</StyledBtn>
+                }
                 <StyledBtn onClick={() => findEl()} className='cart-btn'>Cart</StyledBtn>
             </div>
         </StyledNav>

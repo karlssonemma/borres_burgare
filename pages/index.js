@@ -1,17 +1,24 @@
 import next from 'next';
 import { PageTitle } from '../components/PageTitle';
 import Link from 'next/link';
+import CenteredMain from '../components/CenteredMain';
+import styled from 'styled-components';
+import theme from '../utils/theme';
+
+const StyledLink = styled.a`
+  font-size: ${props => props.theme.fontSizes.xl};
+`;
 
 export default function Home() {
   return (
-    <main>
+    <CenteredMain style={{flexDirection: 'row', justifyContent: 'center'}}>
       <Link href='/login'>
-        <a>Log In</a>
+        <StyledLink>Log In</StyledLink>
       </Link>
       <p>/</p>
       <Link href='/signup'>
-        <a>Sign Up</a>
+        <StyledLink>Sign Up</StyledLink>
       </Link>
-    </main>
+    </CenteredMain>
   )
 }

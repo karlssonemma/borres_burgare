@@ -11,6 +11,8 @@ import { useBasket } from '../../contexts/BasketContext';
 import ProductCard from '../../components/ProductCard';
 import { ProductGrid } from '../../components/ProductGrid';
 import theme from '../../utils/theme';
+import { useAuth } from '../../contexts/AuthContext';
+import { useRouter } from 'next/router';
 
 const StyledMain = styled.main`
     padding: 1em;
@@ -37,6 +39,8 @@ function OrderPage({ menuArr }) {
 
     // const { register, handleSubmit, errors } = useForm();
 
+    const router = useRouter();
+    const { login, currentUser, isAuthenticated } = useAuth();
     const basket = useBasket();
     const [chosen, setChosen] = useState(null);
     const [cart, setCart] = useState([]);
@@ -52,6 +56,14 @@ function OrderPage({ menuArr }) {
     const menuColl = firebaseInstance.firestore().collection('burgers');
     const extrasColl = firebaseInstance.firestore().collection('extras');
     const pattiesColl = firebaseInstance.firestore().collection('patties');
+
+
+    if(!isAuthenticated) {
+        router.push('/login')
+        return <p>You're not signed in</p>
+    };
+
+    console.log(isAuthenticated);
 
     useEffect(() => {  
         if (extras === null) {

@@ -6,7 +6,9 @@ import { StyledBtn } from '../components/StyledBtn';
 import { useForm } from 'react-hook-form';
 import { StyledForm } from '../components/StyledForm';
 import firebaseInstance from '../config/firebase';
-
+import { useRouter } from 'next/router';
+import CenteredMain from '../components/CenteredMain';
+ 
 
 function SignUpPage() {
 
@@ -15,6 +17,7 @@ function SignUpPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const router = useRouter();
     const userColl = firebaseInstance.firestore().collection('users');
  
     const onSubmit = async (data) => {
@@ -31,7 +34,8 @@ function SignUpPage() {
             userColl.doc(user.user.uid).set({
                 email: user.user.email,
                 user_id: user.user.uid
-            })
+            });
+            router.push('/order')
         } catch (error){
             setError('Failed to create account', error)
         };
@@ -41,9 +45,9 @@ function SignUpPage() {
     };
 
     return(
-        <main>
+        <CenteredMain>
             <PageTitle>Sign up</PageTitle>
-            {currentUser.email}
+            {currentUser && currentUser.email}
             {error && <p>{error}</p>}
             <StyledForm 
                 name='signup' 
@@ -71,6 +75,7 @@ function SignUpPage() {
                     formRef={register} 
                 />
                 <StyledBtn
+                    style={{width: '100%'}}
                     type='submit'
                     disabled={loading}
                     onClick={console.log('submitted')}
@@ -78,7 +83,7 @@ function SignUpPage() {
                     Sign Up
                 </StyledBtn>
             </StyledForm>
-        </main>
+        </CenteredMain>
     )
 }
 

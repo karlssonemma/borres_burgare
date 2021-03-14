@@ -7,7 +7,7 @@ import { SecondaryTitle } from '../../components/SecondaryTitle';
 import { Container } from '../../components/Container';
 import { ThirdTitle } from '../../components/ThirdTitle';
 
-function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
+function Cart({ onBtnClickHandler, inputChangeHandler }) {
 
     const basket = useBasket();
 
@@ -22,11 +22,13 @@ function Cart({ cart, onBtnClickHandler, inputChangeHandler }) {
                 (basket.products.length > 0) 
                     ? basket.products.map(item => {
                         return(
-                            <section key={Math.random()}>
-                                <p>{item.count} x {item.title} {item.patty}</p>
-                                {
-                                    item.extras && item.extras.map(item => <p>{'+ ' + item}</p>)
-                                }
+                            <section style={{display: 'flex'}} key={Math.random()}>
+                                <div>
+                                    <p>{item.count} x {item.title} {item.patty}</p>
+                                    {
+                                        item.extras && item.extras.map(item => <p>{'+ ' + item}</p>)
+                                    }
+                                </div>
                                 <StyledBtn onClick={() => handleDelete(item)}>
                                     Remove
                                 </StyledBtn>

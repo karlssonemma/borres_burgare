@@ -2,9 +2,18 @@ const theme = {
     breakpoints: ['20em', '40em', '60em'],
     colors: {
         gray: '#edeff2',
+        darkbrown: '#522809',
+        mudgreen: '#4B4B25',
+        lightbrown: '#A7702A',
+        orange: '#F7985D',
+        lightorange: '#FDC47F',
         buttons: {
             background: 'lightblue',
-            text: 'white'
+            text: 'white',
+            hover: {
+                text: 'yellow',
+                background: 'green'
+            }
         }
     },
     fonts: {

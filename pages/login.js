@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import styled from 'styled-components'
 import InputField from '../components/InputField';
 import { PageTitle } from '../components/PageTitle';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
@@ -6,6 +7,7 @@ import { useRouter } from 'next/router';
 import { StyledBtn } from '../components/StyledBtn';
 import { useForm } from 'react-hook-form';
 import { StyledForm } from '../components/StyledForm';
+import CenteredMain from '../components/CenteredMain';
 
 function LogInPage() {
 
@@ -26,14 +28,13 @@ function LogInPage() {
         } catch {
             setError('Failed to log in');
         };
-
         setLoading(false);
     };
 
     return(
-        <main>
+        <CenteredMain>
             <PageTitle>Log In</PageTitle>
-            {currentUser.email}
+            {currentUser && currentUser.email}
             {error && <p>{error}</p>}
             <StyledForm 
                 formName='signup' 
@@ -55,6 +56,7 @@ function LogInPage() {
                     formRef={register} 
                 />
                 <StyledBtn
+                    style={{width: '100%'}}
                     type='submit'
                     disabled={loading}
                     onClick={console.log('submitted')}
@@ -62,7 +64,7 @@ function LogInPage() {
                     Log In
                 </StyledBtn>
             </StyledForm>
-        </main>
+        </CenteredMain>
     )
 }
 
