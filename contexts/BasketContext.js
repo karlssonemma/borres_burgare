@@ -42,6 +42,10 @@ export const Basket = ({ children }) => {
         setProducts([...tempCart]);
     };
 
+    const deleteBasket = () => {
+        setProducts([]);
+    };
+
     useEffect(() => {
         let data = localStorage.getItem('cart');
         let returned = JSON.parse(data);
@@ -63,7 +67,7 @@ export const Basket = ({ children }) => {
     }, [products])
 
     return(
-        <BasketContext.Provider value={{products, addProduct, total, addToCount, deleteProduct}}>
+        <BasketContext.Provider value={{products, addProduct, total, addToCount, deleteProduct, deleteBasket}}>
             {children}
         </BasketContext.Provider>
     )

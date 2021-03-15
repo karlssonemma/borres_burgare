@@ -6,13 +6,30 @@ import { useBasket } from '../../contexts/BasketContext';
 import { SecondaryTitle } from '../../components/SecondaryTitle';
 import { Container } from '../../components/Container';
 import { ThirdTitle } from '../../components/ThirdTitle';
+import firebaseInstance from '../../config/firebase';
+import { useAuth } from '../../contexts/AuthContext';
 
 function Cart({ onBtnClickHandler, inputChangeHandler }) {
 
     const basket = useBasket();
+    const currentCart = firebaseInstance.firestore().collection('orders_in_process');
+    const { currentUser } = useAuth();
+
 
     const handleDelete = (item) => {
         basket.deleteProduct(item);
+    };
+
+    const handleOrder = () => {
+        currentCart.doc().set({
+            customer: currentUser.uid,
+            order: basket.products,
+            finished: false,
+            pickedUp: false
+        })
+        .then(() => {
+            basket.deleteBasket([]);
+        })
     };
 
     return(
@@ -45,7 +62,7 @@ function Cart({ onBtnClickHandler, inputChangeHandler }) {
                 inputChangeHandler={e => inputChangeHandler(e)}
             />
             <ThirdTitle>Total: {basket.total}</ThirdTitle>
-            <StyledBtn>Order</StyledBtn>
+            <StyledBtn style={{width: '100%'}} onClick={() => handleOrder()}>Order</StyledBtn>
         </Container>
     )
 }
