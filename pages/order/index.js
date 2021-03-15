@@ -13,6 +13,7 @@ import { ProductGrid } from '../../components/ProductGrid';
 import theme from '../../utils/theme';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/router';
+import StyledLink from '../../components/StyledLink';
 
 const StyledMain = styled.main`
     padding: 1em;
@@ -25,14 +26,6 @@ const StyledMain = styled.main`
     }
 `;
 
-const StyledLink = styled.a`
-    display: block;
-    cursor: pointer;
-    font-size: ${props => props.theme.fontSizes.lg};
-    & :hover {
-        color: green;
-    }
-`;
 
 
 function OrderPage({ menuArr }) {

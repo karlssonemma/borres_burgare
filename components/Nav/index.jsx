@@ -5,6 +5,7 @@ import { StyledBtn } from '../../components/StyledBtn';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/router'; 
 import Link from 'next/link';
+import StyledLink from '../../components/StyledLink';
 
 const StyledNav = styled.nav`
     height: 100px;
@@ -14,6 +15,15 @@ const StyledNav = styled.nav`
     display: flex;
     justify-content: space-between;
     align-items: center;
+`;
+
+const FlexDiv = styled.div`
+    display: flex;
+    align-items: center;
+
+    & a {
+        padding-right: 1em;
+    }
 `;
 
 function Nav() {
@@ -38,21 +48,21 @@ const findEl = () => {
     return(
         <StyledNav>
             <PageTitle>BB</PageTitle>
-            <div>
+            <FlexDiv>
                 {
                     isAuthenticated && 
                         <>
                             <Link href='/profile'>
-                                <a>Your Profile</a>
+                                <StyledLink>Your Profile</StyledLink>
                             </Link>
                             <Link href='/order'>
-                                <a>Order</a>
+                                <StyledLink>Order</StyledLink>
                             </Link>
                             <StyledBtn onClick={() => handleSignOut()}>Log Out</StyledBtn>
                         </>
                 }
                 <StyledBtn onClick={() => findEl()} className='cart-btn'>Cart</StyledBtn>
-            </div>
+            </FlexDiv>
         </StyledNav>
     )
 }

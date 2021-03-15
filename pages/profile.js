@@ -5,10 +5,19 @@ import { SecondaryTitle } from '../components/SecondaryTitle';
 import CurrentOrderItem from '../components/CurrentOrderItem';
 import theme from '../utils/theme';
 import styled from 'styled-components';
+import OldOrderItem from '../components/OldOrderItem';
+import { ProductGrid } from '../components/ProductGrid';
 
 const StyledSection = styled.section`
-    width: 100%;
+    width: 50%;
+    margin: 1em auto;
+    padding: 1em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     background-color: ${props => props.theme.colors.mudgreen};
+    border-radius: 10px;
 `;
 
 
@@ -25,7 +34,7 @@ function ProfilePage() {
         .then(query => {
            query.forEach(doc => {
                if(doc.data().customer === currentUser.uid) {
-                   setCurrentOrder(doc.data().order)
+                   setCurrentOrder(doc.data())
                }
            })
         })
@@ -47,26 +56,36 @@ function ProfilePage() {
     return(
         <main>
             {
-                currentOrder 
-                    ? <SecondaryTitle>Your current order</SecondaryTitle>
-                    : <SecondaryTitle>You have no current order</SecondaryTitle>
+                currentOrder && 
+                    <>
+                    <SecondaryTitle style={{textAlign: 'center'}}>Your current order</SecondaryTitle>
+                    <StyledSection>
+                        {
+                            currentOrder.order.map(item => {
+                                return(
+                                    <CurrentOrderItem 
+                                        item={item}
+                                    />
+                                )
+                            })
+                        }
+                        <p>Status: 
+                            {
+                                currentOrder.finished === false ? ' in process' : ' ready for pick up'
+                            }
+                        </p>
+                    </StyledSection>
+                    </>
             }
-
             {
                 currentOrder && 
-                <StyledSection>
-                    {
-                        currentOrder.map(item => {
-                            return(
-                                <CurrentOrderItem 
-                                    item={item}
-                                />
-                            )
-                        })
-                    }
-                </StyledSection>
+                    <>
+                    <SecondaryTitle style={{textAlign: 'center'}}>Previous orders</SecondaryTitle>
+                    <ProductGrid>
+                        <OldOrderItem item={currentOrder.order} /> 
+                    </ProductGrid>
+                    </>
             }
-            
         </main>
     )
 };
