@@ -16,7 +16,7 @@ const StyledSection = styled.section`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: ${props => props.theme.colors.mudgreen};
+    background-color: ${props => props.theme.colors.gray};
     border-radius: 10px;
 `;
 
@@ -28,18 +28,20 @@ function ProfilePage() {
     const ordersFinished = firebaseInstance.firestore().collection('orders_finished');
     const [currentOrder, setCurrentOrder] = useState(null);
     const [oldOrders, setOldOrders] = useState(null);
+    const [status, setStatus] = useState('');
 
+    //get data current order
     useEffect(() => {
-        ordersInProcess.get()
-        .then(query => {
-           query.forEach(doc => {
-               if(doc.data().customer === currentUser.uid) {
-                   setCurrentOrder(doc.data())
-               }
-           })
+        ordersInProcess.onSnapshot(snapshot => {
+            snapshot.forEach(doc => {
+                if (doc.data().customer === currentUser.uid) {
+                    setCurrentOrder(doc.data())
+                };
+            })
         })
     }, [])
 
+    //get data old orders
     useEffect(() => {
         let order = [];
         ordersFinished.get()
@@ -53,6 +55,19 @@ function ProfilePage() {
         .then(() => setOldOrders(order))
     }, [])
 
+    //set status for order
+    useEffect(() => {
+        if (currentOrder) {
+            if (currentOrder.accepted === false) {
+                setStatus(' waiting for the restaurant to accept your order');
+            } else if (currentOrder.accepted === true && currentOrder.finished === true) {
+                setStatus(' ready for pick up');
+            } else if (currentOrder.accepted === true) {
+                setStatus(' in process');
+            }
+        }
+    }, [currentOrder])
+
     return(
         <main>
             {
@@ -65,24 +80,28 @@ function ProfilePage() {
                                 return(
                                     <CurrentOrderItem 
                                         item={item}
+                                        comment={currentOrder.comment}
                                     />
                                 )
                             })
                         }
-                        <p>Status: 
-                            {
-                                currentOrder.finished === false ? ' in process' : ' ready for pick up'
-                            }
+                        <p>Status: {status}
                         </p>
                     </StyledSection>
                     </>
             }
             {
-                currentOrder && 
+                oldOrders && 
                     <>
                     <SecondaryTitle style={{textAlign: 'center'}}>Previous orders</SecondaryTitle>
                     <ProductGrid>
-                        <OldOrderItem item={currentOrder.order} /> 
+                        {
+                            oldOrders.map(item => {
+                                return(
+                                    <OldOrderItem item={item} />
+                                )
+                            })
+                        } 
                     </ProductGrid>
                     </>
             }

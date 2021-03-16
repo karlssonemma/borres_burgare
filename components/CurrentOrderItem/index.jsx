@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 
-function CurrentOrderItem({ item }) {
+function CurrentOrderItem({ item, comment }) {
 
     return(
         <section>
@@ -13,6 +13,9 @@ function CurrentOrderItem({ item }) {
                         <span>+ {item}</span>
                     )
                 })
+            }
+            {
+                comment && <p>Comment: {comment}</p>
             }
         </section>
     )

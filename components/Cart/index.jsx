@@ -8,12 +8,24 @@ import { Container } from '../../components/Container';
 import { ThirdTitle } from '../../components/ThirdTitle';
 import firebaseInstance from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
+import TextAreaField from '../../components/TextAreaField';
+import { useRouter } from 'next/router';
 
-function Cart({ onBtnClickHandler, inputChangeHandler }) {
+const StyledItem = styled.li`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: .2em 0;
+`;
 
+function Cart() {
+
+    const router = useRouter();
     const basket = useBasket();
     const currentCart = firebaseInstance.firestore().collection('orders_in_process');
     const { currentUser } = useAuth();
+    const [comment, setComment] = useState('');
 
 
     const handleDelete = (item) => {
@@ -21,48 +33,68 @@ function Cart({ onBtnClickHandler, inputChangeHandler }) {
     };
 
     const handleOrder = () => {
+
         currentCart.doc().set({
             customer: currentUser.uid,
             order: basket.products,
             finished: false,
-            pickedUp: false
+            pickedUp: false,
+            accepted: false,
+            timeOfOrder: {
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString(),
+            },
+            comment: comment
         })
         .then(() => {
             basket.deleteBasket([]);
+            setComment('');
+            router.push('/profile')
         })
     };
 
     return(
         <Container className='cart'>
+            <div style={{width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <SecondaryTitle>Your Order</SecondaryTitle>
+            <ul>
             {
-                (basket.products.length > 0) 
+                (basket.products.length > 0)
                     ? basket.products.map(item => {
                         return(
-                            <section style={{display: 'flex'}} key={Math.random()}>
+                            <StyledItem style={{display: 'flex'}} key={Math.random()}>
                                 <div>
                                     <p>{item.count} x {item.title} {item.patty}</p>
                                     {
-                                        item.extras && item.extras.map(item => <p>{'+ ' + item}</p>)
+                                        item.extras && item.extras.map(item => <span style={{display: 'block', marginLeft: '1.5em'}}>{'+ ' + item}</span>)
                                     }
                                 </div>
                                 <StyledBtn onClick={() => handleDelete(item)}>
-                                    Remove
+                                    x
                                 </StyledBtn>
-                            </section>
+                            </StyledItem>
                         )
                     })
                     : <p>Empty</p>
             }
-            <InputField 
-                inputType='text' 
-                inputId='comment' 
-                inputName='comment' 
-                labelText='Comment'
-                inputChangeHandler={e => inputChangeHandler(e)}
-            />
-            <ThirdTitle>Total: {basket.total}</ThirdTitle>
-            <StyledBtn style={{width: '100%'}} onClick={() => handleOrder()}>Order</StyledBtn>
+            </ul>
+            {
+                (basket.products.length > 0) && 
+                    <>
+                        <TextAreaField 
+                            inputType='textarea' 
+                            inputId='comment' 
+                            inputName='comment' 
+                            labelText='Comment'
+                            height='50px'
+                            handleChange={e => setComment(e.target.value)}
+                        />
+                        <ThirdTitle style={{marginTop: '1em'}}>Total: {basket.total}</ThirdTitle>
+                        <StyledBtn className='order-btn' style={{width: '100%'}} onClick={() => handleOrder()}>Order</StyledBtn>
+                    </>
+            }
+            
+            </div>
         </Container>
     )
 }

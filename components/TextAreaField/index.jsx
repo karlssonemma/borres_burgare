@@ -15,17 +15,14 @@ const StyledLabel = styled.label`
     font-size: .8rem;
 `;
 
-function InputField({ 
+function TextAreaField({ 
     inputType, 
-    inputPlaceholder, 
     labelText, 
     inputName, 
-    inputId, 
-    inputChangeHandler,
-    refHandler,
-    inputValue, 
+    inputId,
     formRef,
-    height
+    height,
+    handleChange
 }) {
 
     return(
@@ -33,16 +30,14 @@ function InputField({
             <StyledLabel htmlFor={inputId}>{labelText}</StyledLabel>
             <StyledInput 
                 type={inputType}
-                placeholder={inputPlaceholder}
                 id={inputId}
                 name={inputName}
-                // onChange={e => inputChangeHandler(e)}
                 ref={formRef}
-                value={inputValue}
                 style={{height: height}}
+                onChange={e => handleChange(e)}
             />
         </>
     )
 }
 
-export default InputField;
+export default TextAreaField;

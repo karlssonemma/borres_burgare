@@ -15,6 +15,7 @@ export const Container = styled.section`
     &.show-cart {
         display: flex !important;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
         background-color: green;
         position: fixed;
@@ -23,6 +24,7 @@ export const Container = styled.section`
         width: 100vw;
         height: 100vh;
     };
+
 
     @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
         display: block !important;

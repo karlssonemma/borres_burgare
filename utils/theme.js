@@ -5,14 +5,14 @@ const theme = {
         darkbrown: '#522809',
         mudgreen: '#4B4B25',
         lightbrown: '#A7702A',
-        orange: '#F7985D',
+        orange: '#E36414',
         lightorange: '#FDC47F',
         buttons: {
-            background: 'lightblue',
+            background: '#FB8B24',
             text: 'white',
             hover: {
-                text: 'yellow',
-                background: 'green'
+                text: 'white',
+                background: '#E36414'
             }
         }
     },

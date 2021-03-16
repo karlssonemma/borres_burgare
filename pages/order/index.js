@@ -22,7 +22,7 @@ const StyledMain = styled.main`
     grid-template-columns: 17% auto;
 
     @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
-        grid-template-columns: 10% auto 15vw;
+        grid-template-columns: 10% auto 20vw;
     }
 `;
 
@@ -170,9 +170,9 @@ function OrderPage({ menuArr }) {
     return(
         <StyledMain>
             <Container>
-                <StyledLink onClick={e => setMenu(e)}>Burgers</StyledLink>
-                <StyledLink onClick={e => setMenu(e)}>Fries</StyledLink>
-                <StyledLink onClick={e => setMenu(e)}>Drinks</StyledLink>
+                <StyledLink style={{paddingBottom: '.3em'}} onClick={e => setMenu(e)}>Burgers</StyledLink>
+                <StyledLink style={{paddingBottom: '.3em'}} onClick={e => setMenu(e)}>Fries</StyledLink>
+                <StyledLink style={{paddingBottom: '.3em'}} onClick={e => setMenu(e)}>Drinks</StyledLink>
             </Container>
             <ProductGrid>
                 {

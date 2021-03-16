@@ -33,6 +33,7 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
     console.log(basket)
 
     const handleClick = (product) => {
+        if(product.category === 'burger') {
             basket.addProduct({
                 title: product.title,
                 price: product.price,
@@ -41,6 +42,16 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
                 total: product.price,
                 patty: 'Beef'
             });
+        } else {
+            basket.addProduct({
+                title: product.title,
+                price: product.price,
+                id: product.id,
+                count: 1,
+                total: product.price,
+            });
+        }
+        
         console.log('data', basket.products)
     };
 
