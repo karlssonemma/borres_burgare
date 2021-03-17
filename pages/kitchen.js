@@ -5,6 +5,8 @@ import { ProductGrid } from '../components/ProductGrid';
 import { StyledBtn } from '../components/StyledBtn';
 import firebaseInstance from '../config/firebase';
 import { Basket } from '../contexts/BasketContext';
+import KitchenNav from '../components/KitchenNav';
+import { ExtraSpan } from '../components/ExtraSpan';
 
 const StyledMain = styled.main`
     width: 100vw;
@@ -85,6 +87,8 @@ const KitchenPage = () => {
     
 
     return(
+        <>
+        <KitchenNav />
         <StyledMain>
             {/* <h1>Orders</h1> */}
                 <section style={{borderRight: '1px solid black', padding: '0 1em'}}>
@@ -97,10 +101,10 @@ const KitchenPage = () => {
                                     {
                                         item.order.map(item => {
                                             return(
-                                                <p>{item.count} x {item.title}
+                                                <p style={{marginTop: '.7em'}}>{item.count} x {item.title}
                                                 {
                                                     item.extras && item.extras.map(item => 
-                                                        <span style={{display: 'block', marginLeft: '1.5em'}}>+ {item}</span>
+                                                        <ExtraSpan>+ {item}</ExtraSpan>
                                                     )
                                                 }
                                                 </p>
@@ -150,6 +154,7 @@ const KitchenPage = () => {
                     }
                 </section>
         </StyledMain>
+        </>
     )
 };
 

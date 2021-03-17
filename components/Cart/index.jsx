@@ -10,13 +10,15 @@ import firebaseInstance from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import TextAreaField from '../../components/TextAreaField';
 import { useRouter } from 'next/router';
+import { ExtraSpan } from '../../components/ExtraSpan';
+import { CountBtn } from '../CountBtn';
 
 const StyledItem = styled.li`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: .2em 0;
+    align-items: flex-start;
+    margin: 1.5em 0;
 `;
 
 function Cart() {
@@ -53,6 +55,14 @@ function Cart() {
         })
     };
 
+    const handleAddCount = (item) => {
+        basket.addToCount(item)
+    };
+    const handleSubCount = (item) => {
+        basket.subCount(item)
+    };
+    
+
     return(
         <Container className='cart'>
             <div style={{width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
@@ -66,12 +76,20 @@ function Cart() {
                                 <div>
                                     <p>{item.count} x {item.title} {item.patty}</p>
                                     {
-                                        item.extras && item.extras.map(item => <span style={{display: 'block', marginLeft: '1.5em'}}>{'+ ' + item}</span>)
+                                        item.extras && item.extras.map(item => <ExtraSpan>{'+ ' + item}</ExtraSpan>)
                                     }
                                 </div>
-                                <StyledBtn onClick={() => handleDelete(item)}>
-                                    x
-                                </StyledBtn>
+                                <div style={{display: 'flex', flexDirection: 'column'}}>
+                                    <span>{item.total} NOK</span>
+                                    {/* <StyledBtn onClick={() => handleDelete(item)}>
+                                        x
+                                    </StyledBtn> */}
+                                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '.5em'}}>
+                                        <CountBtn onClick={() => handleAddCount(item)}>+</CountBtn>
+                                        <span>{item.count}</span>
+                                        <CountBtn onClick={() => handleSubCount(item)}>-</CountBtn>
+                                    </div>
+                                </div>
                             </StyledItem>
                         )
                     })

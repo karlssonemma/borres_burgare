@@ -13,7 +13,8 @@ function MyApp({ Component, pageProps }) {
       <AuthProvider>
         <Basket>
           <GlobalStyle />
-          <Nav />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@100;500;800&family=Syne+Mono&display=swap" rel="stylesheet" />
           <Component {...pageProps} />
         </Basket>
       </AuthProvider>

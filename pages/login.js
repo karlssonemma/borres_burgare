@@ -8,6 +8,9 @@ import { StyledBtn } from '../components/StyledBtn';
 import { useForm } from 'react-hook-form';
 import { StyledForm } from '../components/StyledForm';
 import CenteredMain from '../components/CenteredMain';
+import Nav from '../components/Nav';
+import Link from 'next/link';
+import StyledLink from '../components/StyledLink';
 
 function LogInPage() {
 
@@ -32,6 +35,8 @@ function LogInPage() {
     };
 
     return(
+        <>
+        <Nav />
         <CenteredMain>
             <PageTitle>Log In</PageTitle>
             {currentUser && currentUser.email}
@@ -64,7 +69,11 @@ function LogInPage() {
                     Log In
                 </StyledBtn>
             </StyledForm>
+            <Link href='/signup'>
+                <StyledLink>Don't have an account?</StyledLink>
+            </Link>
         </CenteredMain>
+        </>
     )
 }
 

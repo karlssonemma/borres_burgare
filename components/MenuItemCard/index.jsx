@@ -66,23 +66,27 @@ const StyledForm = styled.form`
 `;
 
 
-function MenuItemCard({ menu_item, extras, patties, handleSetMenu }) {
+function MenuItemCard({ menu_item, extras, patties }) {
 
-
+    const extrasColl = firebaseInstance.firestore().collection('extras');
     const { register, handleSubmit, errors } = useForm();
     const basket = useBasket();
+    const [total, setTotal] = useState(menu_item.price);
 
     const handleAdd = (menu_item, patty, addOns) => {
-        basket.addProduct({
-            title: menu_item.title,
-            price: menu_item.price,
-            id: menu_item.id,
-            count: 1,
-            total: menu_item.price,
-            patty: patty,
-            extras: addOns,
-        });
-    };
+            basket.addProduct({
+                title: menu_item.title,
+                price: menu_item.price,
+                id: menu_item.id,
+                count: 1,
+                total: total,
+                patty: patty,
+                extras: addOns,
+            });
+
+        document.querySelector('#modify-item-form').reset();
+        setTotal(menu_item.price);
+        }
 
     const onSubmit = (data) => {
         let patty = data.patty;
@@ -90,8 +94,22 @@ function MenuItemCard({ menu_item, extras, patties, handleSetMenu }) {
         handleAdd(menu_item, patty, addOns);
     };
 
-    const updatePrice = (e) => {
-        console.log(e.target.value)
+    //item price + extras total, changes onChange
+    const updatePrice = () => {
+        let extraItemsTotal = 0;
+        let els = document.querySelectorAll('.extras');
+        extrasColl.get()
+        .then(query => {
+            query.forEach(doc => {
+                for (const el of els) {
+                    if(el.checked === true && el.value === doc.data().title) {
+                        extraItemsTotal += doc.data().price;
+                    }
+                }
+            })
+            
+        })
+        .then(() => setTotal(menu_item.price + extraItemsTotal))
     };
 
     const renderAllergens = () => {
@@ -145,13 +163,13 @@ function MenuItemCard({ menu_item, extras, patties, handleSetMenu }) {
                 {/* <StyledImg src={'https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok'} /> */}
                     <SecondaryTitle className='product-card-title'>
                         <span>{menu_item.title}</span>
-                        <span>{menu_item.price + ' NOK'}</span>
+                        <span>{total + ' NOK'}</span>
                     </SecondaryTitle>
                     {/* <p>{menu_item.description}</p> */}
                         {
                             menu_item.allergens && renderAllergens()
                         }
-                    <StyledForm className='choosePatty' onSubmit={handleSubmit(onSubmit)} onChange={e => updatePrice(e)}>
+                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)} onChange={() => updatePrice()}>
                         <section>
                             <SecondaryTitle>Choose your patty</SecondaryTitle>
                             {
@@ -173,15 +191,6 @@ function MenuItemCard({ menu_item, extras, patties, handleSetMenu }) {
                             {
                                 extras && extras.map(item => {
                                     return(
-                                        // <InputField 
-                                        //     inputType='checkbox'
-                                        //     inputId={Math.floor(Math.random() * 1000)}
-                                        //     labelText={item.title + ' + ' + item.price + ' NOK'}
-                                        //     inputName='extra'
-                                        //     inputValue={item.title}
-                                        //     formRef={register}
-                                        //     key={Math.floor(Math.random() * 1000)}
-                                        // />
                                         <StyledCheckbox 
                                             key={item}
                                             inputName='extras'

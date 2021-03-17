@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import theme from '../../utils/theme';
 
 const GlobalStyle = createGlobalStyle`
     * {
@@ -9,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
 
     html, body {
         font-size: 14px;
+        font-family: ${props => props.theme.fonts.spartan};
     }
 
     /* main {

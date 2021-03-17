@@ -11,6 +11,7 @@ export const StyledBtn = styled.button`
     cursor: pointer;
     background-color: ${props => props.theme.colors.buttons.background};
     color: ${props => props.theme.colors.buttons.text};
+    font-family: ${props => props.theme.fonts.spartan};
 
     &:hover {
         background-color: ${props => props.theme.colors.buttons.hover.background};

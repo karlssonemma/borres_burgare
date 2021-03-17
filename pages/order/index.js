@@ -14,6 +14,7 @@ import theme from '../../utils/theme';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/router';
 import StyledLink from '../../components/StyledLink';
+import Nav from '../../components/Nav';
 
 const StyledMain = styled.main`
     padding: 1em;
@@ -168,6 +169,8 @@ function OrderPage({ menuArr }) {
 
    
     return(
+        <>
+        <Nav />
         <StyledMain>
             <Container>
                 <StyledLink style={{paddingBottom: '.3em'}} onClick={e => setMenu(e)}>Burgers</StyledLink>
@@ -192,6 +195,7 @@ function OrderPage({ menuArr }) {
             </ProductGrid>
             <Cart />
         </StyledMain>
+        </>
     )
 }
 

@@ -13,6 +13,7 @@ const StyledInput = styled.input`
 
 const StyledLabel = styled.label`
     font-size: .8rem;
+    margin-top: 1em;
 `;
 
 function TextAreaField({ 

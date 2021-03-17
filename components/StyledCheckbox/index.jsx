@@ -13,7 +13,6 @@ const StyledInput = styled.input`
         background-size: 15px;
         background-position: center;
         background-repeat: no-repeat;
-        /* background-color: yellow; */
     }
 `;
 
@@ -24,10 +23,6 @@ const StyledLabel = styled.label`
     display: flex;
     align-items: center;
     font-size: ${props => props.theme.fontSizes.m};
-
-    /* & :hover ~ span {
-        background-color: pink;
-    } */
 `;
 
 const StyledRadioBtn = styled.span`
@@ -46,7 +41,6 @@ const StyledInputText = styled.span`
 
 function StyledCheckbox({ inputValue, inputName, formRef, inputType, price }) {
 
-
     return(
         <>
             <StyledLabel>
@@ -57,6 +51,7 @@ function StyledCheckbox({ inputValue, inputName, formRef, inputType, price }) {
                     value={inputValue} 
                     ref={formRef}
                     id={inputValue}
+                    className={inputName}
                 />
                 {
                     price && <span>{'+' + price}</span>

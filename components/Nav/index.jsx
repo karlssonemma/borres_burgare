@@ -6,12 +6,13 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/router'; 
 import Link from 'next/link';
 import StyledLink from '../../components/StyledLink';
+import theme from '../../utils/theme';
 
 const StyledNav = styled.nav`
     height: 100px;
     width: 100%;
     padding: 0 1em;
-    background-color: lightgray;
+    background-color: ${props => props.theme.colors.gray};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +48,7 @@ const findEl = () => {
 
     return(
         <StyledNav>
-            <PageTitle>BB</PageTitle>
+            <PageTitle>Børres Burgare</PageTitle>
             <FlexDiv>
                 {
                     isAuthenticated && 

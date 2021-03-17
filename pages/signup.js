@@ -8,6 +8,9 @@ import { StyledForm } from '../components/StyledForm';
 import firebaseInstance from '../config/firebase';
 import { useRouter } from 'next/router';
 import CenteredMain from '../components/CenteredMain';
+import Nav from '../components/Nav';
+import Link from 'next/link';
+import StyledLink from '../components/StyledLink';
  
 
 function SignUpPage() {
@@ -45,6 +48,8 @@ function SignUpPage() {
     };
 
     return(
+        <>
+        <Nav />
         <CenteredMain>
             <PageTitle>Sign up</PageTitle>
             {currentUser && currentUser.email}
@@ -83,7 +88,11 @@ function SignUpPage() {
                     Sign Up
                 </StyledBtn>
             </StyledForm>
+            <Link href='/login'>
+                <StyledLink>Already have an account?</StyledLink>
+            </Link>
         </CenteredMain>
+        </>
     )
 }
 

@@ -17,8 +17,8 @@ const theme = {
         }
     },
     fonts: {
-        arial: 'Roboto, sans-serif',
-        comic: '"Comic Sans", sans-serif'
+        spartan: '"Spartan", sans-serif',
+        syne: '"Syne Mono", monospace'
     },
     fontSizes: {
         xs: '0.75rem',

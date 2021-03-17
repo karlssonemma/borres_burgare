@@ -4,6 +4,7 @@ import Link from 'next/link';
 import CenteredMain from '../components/CenteredMain';
 import styled from 'styled-components';
 import theme from '../utils/theme';
+import Nav from '../components/Nav';
 
 const StyledLink = styled.a`
   font-size: ${props => props.theme.fontSizes.xl};
@@ -11,6 +12,8 @@ const StyledLink = styled.a`
 
 export default function Home() {
   return (
+    <>
+    <Nav />
     <CenteredMain style={{flexDirection: 'row', justifyContent: 'center'}}>
       <Link href='/login'>
         <StyledLink>Log In</StyledLink>
@@ -20,5 +23,6 @@ export default function Home() {
         <StyledLink>Sign Up</StyledLink>
       </Link>
     </CenteredMain>
+    </>
   )
 }

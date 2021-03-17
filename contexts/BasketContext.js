@@ -24,12 +24,31 @@ export const Basket = ({ children }) => {
     const addToCount = (product) => {
         let tempCart = [...products];
         let updatedProduct = tempCart.find(el => el.id === product.id);
+        let totalPrice = updatedProduct.total / updatedProduct.count;
+
         let index = tempCart.indexOf(updatedProduct);
         tempCart.splice(index, 1);
         updatedProduct.count += 1;
-        updatedProduct.total = updatedProduct.count * updatedProduct.price;
+        updatedProduct.total = updatedProduct.total + totalPrice;
         tempCart.push(updatedProduct);
         setProducts(tempCart);
+    };
+
+    const subCount = (product) => {
+        let tempCart = [...products];
+        let updatedProduct = tempCart.find(el => el.id === product.id);
+        let totalPrice = updatedProduct.total / updatedProduct.count;
+
+        if(updatedProduct.count > 1) {
+            let index = tempCart.indexOf(updatedProduct);
+            tempCart.splice(index, 1);
+            updatedProduct.count -= 1;
+            updatedProduct.total = updatedProduct.total - totalPrice;
+            tempCart.push(updatedProduct);
+            setProducts(tempCart);
+        } else {
+            deleteProduct(product);
+        }
     };
 
     const deleteProduct = (product) => {
@@ -67,7 +86,7 @@ export const Basket = ({ children }) => {
     }, [products])
 
     return(
-        <BasketContext.Provider value={{products, addProduct, total, addToCount, deleteProduct, deleteBasket}}>
+        <BasketContext.Provider value={{products, addProduct, total, addToCount, deleteProduct, deleteBasket, subCount}}>
             {children}
         </BasketContext.Provider>
     )

@@ -7,6 +7,7 @@ import theme from '../utils/theme';
 import styled from 'styled-components';
 import OldOrderItem from '../components/OldOrderItem';
 import { ProductGrid } from '../components/ProductGrid';
+import Nav from '../components/Nav';
 
 const StyledSection = styled.section`
     width: 50%;
@@ -69,6 +70,8 @@ function ProfilePage() {
     }, [currentOrder])
 
     return(
+        <>
+        <Nav />
         <main>
             {
                 currentOrder && 
@@ -106,6 +109,7 @@ function ProfilePage() {
                     </>
             }
         </main>
+        </>
     )
 };
 
