@@ -19,6 +19,7 @@ const StyledItem = styled.li`
     justify-content: space-between;
     align-items: flex-start;
     margin: 1.5em 0;
+    
 `;
 
 function Cart() {
@@ -79,15 +80,12 @@ function Cart() {
                                         item.extras && item.extras.map(item => <ExtraSpan>{'+ ' + item}</ExtraSpan>)
                                     }
                                 </div>
-                                <div style={{display: 'flex', flexDirection: 'column'}}>
+                                <div>
                                     <span>{item.total} NOK</span>
-                                    {/* <StyledBtn onClick={() => handleDelete(item)}>
-                                        x
-                                    </StyledBtn> */}
                                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '.5em'}}>
-                                        <CountBtn onClick={() => handleAddCount(item)}>+</CountBtn>
-                                        <span>{item.count}</span>
                                         <CountBtn onClick={() => handleSubCount(item)}>-</CountBtn>
+                                        <span>{item.count}</span>
+                                        <CountBtn onClick={() => handleAddCount(item)}>+</CountBtn>
                                     </div>
                                 </div>
                             </StyledItem>

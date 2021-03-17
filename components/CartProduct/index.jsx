@@ -6,7 +6,7 @@ const StyledSection = styled.section`
     margin: 1em 0;
 `;
 
-function CurrentOrderItem({ item }) {
+function CartProduct({ item }) {
 
     return(
         <StyledSection>
@@ -22,4 +22,4 @@ function CurrentOrderItem({ item }) {
     )
 };
 
-export default CurrentOrderItem;
+export default CartProduct;

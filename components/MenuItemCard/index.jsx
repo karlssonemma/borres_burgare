@@ -169,7 +169,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
                         {
                             menu_item.allergens && renderAllergens()
                         }
-                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)} onChange={() => updatePrice()}>
+                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)}>
                         <section>
                             <SecondaryTitle>Choose your patty</SecondaryTitle>
                             {
@@ -198,6 +198,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
                                             price={item.price}
                                             formRef={register}
                                             inputType='checkbox'
+                                            handleChange={() => updatePrice()}
                                         />
                                     )
                                 })

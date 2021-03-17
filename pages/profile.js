@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import OldOrderItem from '../components/OldOrderItem';
 import { ProductGrid } from '../components/ProductGrid';
 import Nav from '../components/Nav';
+import CartProduct from '../components/CartProduct';
 
 const StyledSection = styled.section`
     width: 50%;
@@ -78,18 +79,21 @@ function ProfilePage() {
                     <>
                     <SecondaryTitle style={{textAlign: 'center'}}>Your current order</SecondaryTitle>
                     <StyledSection>
+                        <div style={{width: 'max-content'}}>
                         {
                             currentOrder.order.map(item => {
                                 return(
-                                    <CurrentOrderItem 
+                                    <CartProduct 
                                         item={item}
-                                        comment={currentOrder.comment}
                                     />
                                 )
                             })
                         }
-                        <p>Status: {status}
-                        </p>
+                        </div>
+                        {
+                            currentOrder.comment && <p>{currentOrder.comment}</p>
+                        }
+                        <p>Status: {status}</p>
                     </StyledSection>
                     </>
             }

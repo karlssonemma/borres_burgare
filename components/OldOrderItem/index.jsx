@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../../utils/theme';
 import { StyledBtn } from '../../components/StyledBtn';
+import CartProduct from '../CartProduct';
 
 function OldOrderItem({ item }) {
 
@@ -19,16 +20,17 @@ const StyledSection = styled.section`
         <StyledSection>
             <div>
             {
-                item.order.map(item => 
-                <p>{item.count} x {item.title}
-                    {
-                        item.extras && item.extras.map(item => <span style={{marginLeft: '1.5em', display: 'block'}}>+ {item}</span>)
-                    }
-                </p>)
+                item.order.map(item => {
+                    return(
+                        <CartProduct item={item} />
+                    )
+                })
             }
-            {item.timeOfOrder && <p>{item.timeOfOrder.date}</p>}
             </div>
-            <StyledBtn>Order again</StyledBtn>
+            <div style={{height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+                {item.timeOfOrder && <p>{item.timeOfOrder.date}</p>}
+                <StyledBtn>Order again</StyledBtn>
+            </div>
         </StyledSection>
     )
 };

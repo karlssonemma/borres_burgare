@@ -101,6 +101,7 @@ const KitchenPage = () => {
                                     {
                                         item.order.map(item => {
                                             return(
+                                                <div>
                                                 <p style={{marginTop: '.7em'}}>{item.count} x {item.title}
                                                 {
                                                     item.extras && item.extras.map(item => 
@@ -108,6 +109,7 @@ const KitchenPage = () => {
                                                     )
                                                 }
                                                 </p>
+                                                </div>
                                             )
                                         })
                                     }
@@ -116,6 +118,7 @@ const KitchenPage = () => {
                                         <p>Comment: "{item.comment}"</p>
                                     }
                                     <StyledBtn onClick={() => handleAccept(item)}>Accept</StyledBtn>
+                                    
                                 </StyledSection>
                             )
                         }
