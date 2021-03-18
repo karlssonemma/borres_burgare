@@ -1,14 +1,10 @@
 import React from 'react';
-import { useRouter } from '../../contexts/BasketContext';
 import styled from 'styled-components';
-import Link from 'next/link';
-import MenuItemCard from '../MenuItemCard';
 import { useBasket } from '../../contexts/BasketContext';
-import { StyledBtn } from '../../components/StyledBtn';
-import { SecondaryTitle } from '../SecondaryTitle';
-import Overlay from '../../components/Overlay';
+import { StyledBtn } from '../Buttons/StyledBtn';
+import { SecondaryTitle } from '../Text/SecondaryTitle';
  
-const StyledSection = styled.section`
+const StyledSection = styled.li`
     background: url('https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok');
     background-size: cover;
     height: 300px;
@@ -30,7 +26,6 @@ const ButtonField = styled.section`
 const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
 
     const basket = useBasket();
-    console.log(basket)
 
     const handleClick = (product) => {
         if(product.category === 'burger') {
@@ -40,7 +35,8 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
                 id: product.id,
                 count: 1,
                 total: product.price,
-                patty: 'Beef'
+                patty: 'Beef',
+                extras: []
             });
         } else {
             basket.addProduct({

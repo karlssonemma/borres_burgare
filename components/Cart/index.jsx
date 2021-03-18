@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import InputField from '../InputField';
-import { StyledBtn } from '../../components/StyledBtn';
+import { StyledBtn } from '../Buttons/StyledBtn';
 import { useBasket } from '../../contexts/BasketContext';
-import { SecondaryTitle } from '../../components/SecondaryTitle';
-import { Container } from '../../components/Container';
-import { ThirdTitle } from '../../components/ThirdTitle';
+import { SecondaryTitle } from '../Text/SecondaryTitle';
+import { Container } from '../Container';
+import { ThirdTitle } from '../Text/ThirdTitle';
 import firebaseInstance from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
-import TextAreaField from '../../components/TextAreaField';
+import TextAreaField from '../FormComponents/TextAreaField';
 import { useRouter } from 'next/router';
-import { ExtraSpan } from '../../components/ExtraSpan';
-import { CountBtn } from '../CountBtn';
+import { CountBtn } from '../Buttons/CountBtn';
+import CartProduct from '../CartProduct';
 
 const StyledItem = styled.li`
     width: 100%;
@@ -31,29 +30,45 @@ function Cart() {
     const [comment, setComment] = useState('');
 
 
-    const handleDelete = (item) => {
-        basket.deleteProduct(item);
-    };
+    // const handleDelete = (item) => {
+    //     basket.deleteProduct(item);
+    // };
 
     const handleOrder = () => {
 
-        currentCart.doc().set({
-            customer: currentUser.uid,
-            order: basket.products,
-            finished: false,
-            pickedUp: false,
-            accepted: false,
-            timeOfOrder: {
-                date: new Date().toLocaleDateString(),
-                time: new Date().toLocaleTimeString(),
-            },
-            comment: comment
-        })
-        .then(() => {
-            basket.deleteBasket([]);
-            setComment('');
-            router.push('/profile')
-        })
+        let newCount;
+
+        let countRef = firebaseInstance.firestore().collection('globals').doc('counter');
+        firebaseInstance.firestore().runTransaction(transaction => {
+            return transaction.get(countRef)
+            .then(doc => {
+                newCount = doc.data().count + 1;
+                if(newCount > 999) {
+                    newCount = 1;
+                }
+                transaction.update(countRef, { count: newCount })
+            })
+            .then(() => {
+                currentCart.doc().set({
+                    customer: currentUser.uid,
+                    order: basket.products,
+                    finished: false,
+                    pickedUp: false,
+                    accepted: false,
+                    timeOfOrder: {
+                        date: new Date().toLocaleDateString(),
+                        time: new Date().toLocaleTimeString(),
+                    },
+                    comment: comment,
+                    orderNr: newCount
+                })
+            })
+            .then(() => {
+                basket.deleteBasket([]);
+                setComment('');
+                router.push('/profile')
+            })
+        });
     };
 
     const handleAddCount = (item) => {
@@ -73,13 +88,8 @@ function Cart() {
                 (basket.products.length > 0)
                     ? basket.products.map(item => {
                         return(
-                            <StyledItem style={{display: 'flex'}} key={Math.random()}>
-                                <div>
-                                    <p>{item.count} x {item.title} {item.patty}</p>
-                                    {
-                                        item.extras && item.extras.map(item => <ExtraSpan>{'+ ' + item}</ExtraSpan>)
-                                    }
-                                </div>
+                            <StyledItem style={{display: 'flex'}} key={Math.random() * 1000}>
+                                <CartProduct item={item} />
                                 <div>
                                     <span>{item.total} NOK</span>
                                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '.5em'}}>

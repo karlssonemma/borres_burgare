@@ -8,11 +8,21 @@ const theme = {
         orange: '#E36414',
         lightorange: '#FDC47F',
         buttons: {
-            background: '#FB8B24',
-            text: 'white',
-            hover: {
+            orange: {
+                background: '#FB8B24',
                 text: 'white',
-                background: '#E36414'
+                hover: {
+                    text: 'white',
+                    background: '#E36414'
+                }
+            },
+            green: {
+                background: '#84C318',
+                text: 'white',
+                hover: {
+                    text: 'white',
+                    background: '#bbeb68'
+                }
             }
         }
     },

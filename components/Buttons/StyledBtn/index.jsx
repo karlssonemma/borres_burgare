@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import theme from '../../utils/theme';
+import theme from '../../../utils/theme';
 
 export const StyledBtn = styled.button`
     width: max-content;
@@ -9,13 +9,13 @@ export const StyledBtn = styled.button`
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: ${props => props.theme.colors.buttons.background};
-    color: ${props => props.theme.colors.buttons.text};
+    background-color: ${props => props.theme.colors.buttons.orange.background};
+    color: ${props => props.theme.colors.buttons.orange.text};
     font-family: ${props => props.theme.fonts.spartan};
 
     &:hover {
-        background-color: ${props => props.theme.colors.buttons.hover.background};
-        color: ${props => props.theme.colors.buttons.hover.text};
+        background-color: ${props => props.theme.colors.buttons.orange.hover.background};
+        color: ${props => props.theme.colors.buttons.orange.hover.text};
     };
 
     &.cart-btn {

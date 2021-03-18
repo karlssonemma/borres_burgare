@@ -22,6 +22,12 @@ const StyledSection = styled.section`
     background-color: ${props => props.theme.colors.gray};
     border-radius: 10px;
 `;
+const GreenBtn = styled(StyledBtn)`
+    background-color: ${props => props.theme.colors.buttons.green.background};
+    &:hover {
+        background-color: ${props => props.theme.colors.buttons.green.hover.background};
+    }
+`;
 
 const KitchenPage = () => {
 
@@ -29,8 +35,8 @@ const KitchenPage = () => {
     const ordersInProcess = firebaseInstance.firestore().collection('orders_in_process');
     const ordersFinished = firebaseInstance.firestore().collection('orders_finished');
 
-    useEffect(() => {
-        const unsubscribe = ordersInProcess.onSnapshot(snapshot => {
+    useEffect(async () => {
+        await ordersInProcess.onSnapshot(snapshot => {
             let orders = [];
             snapshot.forEach(doc => {
                 orders.push({
@@ -40,7 +46,6 @@ const KitchenPage = () => {
             })
             setCurrentOrders(orders);
         })
-        return unsubscribe
     }, [])
 
     const handleAccept = async (item) => {
@@ -97,7 +102,7 @@ const KitchenPage = () => {
                         if (item.accepted === false) {
                             return(
                                 <StyledSection key={item.id}>
-                                    <p>{item.customer}</p>
+                                    <p>#{item.orderNr}</p>
                                     {
                                         item.order.map(item => {
                                             return(
@@ -148,7 +153,7 @@ const KitchenPage = () => {
                                             {
                                                 item.finished === false 
                                                 ? <StyledBtn onClick={() => handleMark(item)}>Mark as ready</StyledBtn>
-                                                : <StyledBtn onClick={() => handleFinalized(item)}>Picked up</StyledBtn>
+                                                : <GreenBtn onClick={() => handleFinalized(item)}>Picked up</GreenBtn>
                                             }
                                     </StyledSection>
                                 )

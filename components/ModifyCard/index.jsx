@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import InputField from '../InputField';
-import RadioInput from '../RadioInput';
-import Btn from '../Btn';
-import { StyledBtn } from '../StyledBtn';
+import { StyledBtn } from '../Buttons/StyledBtn';
 import firebaseInstance from '../../config/firebase';
 import { useBasket } from '../../contexts/BasketContext';
 import { useForm } from 'react-hook-form';
-import StyledCheckbox from '../StyledCheckbox';
-import theme from '../../utils/theme';
-import { SecondaryTitle } from '../../components/SecondaryTitle';
+import StyledCheckbox from '../FormComponents/StyledCheckbox';
+import { SecondaryTitle } from '../Text/SecondaryTitle';
 import Image from 'next/image';
 
 const StyledSection = styled.section`
@@ -28,10 +24,6 @@ const StyledSection = styled.section`
     font-size: ${props => props.theme.fontSizes.l};
     font-family: ${props => props.theme.fonts.arial};
 `;
-
-// const StyledTitle = styled.h3`
-//     padding: .5em 0;
-// `;
 
 const StyledList = styled.ul`
     list-style: none;
@@ -66,12 +58,16 @@ const StyledForm = styled.form`
 `;
 
 
-function MenuItemCard({ menu_item, extras, patties }) {
+function ModifyCard({ menu_item, extras, patties }) {
 
     const extrasColl = firebaseInstance.firestore().collection('extras');
     const { register, handleSubmit, errors } = useForm();
     const basket = useBasket();
     const [total, setTotal] = useState(menu_item.price);
+
+    useEffect(() => {
+        console.log('total changed AGAIN')
+    }, [total])
 
     const handleAdd = (menu_item, patty, addOns) => {
             basket.addProduct({
@@ -80,22 +76,26 @@ function MenuItemCard({ menu_item, extras, patties }) {
                 id: menu_item.id,
                 count: 1,
                 total: total,
-                patty: patty,
+                patty: patty === null ? 'Beef' : patty,
                 extras: addOns,
             });
-
+            
         document.querySelector('#modify-item-form').reset();
         setTotal(menu_item.price);
-        }
+
+    };
 
     const onSubmit = (data) => {
         let patty = data.patty;
         let addOns = data.extras;
+        console.log(addOns)
         handleAdd(menu_item, patty, addOns);
     };
 
     //item price + extras total, changes onChange
     const updatePrice = () => {
+        
+        console.log('RESET FORM')
         let extraItemsTotal = 0;
         let els = document.querySelectorAll('.extras');
         extrasColl.get()
@@ -106,10 +106,12 @@ function MenuItemCard({ menu_item, extras, patties }) {
                         extraItemsTotal += doc.data().price;
                     }
                 }
-            })
-            
+            }) 
         })
-        .then(() => setTotal(menu_item.price + extraItemsTotal))
+
+        //VARFØR FUNKAR INTE DETTAAAA???
+        // setTotal(menu_item.price + extraItemsTotal)
+        
     };
 
     const renderAllergens = () => {
@@ -120,7 +122,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
                     menu_item.allergens.map(item => {
                         if (item === 'egg') {
                             return(
-                                <StyledListItem>
+                                <StyledListItem key={item}>
                                     <Image 
                                         src='/allergens-eggs.png'
                                         width={25}
@@ -131,7 +133,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
                         };
                         if (item === 'milk') {
                             return(
-                                <StyledListItem>
+                                <StyledListItem key={item}>
                                     <Image 
                                         src='/allergens-milk.png'
                                         width={25}
@@ -142,7 +144,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
                         };
                         if (item === 'gluten') {
                             return(
-                                <StyledListItem>
+                                <StyledListItem key={item}>
                                     <Image 
                                         src='/gluten.png'
                                         width={25}
@@ -169,7 +171,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
                         {
                             menu_item.allergens && renderAllergens()
                         }
-                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)}>
+                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)} onChange={() => updatePrice()}>
                         <section>
                             <SecondaryTitle>Choose your patty</SecondaryTitle>
                             {
@@ -181,6 +183,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
                                                 inputName='patty'
                                                 formRef={register}
                                                 inputType='radio'
+                                                id={item.id}
                                             />
                                         ) 
                                 })
@@ -191,14 +194,14 @@ function MenuItemCard({ menu_item, extras, patties }) {
                             {
                                 extras && extras.map(item => {
                                     return(
-                                        <StyledCheckbox 
-                                            key={item}
+                                        <StyledCheckbox
+                                            id={item.id}
+                                            key={Math.random() * 1000}
                                             inputName='extras'
                                             inputValue={item.title}
                                             price={item.price}
                                             formRef={register}
                                             inputType='checkbox'
-                                            handleChange={() => updatePrice()}
                                         />
                                     )
                                 })
@@ -214,7 +217,7 @@ function MenuItemCard({ menu_item, extras, patties }) {
     )
 }
 
-// MenuItemCard.getInitialProps = async () => {
+// ModifyCard.getInitialProps = async () => {
 //     try {
 //         const collection = await firebaseInstance.firestore().collection('extras');
 //         const extrasColl = await collection.get();
@@ -236,4 +239,4 @@ function MenuItemCard({ menu_item, extras, patties }) {
 //     }
 // }
 
-export default MenuItemCard;
+export default ModifyCard;

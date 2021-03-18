@@ -22,6 +22,10 @@ const StyledSection = styled.section`
     border-radius: 10px;
 `;
 
+const Title = styled(SecondaryTitle)`
+    margin-top: 1em;
+`;
+
 
 function ProfilePage() {
 
@@ -38,7 +42,7 @@ function ProfilePage() {
             snapshot.forEach(doc => {
                 if (doc.data().customer === currentUser.uid) {
                     setCurrentOrder(doc.data())
-                };
+                }
             })
         })
     }, [])
@@ -77,7 +81,7 @@ function ProfilePage() {
             {
                 currentOrder && 
                     <>
-                    <SecondaryTitle style={{textAlign: 'center'}}>Your current order</SecondaryTitle>
+                    <Title style={{textAlign: 'center'}}>Your current order</Title>
                     <StyledSection>
                         <div style={{width: 'max-content'}}>
                         {
@@ -100,7 +104,7 @@ function ProfilePage() {
             {
                 oldOrders && 
                     <>
-                    <SecondaryTitle style={{textAlign: 'center'}}>Previous orders</SecondaryTitle>
+                    <Title style={{textAlign: 'center'}}>Previous orders</Title>
                     <ProductGrid>
                         {
                             oldOrders.map(item => {

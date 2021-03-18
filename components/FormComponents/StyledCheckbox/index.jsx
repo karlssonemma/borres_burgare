@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 // import check from './img/check.png';
-import theme from '../../utils/theme';
+import theme from '../../../utils/theme';
 
 const StyledInput = styled.input`
     position: absolute;
@@ -39,7 +39,7 @@ const StyledInputText = styled.span`
     width: auto;
 `;
 
-function StyledCheckbox({ inputValue, inputName, formRef, inputType, price, handleChange }) {
+function StyledCheckbox({ inputValue, inputName, formRef, inputType, price, id }) {
 
     return(
         <>
@@ -50,9 +50,8 @@ function StyledCheckbox({ inputValue, inputName, formRef, inputType, price, hand
                     name={inputName} 
                     value={inputValue} 
                     ref={formRef}
-                    id={inputValue}
+                    id={id}
                     className={inputName}
-                    onChange={() => handleChange()}
                 />
                 {
                     price && <span>{'+' + price}</span>

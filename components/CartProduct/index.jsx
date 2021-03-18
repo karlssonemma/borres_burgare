@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ExtraSpan } from '../ExtraSpan';
+import { ExtraSpan } from '../Text/ExtraSpan';
 
 const StyledSection = styled.section`
     margin: 1em 0;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import theme from '../../utils/theme';
+import theme from '../../../utils/theme';
 
 export const SecondaryTitle = styled.h2`
     font-size: ${props => props.theme.fontSizes.xl};

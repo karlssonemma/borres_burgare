@@ -4,7 +4,7 @@ import { PageTitle } from '../../components/PageTitle';
 const StyledNav = styled.nav`
     height: 100px;
     width: 100%;
-    padding: 0 1em;
+    padding: 0 3em;
     background-color: ${props => props.theme.colors.gray};
     display: flex;
     justify-content: space-between;

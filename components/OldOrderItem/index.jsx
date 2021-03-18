@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import theme from '../../utils/theme';
 import { StyledBtn } from '../../components/StyledBtn';
 import CartProduct from '../CartProduct';
+import { useBasket } from '../../contexts/BasketContext';
+import firebaseInstance from '../../config/firebase';
 
-function OldOrderItem({ item }) {
-
-const StyledSection = styled.section`
+const StyledSection = styled.li`
     width: 100%;
     padding: 1em;
     background-color: ${props => props.theme.colors.gray};
@@ -15,6 +15,20 @@ const StyledSection = styled.section`
     justify-content: space-between;
     align-items: center;
 `;
+
+function OldOrderItem({ item }) {
+
+    const basket = useBasket();
+    const ordersInProcess = firebaseInstance.firestore().collection('orders_in_process');
+
+    const handleOrder = (item) => {
+        ordersInProcess.doc(item.id).set({
+            ...item,
+            finished: false,
+            pickedUp: false, 
+            accepted: false
+        })
+    };
 
     return(
         <StyledSection>
@@ -29,7 +43,7 @@ const StyledSection = styled.section`
             </div>
             <div style={{height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end'}}>
                 {item.timeOfOrder && <p>{item.timeOfOrder.date}</p>}
-                <StyledBtn>Order again</StyledBtn>
+                <StyledBtn onClick={() => handleOrder(item)}>Order again</StyledBtn>
             </div>
         </StyledSection>
     )

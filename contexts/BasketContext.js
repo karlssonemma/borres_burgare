@@ -12,12 +12,39 @@ export const Basket = ({ children }) => {
     const [total, setTotal] = useState(0);
 
     const addProduct = (product) => {
+        // const handleCompare = (el) => {
+        //     if(el.extras.length !== product.extras.length) {
+        //         return false;
+        //     } else {
+        //         let result = false;
+        //         for (let i = 0; i < product.extras.length; i++) {
+        //             if(product.extras[i] != el.extras[i]) {
+        //                 return false;
+        //             } else {
+        //                 result = true;
+        //             }
+                    
+        //         }
+        //         return result;
+        //     }
+        // };
         let tempCart = [...products];
-        let tempProduct = tempCart.find(el => el.id === product.id && el.extras === product.extras && el.patty === product.patty);
+        console.log(JSON.stringify(product.extras))
+        let tempProduct = tempCart.find(el => el.id === product.id && el.patty === product.patty && JSON.stringify(el.extras) === JSON.stringify(product.extras));
         if (!tempProduct) {
-            setProducts([...products, product]);
+            setProducts([...products, product])
         } else {
-            addToCount(product);
+            let temp = JSON.stringify(tempProduct.extras);
+            let prod = JSON.stringify(product.extras);
+            console.log(temp, prod)
+            
+            if (temp === prod) {
+                addToCount(product);
+                console.log('added to count')
+            } else {
+                setProducts([...products, product])
+                console.log('added new prod')
+            }
         };
     };
 

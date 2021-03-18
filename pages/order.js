@@ -1,20 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import firebaseInstance from '../../config/firebase';
-import { Container } from '../../components/Container';
-import readCollection from '../../database/readCollection';
-import MenuItemCard from '../../components/MenuItemCard';
-import Cart from '../../components/Cart';
+import firebaseInstance from '../config/firebase';
+import { Container } from '../components/Container';
+import ModifyCard from '../components/ModifyCard';
+import Cart from '../components/Cart';
 import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
-import Link from 'next/link';
-import { useBasket } from '../../contexts/BasketContext';
-import ProductCard from '../../components/ProductCard';
-import { ProductGrid } from '../../components/ProductGrid';
-import theme from '../../utils/theme';
-import { useAuth } from '../../contexts/AuthContext';
+import { useBasket } from '../contexts/BasketContext';
+import ProductCard from '../components/ProductCard';
+import { ProductGrid } from '../components/ProductGrid';
+import theme from '../utils/theme';
+import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
-import StyledLink from '../../components/StyledLink';
-import Nav from '../../components/Nav';
+import StyledLink from '../components/StyledLink';
+import Nav from '../components/Nav';
 
 const StyledMain = styled.main`
     padding: 1em;
@@ -131,20 +128,6 @@ function OrderPage({ menuArr }) {
         setAddOns(null);
     };
 
-    function removeItem(id) {
-        let tempCart = [...cart];
-        let tempItem = tempCart.find(item => item.id === id);
-        if(tempItem) {
-            let index = tempCart.indexOf(tempItem);
-            tempCart.splice(index, 1)
-        };
-        setCart([...tempCart]);
-        currentCart.doc(id).delete()
-    };
-
-    function handleComment(e) {
-        setComment(e.target.value);
-    };
 
    function setMenu(e) {
        setChosen(null);
@@ -190,7 +173,7 @@ function OrderPage({ menuArr }) {
                     })
                 }
                 {
-                    (activeMenu === null && chosen) && <MenuItemCard extras={extras} patties={patties} menu_item={chosen} />
+                    (activeMenu === null && chosen) && <ModifyCard extras={extras} patties={patties} menu_item={chosen} />
                 }
             </ProductGrid>
             <Cart />
@@ -203,8 +186,6 @@ OrderPage.getInitialProps = async () => {
     try {
         const collection = await firebaseInstance.firestore().collection('burgers');
         const menuCollection = await collection.get();
-        // const collection2 = await firebaseInstance.firestore().collection('extras');
-        // const extrasCollection = await collection2.get();
 
         const menuArr = [];
 
@@ -214,15 +195,6 @@ OrderPage.getInitialProps = async () => {
                 ...item.data()
             });
         });
-
-        // const extrasArr = [];
-
-        // extrasCollection.forEach(item => {
-        //     extrasArr.push({
-        //         id: item.id,
-        //         ...item.data()
-        //     });
-        // });
         
         return { menuArr }
 
