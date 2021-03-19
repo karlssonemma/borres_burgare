@@ -12,40 +12,49 @@ export const Basket = ({ children }) => {
     const [total, setTotal] = useState(0);
 
     const addProduct = (product) => {
-        // const handleCompare = (el) => {
-        //     if(el.extras.length !== product.extras.length) {
-        //         return false;
-        //     } else {
-        //         let result = false;
-        //         for (let i = 0; i < product.extras.length; i++) {
-        //             if(product.extras[i] != el.extras[i]) {
-        //                 return false;
-        //             } else {
-        //                 result = true;
-        //             }
-                    
-        //         }
-        //         return result;
-        //     }
-        // };
-        let tempCart = [...products];
-        console.log(JSON.stringify(product.extras))
-        let tempProduct = tempCart.find(el => el.id === product.id && el.patty === product.patty && JSON.stringify(el.extras) === JSON.stringify(product.extras));
-        if (!tempProduct) {
-            setProducts([...products, product])
-        } else {
-            let temp = JSON.stringify(tempProduct.extras);
-            let prod = JSON.stringify(product.extras);
-            console.log(temp, prod)
-            
-            if (temp === prod) {
-                addToCount(product);
-                console.log('added to count')
-            } else {
-                setProducts([...products, product])
-                console.log('added new prod')
-            }
-        };
+    // Hvis prod navn eksisterer i listen sjekk om noen av de har samme addons
+    let newProd;
+    let hasSameProduct = false
+    const hasProductWithSameTitle = products.filter((item) => {
+      return product.title === item.title;
+    });
+    // If there is a product with the same title i nthe basket
+    if (hasProductWithSameTitle.length) {
+      // Check if one of the items have the same addons
+      hasSameProduct = hasProductWithSameTitle.some(basketItem => {
+        // By first checking if number of addons are equal
+        if(product.extras && product.extras.length === basketItem.extras.length) {
+          // Then check if all the addons in the new product exists in one of the products in the basket
+          const sameExtras = product.extras.every(extra => {
+            return basketItem.extras.includes(extra)
+          })
+          if(sameExtras) {
+            newProd = basketItem;
+            return true
+          } else {
+            return false
+          }
+        }
+      })
+    }
+
+    if(hasSameProduct){
+      // Add to the number of products
+      console.log('do something');
+      let newArr = [...products];
+      let index = products.indexOf(newProd);
+      let totalPrice = newArr[index].total / newArr[index].count;
+      newArr[index] = {
+          ...newArr[index], 
+          count: newArr[index].count + 1,
+          total: newArr[index].total + totalPrice
+        }
+      setProducts(newArr);   
+    } else {
+      // add new product
+      console.log('added NEW')
+      setProducts([...products, product])
+    }
     };
 
     const addToCount = (product) => {

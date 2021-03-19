@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components'
-import InputField from '../components/InputField';
-import { PageTitle } from '../components/PageTitle';
+import InputField from '../components/FormComponents/InputField';
+import { PageTitle } from '../components/Text/PageTitle';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
-import { StyledBtn } from '../components/StyledBtn';
+import { StyledBtn } from '../components/Buttons/StyledBtn';
 import { useForm } from 'react-hook-form';
-import { StyledForm } from '../components/StyledForm';
+import { StyledForm } from '../components/FormComponents/StyledForm';
 import CenteredMain from '../components/CenteredMain';
 import Nav from '../components/Nav';
 import Link from 'next/link';

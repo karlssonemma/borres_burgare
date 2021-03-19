@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import theme from '../../utils/theme';
 
 export const Container = styled.section`
-    width: auto;
+    /* min-width: max-content; */
+    width: auto; 
     height: auto;
     padding: 1.5em;
     display: block;
-    /* border-radius: 10px; */
+    
 
     &.cart {
         display: none;
@@ -26,7 +27,7 @@ export const Container = styled.section`
     };
 
 
-    @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
+    @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
         display: block !important;
     }
 `;

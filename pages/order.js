@@ -20,13 +20,16 @@ const StyledMain = styled.main`
     grid-template-columns: 17% auto;
 
     @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
-        grid-template-columns: 10% auto 20vw;
+        grid-template-columns: max-content auto 20vw;
     }
+    /* @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
+        grid-template-columns: 20% auto;
+    } */
 `;
 
 
 
-function OrderPage({ menuArr }) {
+function OrderPage() {
 
     // const { register, handleSubmit, errors } = useForm();
 
@@ -37,13 +40,12 @@ function OrderPage({ menuArr }) {
     const [cart, setCart] = useState([]);
     const [comment, setComment] = useState('');
     // const [burgers, setBurgers] = useState(null);
-    const burgers = [...menuArr];
-    const [activeMenu, setActiveMenu] = useState(burgers);
+    // const burgers = [...menuArr];
+    const [burgers, setBurgers] = useState(null);
+    const [activeMenu, setActiveMenu] = useState(null);
     const [extras, setExtras] = useState(null);
     const [patties, setPatties] = useState(null);
     
-
-    const currentCart = firebaseInstance.firestore().collection('cart');
     const menuColl = firebaseInstance.firestore().collection('burgers');
     const extrasColl = firebaseInstance.firestore().collection('extras');
     const pattiesColl = firebaseInstance.firestore().collection('patties');
@@ -55,6 +57,29 @@ function OrderPage({ menuArr }) {
     };
 
     console.log(isAuthenticated);
+
+    useEffect(() => {
+        if(activeMenu === null && burgers !== null) {
+            setActiveMenu(burgers);
+        }
+    }, [burgers])
+
+    useEffect(() => {  
+        if (burgers === null) {
+            let menuArr = [];
+            menuColl.get()
+            .then(query => {
+                query.forEach(doc => {
+                    menuArr.push({
+                        id: doc.id,
+                        ...doc.data()
+                    })
+                })
+            setBurgers(menuArr)
+            })
+        }
+    }, [])
+
 
     useEffect(() => {  
         if (extras === null) {
@@ -182,28 +207,28 @@ function OrderPage({ menuArr }) {
     )
 }
 
-OrderPage.getInitialProps = async () => {
-    try {
-        const collection = await firebaseInstance.firestore().collection('burgers');
-        const menuCollection = await collection.get();
+// OrderPage.getInitialProps = async () => {
+//     try {
+//         const collection = await firebaseInstance.firestore().collection('burgers');
+//         const menuCollection = await collection.get();
 
-        const menuArr = [];
+//         const menuArr = [];
 
-        menuCollection.forEach(item => {
-            menuArr.push({
-                id: item.id,
-                ...item.data()
-            });
-        });
+//         menuCollection.forEach(item => {
+//             menuArr.push({
+//                 id: item.id,
+//                 ...item.data()
+//             });
+//         });
         
-        return { menuArr }
+//         return { menuArr }
 
-    } catch (error) {
-        return {
-            error: error.message
-        };
-    };
-};
+//     } catch (error) {
+//         return {
+//             error: error.message
+//         };
+//     };
+// };
 
 
 export default OrderPage;

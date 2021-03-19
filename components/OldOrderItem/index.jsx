@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import theme from '../../utils/theme';
-import { StyledBtn } from '../../components/StyledBtn';
+import { StyledBtn } from '../../components/Buttons/StyledBtn';
 import CartProduct from '../CartProduct';
 import { useBasket } from '../../contexts/BasketContext';
 import firebaseInstance from '../../config/firebase';

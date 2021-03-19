@@ -1,5 +1,5 @@
 import next from 'next';
-import { PageTitle } from '../components/PageTitle';
+import { PageTitle } from '../components/Text/PageTitle';
 import Link from 'next/link';
 import CenteredMain from '../components/CenteredMain';
 import styled from 'styled-components';

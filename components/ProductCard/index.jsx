@@ -36,7 +36,8 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
                 count: 1,
                 total: product.price,
                 patty: 'Beef',
-                extras: []
+                extras: [],
+                category: product.category
             });
         } else {
             basket.addProduct({
@@ -45,6 +46,7 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
                 id: product.id,
                 count: 1,
                 total: product.price,
+                category: product.category
             });
         }
         

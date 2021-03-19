@@ -13,26 +13,29 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const isAuthenticated = currentUser !== null && !loading;
 
-    function signup(email, password) {
-        return auth.createUserWithEmailAndPassword(email, password)
-    };
-
-    function login(email, password) {
-        return auth.signInWithEmailAndPassword(email, password)
-    };
-
-    function logout() {
-        return auth.signOut()
-    };
-
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
+        return auth.onAuthStateChanged(user => {
             console.log(user)
-            setCurrentUser(user);
+            if (user) {
+                setCurrentUser(user);
+            } else {
+                setCurrentUser(null)
+            }
             setLoading(false);
         });
-        return unsubscribe;
     }, [])
+
+    const signup = (email, password) => {
+         return auth.createUserWithEmailAndPassword(email, password)
+    };
+
+    const login = (email, password) => {
+         return auth.signInWithEmailAndPassword(email, password)
+    };
+
+    const logout = () => {
+        auth.signOut()
+    };
 
     const value = {
         currentUser,

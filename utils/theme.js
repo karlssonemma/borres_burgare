@@ -1,5 +1,5 @@
 const theme = {
-    breakpoints: ['20em', '40em', '60em'],
+    breakpoints: ['10em', '50em', '75em'],
     colors: {
         gray: '#edeff2',
         darkbrown: '#522809',

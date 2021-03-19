@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import firebaseInstance from '../config/firebase';
-import { SecondaryTitle } from '../components/SecondaryTitle';
-import CurrentOrderItem from '../components/CurrentOrderItem';
+import { SecondaryTitle } from '../components/Text/SecondaryTitle';
 import theme from '../utils/theme';
 import styled from 'styled-components';
 import OldOrderItem from '../components/OldOrderItem';
