@@ -5,14 +5,15 @@ import { StyledBtn } from '../Buttons/StyledBtn';
 import { SecondaryTitle } from '../Text/SecondaryTitle';
  
 const StyledSection = styled.li`
-    background: url('https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok');
+    background: url('https://static.feber.se/article_images/48/28/13/482813_1920.jpg');
     background-size: cover;
     height: 300px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: space-between;
     width: 100%;
     border-radius: 10px;
+    overflow: hidden;
 `;
 
 const ButtonField = styled.section`
@@ -59,18 +60,11 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
 
     return(
         <StyledSection onClick={e => showInfo(e)}>
-            <SecondaryTitle className='product-card-title' style={{padding: '0 0.5em'}}>
+            <SecondaryTitle className='product-card-title' style={{padding: '1em .8em'}}>
                 <span className='product-title'>{product.title}</span>
                 <span className='product-price'>{product.price + ' NOK'}</span>
             </SecondaryTitle>
             <ButtonField>
-                {/* {
-                    product.category === 'burger' ? 
-                        <Link href={'/order/' + product.id}>
-                            <a>Modify</a>
-                        </Link> 
-                        : ''
-                } */}
                 <StyledBtn onClick={() => handleClick(product)}>Add</StyledBtn>
                 {
                     product.category === 'burger' && <StyledBtn onClick={() => onBtnClick()}>Modify</StyledBtn>

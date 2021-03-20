@@ -14,17 +14,26 @@ const StyledMain = styled.main`
     min-height: 100vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-gap: 2em;
+    padding: 2em;
 `;
 
 const StyledSection = styled.section`
     width: 100%;
-    margin-top: 1em;
     padding: 1em;
-    background-color: ${props => props.theme.colors.gray};
+    background-color: white;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
 `;
+
+const StyledBackground = styled.section`
+    background-color: green;
+    border-radius: 10px;
+    padding: 1em;
+    background-color: ${props => props.theme.colors.gray};
+`;
+
 const GreenBtn = styled(StyledBtn)`
     background-color: ${props => props.theme.colors.buttons.green.background};
     &:hover {
@@ -106,7 +115,7 @@ const KitchenPage = () => {
         <KitchenNav />
         <StyledMain>
             {/* <h1>Orders</h1> */}
-                <section style={{borderRight: '1px solid black', padding: '0 1em'}}>
+                <StyledBackground>
                 {
                     currentOrders && currentOrders.map(item => {
                         if (item.accepted === false) {
@@ -136,8 +145,8 @@ const KitchenPage = () => {
                         }
                     })
                 }
-                </section>
-                <section style={{padding: '0 1em'}}>
+                </StyledBackground>
+                <StyledBackground>
                     {
                         currentOrders && currentOrders.map(item => {
                             if (item.accepted === true) {
@@ -165,7 +174,7 @@ const KitchenPage = () => {
                             }
                         })
                     }
-                </section>
+                </StyledBackground>
         </StyledMain>
         </>
     )

@@ -49,8 +49,6 @@ function OrderPage() {
         return <p>You're not signed in</p>
     };
 
-    console.log(isAuthenticated);
-
     useEffect(() => {
         if(activeMenu === null && burgers !== null) {
             setActiveMenu(burgers);

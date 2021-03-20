@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
-import InputField from '../components/InputField';
-import { PageTitle } from '../components/PageTitle';
+import InputField from '../components//FormComponents/InputField';
+import { PageTitle } from '../components/Text/PageTitle';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
-import { StyledBtn } from '../components/StyledBtn';
+import { StyledBtn } from '../components/Buttons/StyledBtn';
 import { useForm } from 'react-hook-form';
-import { StyledForm } from '../components/StyledForm';
+import { StyledForm } from '../components/FormComponents/StyledForm';
 import firebaseInstance from '../config/firebase';
 import { useRouter } from 'next/router';
 import CenteredMain from '../components/CenteredMain';
@@ -52,8 +52,7 @@ function SignUpPage() {
         <Nav />
         <CenteredMain>
             <PageTitle>Sign up</PageTitle>
-            {currentUser && currentUser.email}
-            {error && <p>{error}</p>}
+            {error && <p style={{marginTop: '.5em'}}>{error}</p>}
             <StyledForm 
                 name='signup' 
                 id='signup' 

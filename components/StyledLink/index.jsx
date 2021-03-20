@@ -5,10 +5,7 @@ const StyledLink = styled.a`
     cursor: pointer;
     font-size: ${props => props.theme.fontSizes.m};
     & :hover {
-        color: green;
-    }
-    & :active {
-        color: blue;
+        color: ${props => props.theme.colors.green};
     }
 `;
 

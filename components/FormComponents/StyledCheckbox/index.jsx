@@ -39,7 +39,7 @@ const StyledInputText = styled.span`
     width: auto;
 `;
 
-function StyledCheckbox({ inputValue, inputName, formRef, inputType, price, id }) {
+function StyledCheckbox({ inputValue, inputName, formRef, inputType, price, id, req }) {
 
     return(
         <>
@@ -52,6 +52,7 @@ function StyledCheckbox({ inputValue, inputName, formRef, inputType, price, id }
                     ref={formRef}
                     id={id}
                     className={inputName}
+                    checked={req}
                 />
                 {
                     price && <span>{'+' + price}</span>

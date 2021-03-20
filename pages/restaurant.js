@@ -63,7 +63,7 @@ function RestaurantPage() {
     return(
         <StyledMain>
             <StyledSection>
-                <CenteredTitle>In process</CenteredTitle>
+                <CenteredTitle>Being prepared</CenteredTitle>
                 {
                     orders && orders.map(item => {
                         if (item.accepted === true && item.finished === false) {

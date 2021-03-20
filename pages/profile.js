@@ -82,7 +82,7 @@ function ProfilePage() {
             } else if (currentOrder.accepted === true && currentOrder.finished === true) {
                 setStatus(' Ready for pick up');
             } else if (currentOrder.accepted === true) {
-                setStatus(' In process');
+                setStatus(' Your order is being prepared');
             }
         }
     }, [currentOrder])
@@ -129,7 +129,7 @@ function ProfilePage() {
                         {
                             oldOrders.map(item => {
                                 return(
-                                    <OldOrderItem item={item} />
+                                    <OldOrderItem item={item} key={item.id} />
                                 )
                             })
                         } 

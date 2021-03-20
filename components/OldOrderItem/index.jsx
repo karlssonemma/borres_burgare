@@ -40,7 +40,7 @@ function OldOrderItem({ item }) {
             {
                 item.order.map(item => {
                     return(
-                        <CartProduct item={item} />
+                        <CartProduct item={item} key={Math.floor(Math.random() * 1000)}/>
                     )
                 })
             }

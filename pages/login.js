@@ -39,8 +39,7 @@ function LogInPage() {
         <Nav />
         <CenteredMain>
             <PageTitle>Log In</PageTitle>
-            {currentUser && currentUser.email}
-            {error && <p>{error}</p>}
+            {error && <p style={{marginTop: '.5em'}}>{error}</p>}
             <StyledForm 
                 formName='signup' 
                 formId='signup' 

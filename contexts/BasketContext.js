@@ -85,9 +85,9 @@ export const Basket = ({ children }) => {
     const subCount = (product) => {
         let tempCart = [...products];
         let updatedProduct = tempCart.find(el => el.id === product.id);
-        let totalPrice = updatedProduct.total / updatedProduct.count;
 
         if(updatedProduct.count > 1) {
+            let totalPrice = updatedProduct.total / updatedProduct.count;
             let index = tempCart.indexOf(updatedProduct);
             tempCart.splice(index, 1);
             updatedProduct.count -= 1;

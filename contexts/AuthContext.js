@@ -15,7 +15,6 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         return auth.onAuthStateChanged(user => {
-            console.log(user)
             if (user) {
                 setCurrentUser(user);
             } else {

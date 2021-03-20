@@ -4,25 +4,32 @@ import Link from 'next/link';
 import CenteredMain from '../components/CenteredMain';
 import styled from 'styled-components';
 import theme from '../utils/theme';
-import Nav from '../components/Nav';
+import Nav from '../components/Nav'; 
+import StyledLink from '../components/StyledLink';
 
-const StyledLink = styled.a`
-  font-size: ${props => props.theme.fontSizes.xl};
+const BigLink = styled(StyledLink)`
+  font-size: ${props => props.theme.fontSizes.xxl};
 `;
 
+const Background = styled(CenteredMain)`
+  height: 85vh;
+  & span {
+    font-size: ${props => props.theme.fontSizes.xxl};
+  }
+`;
 export default function Home() {
   return (
     <>
     <Nav />
-    <CenteredMain style={{flexDirection: 'row', justifyContent: 'center'}}>
+    <Background style={{flexDirection: 'row', justifyContent: 'center'}}>
       <Link href='/login'>
-        <StyledLink>Log In</StyledLink>
+        <BigLink>Log In</BigLink>
       </Link>
-      <p>/</p>
+      <span>/</span>
       <Link href='/signup'>
-        <StyledLink>Sign Up</StyledLink>
+        <BigLink>Sign Up</BigLink>
       </Link>
-    </CenteredMain>
+    </Background>
     </>
   )
 }

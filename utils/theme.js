@@ -37,7 +37,8 @@ const theme = {
         s: '1rem', 
         m: '1.25rem', 
         lg: '1.5rem',
-        xl: '2rem'
+        xl: '2rem',
+        xxl: '3rem'
     },
     space: ['0.25em', '0.5em', '0.75em', '1em']
 }

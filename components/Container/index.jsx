@@ -18,7 +18,7 @@ export const Container = styled.section`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: green;
+        background-color: white;
         position: fixed;
         top: 0;
         left: 0;

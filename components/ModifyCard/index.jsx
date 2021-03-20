@@ -50,11 +50,15 @@ const StyledForm = styled.form`
     gap: 20px;
     grid-template-columns: 1fr;
     border-top: 1px solid black;
-    padding-top: 1em;
+    padding-top: 1.5em;
 
     @media (min-width: ${props => props.theme.breakpoints[2]}) {
         grid-template-columns: repeat(2, 1fr);
     }
+`;
+
+const Description = styled.p`
+    padding: 1em 0;
 `;
 
 
@@ -63,70 +67,37 @@ function ModifyCard({ menu_item, extras, patties }) {
     const extrasColl = firebaseInstance.firestore().collection('extras');
     const { register, handleSubmit, errors } = useForm();
     const basket = useBasket();
-    const [total, setTotal] = useState(0);
-    const [extraTotal, setExtraTotal] = useState(0);
 
-    console.log('rerendered comp')
-
-    useEffect(() => {
-        if (total === 0) {
-            setTotal(menu_item.price)
-        }
-    }, [])
-
-    useEffect(() => {
-        console.log('total changed AGAIN')
-    }, [total])
-
-    const handleAdd = (menu_item, patty, addOns) => {
+    const handleAdd = (menu_item, patty, addOns, totalExtras) => {
             basket.addProduct({
                 title: menu_item.title,
                 price: menu_item.price,
                 id: menu_item.id,
                 count: 1,
-                total: total,
+                total: totalExtras + menu_item.price,
                 patty: patty === null ? 'Beef' : patty,
                 extras: addOns,
                 category: menu_item.category
             });
             
         document.querySelector('#modify-item-form').reset();
-        setTotal(menu_item.price);
-
     };
 
     const onSubmit = (data) => {
-        let patty = data.patty;
-        let addOns = data.extras;
-        console.log(addOns)
-        handleAdd(menu_item, patty, addOns);
-        console.log(data);
-    };
-
-    //item price + extras total, changes onChange
-    const updatePrice = () => {
-        
-        console.log('RESET FORM')
-        let extraItemsTotal = 0;
-        let els = document.querySelectorAll('.extras');
+        let totalExtras = 0;
         extrasColl.get()
         .then(query => {
             query.forEach(doc => {
-                for (const el of els) {
-                    if(el.checked === true && el.value === doc.data().title) {
-                        extraItemsTotal += doc.data().price;
-                        console.log(extraItemsTotal)
-                        // setExtraTotal(extraItemsTotal);
-                    }
-                }
+                let found = data.extras.find(item => item === doc.data().title)
+                if(found) {
+                    totalExtras += doc.data().price;
+                } 
             })
-             //funkar här men då resettar formet
+        }).then(() => {
+            let patty = data.patty;
+            let addOns = data.extras;
+            handleAdd(menu_item, patty, addOns, totalExtras);
         })
-        
-        //VARFØR FUNKAR INTE DETTAAAA???
-        
-        
-        
     };
 
     const renderAllergens = () => {
@@ -177,57 +148,57 @@ function ModifyCard({ menu_item, extras, patties }) {
 
     return(
         <StyledSection>
-                {/* <StyledImg src={'https://res.cloudinary.com/norgesgruppen/images/c_scale,dpr_auto,f_auto,q_auto:eco,w_1600/ikfq076wqj996ei0rv3f/hjemmelaget-burger-med-bacon-cheddarost-og-rodlok'} /> */}
-                    <SecondaryTitle className='product-card-title'>
-                        <span>{menu_item.title}</span>
-                        <span>{total + ' NOK'}</span>
-                    </SecondaryTitle>
-                    {/* <p>{menu_item.description}</p> */}
-                        {
-                            menu_item.allergens && renderAllergens()
-                        }
-                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)}>
-                        <section>
-                            <SecondaryTitle>Choose your patty</SecondaryTitle>
-                            {
-                                patties && patties.map(item => {
-                                        return(
-                                            <StyledCheckbox
-                                                inputValue={item.title} 
-                                                key={item.id}
-                                                inputName='patty'
-                                                formRef={register}
-                                                inputType='radio'
-                                                id={item.id}
-                                            />
-                                        ) 
-                                })
-                            }
-                        </section>
-                        <section>
-                            <SecondaryTitle>Anything extra?</SecondaryTitle>
-                            {
-                                extras && extras.map(item => {
-                                    return(
-                                        <StyledCheckbox
-                                            id={item.id}
-                                            key={Math.random() * 1000}
-                                            inputName='extras'
-                                            inputValue={item.title}
-                                            price={item.price}
-                                            formRef={register}
-                                            inputType='checkbox'
-                                        />
-                                    )
-                                })
-                            }
-                        </section>
-                        <StyledBtn
-                            key={Math.floor(Math.random() * 1000)} 
-                            type='submit'
-                            >Add
-                        </StyledBtn>
-                    </StyledForm>
+            <SecondaryTitle className='product-card-title'>
+                <span>{menu_item.title}</span>
+                <span>{menu_item.price + ' NOK'}</span>
+            </SecondaryTitle>
+            <Description>{menu_item.description}</Description>
+                {
+                    menu_item.allergens && renderAllergens()
+                }
+            <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)}>
+                <section>
+                    <SecondaryTitle>Choose your patty</SecondaryTitle>
+                    {
+                        patties && patties.map(item => {
+                                return(
+                                    <StyledCheckbox
+                                        inputValue={item.title} 
+                                        key={item.id}
+                                        inputName='patty'
+                                        formRef={register}
+                                        inputType='radio'
+                                        id={item.id}
+                                        req={true}
+                                    />
+                                ) 
+                        })
+                    }
+                </section>
+                <section>
+                    <SecondaryTitle>Anything extra?</SecondaryTitle>
+                    {
+                        extras && extras.map(item => {
+                            return(
+                                <StyledCheckbox
+                                    id={item.id}
+                                    key={Math.random() * 1000}
+                                    inputName='extras'
+                                    inputValue={item.title}
+                                    price={item.price}
+                                    formRef={register}
+                                    inputType='checkbox'
+                                />
+                            )
+                        })
+                    }
+                </section>
+                <StyledBtn
+                    key={Math.floor(Math.random() * 1000)} 
+                    type='submit'
+                    >Add
+                </StyledBtn>
+            </StyledForm>
         </StyledSection>
     )
 }
