@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PageTitle } from '../../components/PageTitle';
+import { PageTitle } from '../../components/Text/PageTitle';
 
 const StyledNav = styled.nav`
     height: 100px;

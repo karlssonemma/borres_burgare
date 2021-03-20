@@ -7,6 +7,9 @@ const StyledLink = styled.a`
     & :hover {
         color: green;
     }
+    & :active {
+        color: blue;
+    }
 `;
 
 export default StyledLink;

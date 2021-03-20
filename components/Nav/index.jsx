@@ -31,6 +31,7 @@ function Nav() {
 
 const router = useRouter();
 const { logout, isAuthenticated } = useAuth();
+console.log(router.asPath);
 
 const handleSignOut = async () => {
     try {
@@ -62,7 +63,9 @@ const findEl = () => {
                             <StyledBtn onClick={() => handleSignOut()}>Log Out</StyledBtn>
                         </>
                 }
-                <StyledBtn onClick={() => findEl()} className='cart-btn'>Cart</StyledBtn>
+                {
+                    router.asPath === '/order' && <StyledBtn onClick={() => findEl()} className='cart-btn'>Cart</StyledBtn>
+                }
             </FlexDiv>
         </StyledNav>
     )

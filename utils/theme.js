@@ -1,7 +1,9 @@
 const theme = {
     breakpoints: ['10em', '50em', '75em'],
     colors: {
+        green: '#84C318',
         gray: '#edeff2',
+        darkgrey: 'darkgrey',
         darkbrown: '#522809',
         mudgreen: '#4B4B25',
         lightbrown: '#A7702A',

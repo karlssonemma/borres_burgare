@@ -10,19 +10,33 @@ import Nav from '../components/Nav';
 import CartProduct from '../components/CartProduct';
 
 const StyledSection = styled.section`
-    width: 50%;
+    max-width: 500px;
+    width: 60%;
     margin: 1em auto;
-    padding: 1em 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
     background-color: ${props => props.theme.colors.gray};
     border-radius: 10px;
+    overflow: hidden;
+`;
+
+const FlexDiv = styled.div`
+    display: grid;
+    grid-template-columns: auto max-content;
+    padding: 1em;
 `;
 
 const Title = styled(SecondaryTitle)`
     margin-top: 1em;
+`;
+
+const Status = styled.p`
+    background-color: darkgray;
+    position: relative;
+    padding: 1em;
+    text-align: center; 
+`;
+
+const GreenStatus = styled(Status)`
+    background-color: ${props => props.theme.colors.green};
 `;
 
 
@@ -64,11 +78,11 @@ function ProfilePage() {
     useEffect(() => {
         if (currentOrder) {
             if (currentOrder.accepted === false) {
-                setStatus(' waiting for the restaurant to accept your order');
+                setStatus(' Waiting for the restaurant to accept your order');
             } else if (currentOrder.accepted === true && currentOrder.finished === true) {
-                setStatus(' ready for pick up');
+                setStatus(' Ready for pick up');
             } else if (currentOrder.accepted === true) {
-                setStatus(' in process');
+                setStatus(' In process');
             }
         }
     }, [currentOrder])
@@ -82,21 +96,28 @@ function ProfilePage() {
                     <>
                     <Title style={{textAlign: 'center'}}>Your current order</Title>
                     <StyledSection>
-                        <div style={{width: 'max-content'}}>
+                        <FlexDiv>
+                            <div>
+                            {
+                                currentOrder.order.map(item => {
+                                    return(
+                                        <CartProduct 
+                                            item={item}
+                                        />
+                                    )
+                                })
+                            }
+                            {
+                                currentOrder.comment && <p>Comment: "{currentOrder.comment}"</p>
+                            }
+                            </div>
+                            <p>#{currentOrder.orderNr}</p>
+                        </FlexDiv>
                         {
-                            currentOrder.order.map(item => {
-                                return(
-                                    <CartProduct 
-                                        item={item}
-                                    />
-                                )
-                            })
+                            status === ' Ready for pick up' 
+                                ? <GreenStatus>{status}</GreenStatus>
+                                : <Status>{status}</Status>
                         }
-                        </div>
-                        {
-                            currentOrder.comment && <p>{currentOrder.comment}</p>
-                        }
-                        <p>Status: {status}</p>
                     </StyledSection>
                     </>
             }

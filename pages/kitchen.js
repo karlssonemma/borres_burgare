@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../utils/theme';
 import { ProductGrid } from '../components/ProductGrid';
-import { StyledBtn } from '../components/StyledBtn';
+import { StyledBtn } from '../components/Buttons/StyledBtn';
 import firebaseInstance from '../config/firebase';
 import { Basket } from '../contexts/BasketContext';
 import KitchenNav from '../components/KitchenNav';
-import { ExtraSpan } from '../components/ExtraSpan';
+import { ExtraSpan } from '../components/Text/ExtraSpan';
+import CartProduct from '../components/CartProduct';
 
 const StyledMain = styled.main`
     width: 100vw;
@@ -21,12 +22,21 @@ const StyledSection = styled.section`
     padding: 1em;
     background-color: ${props => props.theme.colors.gray};
     border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
 `;
 const GreenBtn = styled(StyledBtn)`
     background-color: ${props => props.theme.colors.buttons.green.background};
     &:hover {
         background-color: ${props => props.theme.colors.buttons.green.hover.background};
     }
+`;
+
+const FlexDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-items: flex-end;
 `;
 
 const KitchenPage = () => {
@@ -102,28 +112,25 @@ const KitchenPage = () => {
                         if (item.accepted === false) {
                             return(
                                 <StyledSection key={item.id}>
-                                    <p>#{item.orderNr}</p>
+                                    <div>
                                     {
                                         item.order.map(item => {
                                             return(
-                                                <div>
-                                                <p style={{marginTop: '.7em'}}>{item.count} x {item.title}
-                                                {
-                                                    item.extras && item.extras.map(item => 
-                                                        <ExtraSpan>+ {item}</ExtraSpan>
-                                                    )
-                                                }
-                                                </p>
-                                                </div>
+                                                
+                                                <CartProduct item={item} />
+                                                
                                             )
                                         })
                                     }
                                     {
-                                        item.comment !== null &&
+                                        item.comment &&
                                         <p>Comment: "{item.comment}"</p>
                                     }
-                                    <StyledBtn onClick={() => handleAccept(item)}>Accept</StyledBtn>
-                                    
+                                    </div>
+                                    <FlexDiv>
+                                        <p>#{item.orderNr}</p>
+                                        <StyledBtn onClick={() => handleAccept(item)}>Accept</StyledBtn>
+                                    </FlexDiv>     
                                 </StyledSection>
                             )
                         }
@@ -136,25 +143,23 @@ const KitchenPage = () => {
                             if (item.accepted === true) {
                                 return(
                                     <StyledSection key={item.id}>
-                                         <p>{item.customer}</p>
-                                            {
-                                                item.order.map(item => {
-                                                    return(
-                                                        <p>{item.count} x {item.title}
-                                                        {
-                                                            item.extras && item.extras.map(item => 
-                                                                <span style={{display: 'block'}}>+ {item}</span>
-                                                            )
-                                                        }
-                                                        </p>
-                                                    )
-                                                })
-                                            }
+                                        <div>
+                                        {
+                                            item.order.map(item => {
+                                                return(
+                                                    <CartProduct item={item} />
+                                                )
+                                            })
+                                        }
+                                        </div>
+                                        <FlexDiv>
+                                            <p>#{item.orderNr}</p>
                                             {
                                                 item.finished === false 
                                                 ? <StyledBtn onClick={() => handleMark(item)}>Mark as ready</StyledBtn>
                                                 : <GreenBtn onClick={() => handleFinalized(item)}>Picked up</GreenBtn>
                                             }
+                                        </FlexDiv>
                                     </StyledSection>
                                 )
                             }

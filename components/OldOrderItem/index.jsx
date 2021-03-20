@@ -5,6 +5,7 @@ import { StyledBtn } from '../../components/Buttons/StyledBtn';
 import CartProduct from '../CartProduct';
 import { useBasket } from '../../contexts/BasketContext';
 import firebaseInstance from '../../config/firebase';
+import { useRouter } from 'next/router';
 
 const StyledSection = styled.li`
     width: 100%;
@@ -18,17 +19,20 @@ const StyledSection = styled.li`
 
 function OldOrderItem({ item }) {
 
+    const router = useRouter();
     const basket = useBasket();
     const ordersInProcess = firebaseInstance.firestore().collection('orders_in_process');
 
     const handleOrder = (item) => {
-        ordersInProcess.doc(item.id).set({
-            ...item,
-            finished: false,
-            pickedUp: false, 
-            accepted: false
-        })
-    };
+        // ordersInProcess.doc(item.id).set({
+        //     ...item,
+        //     finished: false,
+        //     pickedUp: false, 
+        //     accepted: false
+        // })
+        basket.setProducts(item.order);
+        router.push('/order');
+        };
 
     return(
         <StyledSection>

@@ -2,23 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import { ExtraSpan } from '../Text/ExtraSpan';
 
-const StyledSection = styled.section`
-    margin: 1em 0;
-`;
+// const StyledSection = styled.section`
+//     margin-bottom: 1em;
+// `;
 
 function CartProduct({ item }) {
 
     return(
-        <StyledSection>
-            <p>{item.count} x {item.title}</p>
+        <>
+            <p style={{marginBottom: '1em'}}>{item.count} x {item.title} {item.patty}
             {
                 item.extras && item.extras.map(item => {
                     return(
                         <ExtraSpan>+ {item}</ExtraSpan>
                     )
                 })
-            }
-        </StyledSection>
+            }</p>
+        </>
     )
 };
 

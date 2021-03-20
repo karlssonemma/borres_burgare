@@ -12,49 +12,61 @@ export const Basket = ({ children }) => {
     const [total, setTotal] = useState(0);
 
     const addProduct = (product) => {
-    // Hvis prod navn eksisterer i listen sjekk om noen av de har samme addons
-    let newProd;
-    let hasSameProduct = false
-    const hasProductWithSameTitle = products.filter((item) => {
-      return product.title === item.title;
-    });
-    // If there is a product with the same title i nthe basket
-    if (hasProductWithSameTitle.length) {
-      // Check if one of the items have the same addons
-      hasSameProduct = hasProductWithSameTitle.some(basketItem => {
-        // By first checking if number of addons are equal
-        if(product.extras && product.extras.length === basketItem.extras.length) {
-          // Then check if all the addons in the new product exists in one of the products in the basket
-          const sameExtras = product.extras.every(extra => {
-            return basketItem.extras.includes(extra)
-          })
-          if(sameExtras) {
-            newProd = basketItem;
-            return true
-          } else {
-            return false
-          }
-        }
-      })
-    }
+        if (product.category === 'burger') {
+        
+            let newProd;
+            let hasSameProduct = false
+            const hasProductWithSameTitle = products.filter((item) => {
+            return product.title === item.title && item.patty === product.patty;
+            });
+            if (hasProductWithSameTitle.length) {
+                hasSameProduct = hasProductWithSameTitle.some(basketItem => {
+                    if(product.extras && product.extras.length === basketItem.extras.length) {
+                        const sameExtras = product.extras.every(extra => {
+                            return basketItem.extras.includes(extra)
+                        })
+                        if(sameExtras) {
+                            newProd = basketItem;
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                })
+            }
 
-    if(hasSameProduct){
-      // Add to the number of products
-      console.log('do something');
-      let newArr = [...products];
-      let index = products.indexOf(newProd);
-      let totalPrice = newArr[index].total / newArr[index].count;
-      newArr[index] = {
-          ...newArr[index], 
-          count: newArr[index].count + 1,
-          total: newArr[index].total + totalPrice
+            if (hasSameProduct) {
+                // Add to the number of products
+                console.log('do something');
+                let newArr = [...products];
+                let index = products.indexOf(newProd);
+                let totalPrice = newArr[index].total / newArr[index].count;
+                newArr[index] = {
+                    ...newArr[index], 
+                    count: newArr[index].count + 1,
+                    total: newArr[index].total + totalPrice
+                    }
+                setProducts(newArr);   
+            } else {
+                // add new product
+                console.log('added NEW')
+                setProducts([...products, product])
+            }
+        } else {
+            let tempCart = [...products];
+            let tempProd = tempCart.find(el => el.title === product.title);
+            if(!tempProd) {
+                setProducts([...products, product]);
+            } else {
+                let index = products.indexOf(tempProd);
+                tempCart[index] = {
+                    ...tempCart[index],
+                    count: tempCart[index].count + 1,
+                    total: tempCart[index].count * tempCart[index].price
+                }
+                setProducts(tempCart);
+            }
         }
-      setProducts(newArr);   
-    } else {
-      // add new product
-      console.log('added NEW')
-      setProducts([...products, product])
-    }
     };
 
     const addToCount = (product) => {
@@ -122,7 +134,7 @@ export const Basket = ({ children }) => {
     }, [products])
 
     return(
-        <BasketContext.Provider value={{products, addProduct, total, addToCount, deleteProduct, deleteBasket, subCount}}>
+        <BasketContext.Provider value={{products, setProducts, addProduct, total, addToCount, deleteProduct, deleteBasket, subCount}}>
             {children}
         </BasketContext.Provider>
     )

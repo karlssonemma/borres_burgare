@@ -30,17 +30,10 @@ const StyledMain = styled.main`
 
 
 function OrderPage() {
-
-    // const { register, handleSubmit, errors } = useForm();
-
     const router = useRouter();
     const { login, currentUser, isAuthenticated } = useAuth();
     const basket = useBasket();
     const [chosen, setChosen] = useState(null);
-    const [cart, setCart] = useState([]);
-    const [comment, setComment] = useState('');
-    // const [burgers, setBurgers] = useState(null);
-    // const burgers = [...menuArr];
     const [burgers, setBurgers] = useState(null);
     const [activeMenu, setActiveMenu] = useState(null);
     const [extras, setExtras] = useState(null);
@@ -113,46 +106,6 @@ function OrderPage() {
         }
     }, [])
 
-    const onSubmit = (data) => {
-        console.log(data);
-        setAddOns(data)
-    };
-
-    const addItem = async (id, item) => {
-        
-        let checkedExtras = addOns;
-        
-        let tempCart = [...cart];
-        let tempProducts = [...activeMenu];
-
-        let tempItem = tempCart.find(el => el.id === id && el.chosen_patty === item.chosen_patty && JSON.stringify(el.extras) === JSON.stringify(checkedExtras));
-        if (!tempItem) {
-            tempItem = tempProducts.find(el => el.id === id && el.chosen_patty === item.chosen_patty);
-            console.log(tempItem)
-            let newItem = {
-                            ...tempItem, 
-                            count: 1, 
-                            total: tempItem.price,
-                            extras: checkedExtras
-                          }
-            tempCart.push(newItem);
-            setCart(tempCart);
-        } else {
-            let index = tempCart.indexOf(tempItem);
-            tempCart.splice(index, 1);
-            let newCount = tempItem.count += 1;
-            let newItem = {
-                            ...tempItem, 
-                            count: newCount,
-                            total: tempItem.price * newCount,
-                            extras: checkedExtras
-                          }
-            tempCart.push(newItem);
-            setCart(tempCart);
-        }
-        setAddOns(null);
-    };
-
 
    function setMenu(e) {
        setChosen(null);
@@ -205,30 +158,6 @@ function OrderPage() {
         </StyledMain>
         </>
     )
-}
-
-// OrderPage.getInitialProps = async () => {
-//     try {
-//         const collection = await firebaseInstance.firestore().collection('burgers');
-//         const menuCollection = await collection.get();
-
-//         const menuArr = [];
-
-//         menuCollection.forEach(item => {
-//             menuArr.push({
-//                 id: item.id,
-//                 ...item.data()
-//             });
-//         });
-        
-//         return { menuArr }
-
-//     } catch (error) {
-//         return {
-//             error: error.message
-//         };
-//     };
-// };
-
+};
 
 export default OrderPage;

@@ -63,7 +63,16 @@ function ModifyCard({ menu_item, extras, patties }) {
     const extrasColl = firebaseInstance.firestore().collection('extras');
     const { register, handleSubmit, errors } = useForm();
     const basket = useBasket();
-    const [total, setTotal] = useState(menu_item.price);
+    const [total, setTotal] = useState(0);
+    const [extraTotal, setExtraTotal] = useState(0);
+
+    console.log('rerendered comp')
+
+    useEffect(() => {
+        if (total === 0) {
+            setTotal(menu_item.price)
+        }
+    }, [])
 
     useEffect(() => {
         console.log('total changed AGAIN')
@@ -78,6 +87,7 @@ function ModifyCard({ menu_item, extras, patties }) {
                 total: total,
                 patty: patty === null ? 'Beef' : patty,
                 extras: addOns,
+                category: menu_item.category
             });
             
         document.querySelector('#modify-item-form').reset();
@@ -90,6 +100,7 @@ function ModifyCard({ menu_item, extras, patties }) {
         let addOns = data.extras;
         console.log(addOns)
         handleAdd(menu_item, patty, addOns);
+        console.log(data);
     };
 
     //item price + extras total, changes onChange
@@ -104,13 +115,17 @@ function ModifyCard({ menu_item, extras, patties }) {
                 for (const el of els) {
                     if(el.checked === true && el.value === doc.data().title) {
                         extraItemsTotal += doc.data().price;
+                        console.log(extraItemsTotal)
+                        // setExtraTotal(extraItemsTotal);
                     }
                 }
-            }) 
+            })
+             //funkar här men då resettar formet
         })
-
+        
         //VARFØR FUNKAR INTE DETTAAAA???
-        // setTotal(menu_item.price + extraItemsTotal)
+        
+        
         
     };
 
@@ -171,7 +186,7 @@ function ModifyCard({ menu_item, extras, patties }) {
                         {
                             menu_item.allergens && renderAllergens()
                         }
-                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)} onChange={() => updatePrice()}>
+                    <StyledForm id='modify-item-form' className='choosePatty' onSubmit={handleSubmit(onSubmit)}>
                         <section>
                             <SecondaryTitle>Choose your patty</SecondaryTitle>
                             {
