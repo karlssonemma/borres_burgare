@@ -38,6 +38,8 @@ const GreenNumber = styled(StyledNumber)`
 const CenteredTitle = styled(SecondaryTitle)`
     text-align: center;
     margin-bottom: 1em;
+    font-size: ${props => props.theme.fontSizes.xl};
+
 `;
 
 function RestaurantPage() {

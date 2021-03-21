@@ -17,10 +17,10 @@ const StyledMain = styled.main`
     padding: 1em;
     width: 100vw;
     display: grid;
-    grid-template-columns: 17% auto;
+    grid-template-columns: 110px auto;
 
     @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
-        grid-template-columns: max-content auto 20vw;
+        grid-template-columns: 110px auto 20vw;
     }
     /* @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
         grid-template-columns: 20% auto;

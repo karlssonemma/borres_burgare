@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import React from 'react';
 
-const StyledInput = styled.input`
-    width: auto;
+const StyledInput = styled.textarea`
+    max-width: 100%;
+    min-width: 100%;
     padding: .5em;
     margin: .3em 0;
     background-color: #eeeeee;
@@ -17,12 +18,10 @@ const StyledLabel = styled.label`
 `;
 
 function TextAreaField({ 
-    inputType, 
     labelText, 
     inputName, 
     inputId,
     formRef,
-    height,
     handleChange
 }) {
 
@@ -30,12 +29,12 @@ function TextAreaField({
         <>
             <StyledLabel htmlFor={inputId}>{labelText}</StyledLabel>
             <StyledInput 
-                type={inputType}
                 id={inputId}
                 name={inputName}
                 ref={formRef}
-                style={{height: height}}
                 onChange={e => handleChange(e)}
+                rows='3'
+                col='1'
             />
         </>
     )

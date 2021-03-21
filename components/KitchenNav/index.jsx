@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PageTitle } from '../../components/Text/PageTitle';
 
 const StyledNav = styled.nav`
-    height: 100px;
+    height: 120px;
     width: 100%;
     padding: 0 3em;
     background-color: ${props => props.theme.colors.gray};

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { StyledBtn } from '../Buttons/StyledBtn';
 import firebaseInstance from '../../config/firebase';
@@ -11,24 +11,26 @@ import Image from 'next/image';
 const StyledSection = styled.section`
     width: 100%;
     height: max-content;
+    padding: 2em;
     grid-column: 1 / span 3;
 
     display: flex;
     flex-direction: column;
-    border-radius: 10px;
 
+    border-radius: 10px;
     cursor: pointer;
     overflow: hidden;
-    padding: 2em;
     background-color: ${props => props.theme.colors.gray};
     font-size: ${props => props.theme.fontSizes.l};
     font-family: ${props => props.theme.fonts.arial};
 `;
 
 const StyledList = styled.ul`
-    list-style: none;
-    padding: 0;
     height: 50px;
+    padding: 0;
+
+    list-style: none;
+
     display: flex;
     align-items: center;
 `;
@@ -36,12 +38,6 @@ const StyledList = styled.ul`
 const StyledListItem = styled.li`
     display: inline-block;
     margin-left: 0.5em;
-`;
-
-const StyledImg = styled.img`
-    height: 100%;
-    margin-right: 1em;
-    object-fit: contain;
 `;
 
 const StyledForm = styled.form`
@@ -201,28 +197,6 @@ function ModifyCard({ menu_item, extras, patties }) {
             </StyledForm>
         </StyledSection>
     )
-}
-
-// ModifyCard.getInitialProps = async () => {
-//     try {
-//         const collection = await firebaseInstance.firestore().collection('extras');
-//         const extrasColl = await collection.get();
-
-//         const extras = [];
-//         extrasColl.forEach(extra => {
-//             extras.push({
-//                 id: extra.id,
-//                 ...extra.data()
-//             });
-//         });
-
-//         return { extras }
-
-//     } catch (error) {
-//         return {
-//             error: error.message
-//         }
-//     }
-// }
+};
 
 export default ModifyCard;

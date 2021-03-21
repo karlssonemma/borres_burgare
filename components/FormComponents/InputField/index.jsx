@@ -21,8 +21,6 @@ function InputField({
     labelText, 
     inputName, 
     inputId, 
-    inputChangeHandler,
-    refHandler,
     inputValue, 
     formRef,
     height
@@ -36,7 +34,6 @@ function InputField({
                 placeholder={inputPlaceholder}
                 id={inputId}
                 name={inputName}
-                // onChange={e => inputChangeHandler(e)}
                 ref={formRef}
                 value={inputValue}
                 style={{height: height}}

@@ -1,10 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { ExtraSpan } from '../Text/ExtraSpan';
 
-// const StyledSection = styled.section`
-//     margin-bottom: 1em;
-// `;
 
 function CartProduct({ item }) {
 

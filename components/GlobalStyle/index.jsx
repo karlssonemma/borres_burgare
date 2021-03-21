@@ -12,14 +12,6 @@ const GlobalStyle = createGlobalStyle`
         font-size: 14px;
         font-family: ${props => props.theme.fonts.spartan};
     }
-
-    /* main {
-        width: 100vw;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    } */
 `;
 
 export default GlobalStyle;

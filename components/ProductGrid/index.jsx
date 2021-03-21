@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import theme from '../../utils/theme';
 
 export const ProductGrid = styled.ul`
-    
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 20px;

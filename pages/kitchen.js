@@ -24,6 +24,7 @@ const StyledSection = styled.section`
     background-color: white;
     border-radius: 10px;
     display: flex;
+    margin-bottom: 1em;
     justify-content: space-between;
 `;
 
@@ -46,6 +47,12 @@ const FlexDiv = styled.div`
     flex-direction: column;
     justify-content:space-between;
     align-items: flex-end;
+`;
+const Icon = styled.img`
+    margin-right: .4em;
+    width: 20px;
+    position: relative;
+    bottom: -6px;
 `;
 
 const KitchenPage = () => {
@@ -133,7 +140,7 @@ const KitchenPage = () => {
                                     }
                                     {
                                         item.comment &&
-                                        <p>Comment: "{item.comment}"</p>
+                                        <p><Icon src='/comment.png'/> "{item.comment}"</p>
                                     }
                                     </div>
                                     <FlexDiv>
@@ -159,6 +166,10 @@ const KitchenPage = () => {
                                                     <CartProduct item={item} />
                                                 )
                                             })
+                                        }
+                                        {
+                                            item.comment &&
+                                            <p><Icon src='/comment.png'/> "{item.comment}"</p>
                                         }
                                         </div>
                                         <FlexDiv>

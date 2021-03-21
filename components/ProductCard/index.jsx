@@ -50,16 +50,11 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
                 category: product.category
             });
         }
-        
-        console.log('data', basket.products)
     };
 
-    const showInfo = (e) => {
-        console.log(e.target)
-    };
 
     return(
-        <StyledSection onClick={e => showInfo(e)}>
+        <StyledSection>
             <SecondaryTitle className='product-card-title' style={{padding: '1em .8em'}}>
                 <span className='product-title'>{product.title}</span>
                 <span className='product-price'>{product.price + ' NOK'}</span>

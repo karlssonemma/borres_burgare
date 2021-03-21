@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { StyledBtn } from '../Buttons/StyledBtn';
 import { useBasket } from '../../contexts/BasketContext';
@@ -29,10 +29,6 @@ function Cart() {
     const { currentUser } = useAuth();
     const [comment, setComment] = useState('');
 
-
-    // const handleDelete = (item) => {
-    //     basket.deleteProduct(item);
-    // };
 
     const handleOrder = () => {
 
@@ -74,6 +70,7 @@ function Cart() {
     const handleAddCount = (item) => {
         basket.addToCount(item)
     };
+
     const handleSubCount = (item) => {
         basket.subCount(item)
     };
@@ -89,7 +86,7 @@ function Cart() {
                     ? basket.products.map(item => {
                         return(
                             <StyledItem style={{display: 'flex'}} key={Math.random() * 1000}>
-                                <CartProduct item={item} />
+                                <CartProduct item={item} key={Math.floor(Math.random() * 1000)} />
                                 <div>
                                     <span>{item.total} NOK</span>
                                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '.5em'}}>
@@ -108,11 +105,9 @@ function Cart() {
                 (basket.products.length > 0) && 
                     <>
                         <TextAreaField 
-                            inputType='textarea' 
                             inputId='comment' 
                             inputName='comment' 
                             labelText='Comment'
-                            height='50px'
                             handleChange={e => setComment(e.target.value)}
                         />
                         <ThirdTitle style={{marginTop: '1em'}}>Total: {basket.total}</ThirdTitle>

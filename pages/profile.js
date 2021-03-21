@@ -39,6 +39,13 @@ const GreenStatus = styled(Status)`
     background-color: ${props => props.theme.colors.green};
 `;
 
+const Icon = styled.img`
+    margin-right: .4em;
+    width: 20px;
+    position: relative;
+    bottom: -6px;
+`;
+
 
 function ProfilePage() {
 
@@ -108,7 +115,7 @@ function ProfilePage() {
                                 })
                             }
                             {
-                                currentOrder.comment && <p>Comment: "{currentOrder.comment}"</p>
+                                currentOrder.comment && <p><Icon src='/comment.png'/> "{currentOrder.comment}"</p>
                             }
                             </div>
                             <p>#{currentOrder.orderNr}</p>

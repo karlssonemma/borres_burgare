@@ -10,13 +10,16 @@ import theme from '../../utils/theme';
 import { useBasket } from '../../contexts/BasketContext';
 
 const StyledNav = styled.nav`
-    height: 15vh;
+    height: 120px;
     width: 100%;
     padding: 0 3em;
     background-color: ${props => props.theme.colors.gray};
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 `;
 
 const FlexDiv = styled.div`
@@ -35,9 +38,7 @@ const StyledImg = styled.img`
 `;
 
 const CartBtn = styled(StyledBtn)`
-    background-color: transparent;
     padding: 1em;
-    margin-left: 1em;
     color: black;
 
     &:hover {
@@ -47,54 +48,55 @@ const CartBtn = styled(StyledBtn)`
 
 function Nav() {
 
-const basket = useBasket();
-const router = useRouter();
-const { logout, isAuthenticated } = useAuth();
-const [numberOfProducts, setNumberOfProducts] = useState(0);
+    const basket = useBasket();
+    const router = useRouter();
+    const { logout, isAuthenticated } = useAuth();
+    const [numberOfProducts, setNumberOfProducts] = useState(0);
 
-useEffect(() => {
-    let number = basket.products.reduce((prev, cur) => {
-        return prev + cur.count;
-    }, 0)
-    setNumberOfProducts(number);
-}, [basket.products])
+    useEffect(() => {
+        let number = basket.products.reduce((prev, cur) => {
+            return prev + cur.count;
+        }, 0)
+        setNumberOfProducts(number);
+    }, [basket.products])
 
-const handleSignOut = async () => {
-    try {
-        await logout();
-        router.push('/login');
-    } catch(error) {
-        console.log('ERROR', error);
-    }
-};
+    const handleSignOut = async () => {
+        try {
+            await logout();
+            basket.setProducts([]);
+            router.push('/login');
+        } catch(error) {
+            console.log('ERROR', error);
+        }
+    };
 
-const findEl = () => {
-    let cart = document.querySelector('.cart');
-    cart.classList.toggle('show-cart');
-};
+    const findEl = () => {
+        let cart = document.querySelector('.cart');
+        cart.classList.toggle('show-cart');
+    };
 
-    return(
-        <StyledNav>
-            <PageTitle>BB</PageTitle>
-            <FlexDiv>
-                {
-                    isAuthenticated && 
-                        <>
-                            <Link href='/profile'>
-                                <StyledLink>Profile</StyledLink>
-                            </Link>
-                            <Link href='/order'>
-                                <StyledLink>Order</StyledLink>
-                            </Link>
-                            <StyledBtn onClick={() => handleSignOut()}>Log Out</StyledBtn>
-                            {
-                                router.asPath === '/order' && <CartBtn onClick={() => findEl()} className='cart-btn'>{numberOfProducts !== 0 && numberOfProducts}<StyledImg src='/shopping-cart.png'/></CartBtn>
-                            }
-                        </>
-                }
-            </FlexDiv>
-        </StyledNav>
-    )
+        return(
+            <StyledNav>
+                <PageTitle>BB</PageTitle>
+                <FlexDiv>
+                    {
+                        isAuthenticated && 
+                            <>
+                                <Link href='/profile'>
+                                    <StyledLink>Profile</StyledLink>
+                                </Link>
+                                <Link href='/order'>
+                                    <StyledLink>Order</StyledLink>
+                                </Link>
+                                <StyledLink onClick={() => handleSignOut()}>Log Out</StyledLink>
+                                {
+                                    router.asPath === '/order' && <CartBtn onClick={() => findEl()} className='cart-btn'>{numberOfProducts !== 0 ? numberOfProducts : 0}<StyledImg src='/shopping-cart.png'/></CartBtn>
+                                }
+                            </>
+                    }
+                </FlexDiv>
+            </StyledNav>
+        )
 }
 
 export default Nav;
