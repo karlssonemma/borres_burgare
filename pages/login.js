@@ -25,7 +25,7 @@ function LogInPage() {
         try {
             setError('');
             setLoading(true);
-            await login(data.email, data.password);
+            await login(data.email, data.password)
             router.push('/order');
             console.log(currentUser);
         } catch {

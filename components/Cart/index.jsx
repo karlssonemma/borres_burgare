@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { StyledBtn } from '../Buttons/StyledBtn';
 import { useBasket } from '../../contexts/BasketContext';
 import { SecondaryTitle } from '../Text/SecondaryTitle';
-import { Container } from '../Container';
 import { ThirdTitle } from '../Text/ThirdTitle';
 import firebaseInstance from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
@@ -11,6 +10,44 @@ import TextAreaField from '../FormComponents/TextAreaField';
 import { useRouter } from 'next/router';
 import { CountBtn } from '../Buttons/CountBtn';
 import CartProduct from '../CartProduct';
+import Image from 'next/image'
+
+const StyledCart = styled.section`
+    width: auto; 
+    height: auto;
+    padding: 1.5em;
+    display: block;
+    
+    &.cart {
+        display: none;
+    };
+
+    &.show-cart {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        min-height: 100vh;
+        padding-top: 160px;
+        z-index: 10;
+    };
+
+    &.close_btn {
+        display: block;
+    }
+
+    @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
+        display: block !important;
+
+        &.close_btn {
+            display: none;
+        }
+    }
+`;
 
 const StyledItem = styled.li`
     width: 100%;
@@ -18,8 +55,14 @@ const StyledItem = styled.li`
     justify-content: space-between;
     align-items: flex-start;
     margin: 1.5em 0;
-    
 `;
+
+const CloseBtn = styled(StyledBtn)`
+    position: absolute;
+    top: 2em;
+    right: 3em;
+`;
+
 
 function Cart() {
 
@@ -74,10 +117,21 @@ function Cart() {
     const handleSubCount = (item) => {
         basket.subCount(item)
     };
-    
+
+    const handleClose = () => {
+        let cart = document.querySelector('.cart');
+        cart.classList.toggle('show-cart');
+    };
 
     return(
-        <Container className='cart'>
+        <StyledCart className='cart'>
+            <CloseBtn className='close_btn' onClick={handleClose}>
+                <Image 
+                    src='/cancel.png'
+                    width={15}
+                    height={15}
+                />
+            </CloseBtn>
             <div style={{width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <SecondaryTitle>Your Order</SecondaryTitle>
             <ul>
@@ -110,13 +164,13 @@ function Cart() {
                             labelText='Comment'
                             handleChange={e => setComment(e.target.value)}
                         />
-                        <ThirdTitle style={{marginTop: '1em'}}>Total: {basket.total}</ThirdTitle>
+                        <ThirdTitle style={{marginTop: '1em'}}>Total: {basket.total} NOK</ThirdTitle>
                         <StyledBtn className='order-btn' style={{width: '100%'}} onClick={() => handleOrder()}>Order</StyledBtn>
                     </>
             }
             
             </div>
-        </Container>
+        </StyledCart>
     )
 }
 

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { auth } from '../config/firebase';
+import firebaseInstance, { auth } from '../config/firebase';
 
 const AuthContext = React.createContext();
 
@@ -25,11 +25,14 @@ export function AuthProvider({ children }) {
     }, [])
 
     const signup = (email, password) => {
-         return auth.createUserWithEmailAndPassword(email, password)
+        return auth.createUserWithEmailAndPassword(email, password)
     };
 
     const login = (email, password) => {
-         return auth.signInWithEmailAndPassword(email, password)
+        auth.setPersistence(firebaseInstance.auth.Auth.Persistence.SESSION)
+        .then(() => {
+            auth.signInWithEmailAndPassword(email, password)
+        })
     };
 
     const logout = () => {

@@ -1,9 +1,6 @@
-import next from 'next';
-import { PageTitle } from '../components/Text/PageTitle';
 import Link from 'next/link';
 import CenteredMain from '../components/CenteredMain';
 import styled from 'styled-components';
-import theme from '../utils/theme';
 import Nav from '../components/Nav'; 
 import StyledLink from '../components/StyledLink';
 

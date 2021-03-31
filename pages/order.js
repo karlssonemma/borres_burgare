@@ -132,9 +132,9 @@ function OrderPage() {
         <Nav />
         <StyledMain>
             <Container>
-                <StyledLink style={{paddingBottom: '.3em'}} onClick={e => setMenu(e)}>Burgers</StyledLink>
-                <StyledLink style={{paddingBottom: '.3em'}} onClick={e => setMenu(e)}>Fries</StyledLink>
-                <StyledLink style={{paddingBottom: '.3em'}} onClick={e => setMenu(e)}>Drinks</StyledLink>
+                <StyledLink style={{paddingBottom: '1em'}} onClick={e => setMenu(e)}>Burgers</StyledLink>
+                <StyledLink style={{paddingBottom: '1em'}} onClick={e => setMenu(e)}>Fries</StyledLink>
+                <StyledLink style={{paddingBottom: '1em'}} onClick={e => setMenu(e)}>Drinks</StyledLink>
             </Container>
             <ProductGrid>
                 {

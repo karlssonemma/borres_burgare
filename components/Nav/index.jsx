@@ -19,7 +19,7 @@ const StyledNav = styled.nav`
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 10;
 `;
 
 const FlexDiv = styled.div`
@@ -77,7 +77,7 @@ function Nav() {
 
         return(
             <StyledNav>
-                <PageTitle>BB</PageTitle>
+                <PageTitle>Børres Burgare</PageTitle>
                 <FlexDiv>
                     {
                         isAuthenticated && 
