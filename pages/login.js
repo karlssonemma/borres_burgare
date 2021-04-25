@@ -1,20 +1,31 @@
 import React, { useRef, useState } from 'react';
-import styled from 'styled-components'
-import InputField from '../components/FormComponents/InputField';
-import { PageTitle } from '../components/Text/PageTitle';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
-import { StyledBtn } from '../components/Buttons/StyledBtn';
+import styled from 'styled-components'
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, string } from 'yup';
+
+import InputField from '../components/FormComponents/InputField';
+import { PageTitle } from '../components/Text/PageTitle';
+import { StyledBtn } from '../components/Buttons/StyledBtn';
 import { StyledForm } from '../components/FormComponents/StyledForm';
 import CenteredMain from '../components/CenteredMain';
 import Nav from '../components/Nav';
 import Link from 'next/link';
 import StyledLink from '../components/StyledLink';
 
+const schema = object().shape({
+    email: string().required('required'),
+    password: string().required('required')
+})
+
 function LogInPage() {
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        mode: 'onChange',
+        resolver: yupResolver(schema)
+    });
     const { login, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -27,7 +38,6 @@ function LogInPage() {
             setLoading(true);
             await login(data.email, data.password)
             router.push('/order');
-            console.log(currentUser);
         } catch {
             setError('Failed to log in');
         };
@@ -43,27 +53,25 @@ function LogInPage() {
             <StyledForm 
                 formName='signup' 
                 formId='signup' 
-                // formAction='/' 
-                // formMethod='GET'
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <InputField 
                     inputType='email' 
                     inputName='email' 
                     labelText='Email'
-                    formRef={register}
+                    register={register}
                 />
                 <InputField 
                     inputType='password' 
                     inputName='password' 
                     labelText='Password'
-                    formRef={register} 
+                    register={register} 
                 />
                 <StyledBtn
                     style={{width: '100%'}}
                     type='submit'
                     disabled={loading}
-                    onClick={console.log('submitted')}
+                    onClick={console.log(errors)}
                 >
                     Log In
                 </StyledBtn>

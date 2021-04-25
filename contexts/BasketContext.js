@@ -11,6 +11,16 @@ export const Basket = ({ children }) => {
     const [products, setProducts] = useState([]);
     const [total, setTotal] = useState(0);
 
+    useEffect(() => {
+        products.sort((a, b) => {
+            if (a.title > b.title) {
+                return 1;
+            } else {
+                return -1;
+            }
+        })
+    }, [products])
+
     const addProduct = (product) => {
         if (product.category === 'burger') {
         
@@ -71,7 +81,9 @@ export const Basket = ({ children }) => {
 
     const addToCount = (product) => {
         let tempCart = [...products];
-        let updatedProduct = tempCart.find(el => el.id === product.id);
+        let updatedProduct = tempCart.find(el => el.id === product.id && el.patty === product.patty && JSON.stringify(el.extras) === JSON.stringify(product.extras));
+
+        
         let totalPrice = updatedProduct.total / updatedProduct.count;
 
         let index = tempCart.indexOf(updatedProduct);
@@ -84,7 +96,7 @@ export const Basket = ({ children }) => {
 
     const subCount = (product) => {
         let tempCart = [...products];
-        let updatedProduct = tempCart.find(el => el.id === product.id);
+        let updatedProduct = tempCart.find(el => el.id === product.id && el.patty === product.patty && JSON.stringify(el.extras) === JSON.stringify(product.extras));
 
         if(updatedProduct.count > 1) {
             let totalPrice = updatedProduct.total / updatedProduct.count;

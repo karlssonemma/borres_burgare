@@ -8,15 +8,31 @@ import { useRouter } from 'next/router';
 
 const StyledSection = styled.li`
     width: 100%;
+    height: 200px;
     padding: 1em;
     background-color: ${props => props.theme.colors.gray};
     border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: auto max-content;
+    /* justify-content: space-between;
+    align-items: center; */
 `;
 
-function OldOrderItem({ item }) {
+const RightColumn = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+`;
+
+const LeftColumn = styled.div`
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+`;
+
+function OldOrderItem({ item, disabled }) {
 
     const router = useRouter();
     const basket = useBasket();
@@ -28,7 +44,7 @@ function OldOrderItem({ item }) {
 
     return(
         <StyledSection>
-            <div>
+            <LeftColumn>
             {
                 item.order.map(item => {
                     return(
@@ -36,11 +52,11 @@ function OldOrderItem({ item }) {
                     )
                 })
             }
-            </div>
-            <div style={{height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+            </LeftColumn>
+            <RightColumn>
                 {item.timeOfOrder && <p>{item.timeOfOrder.date}</p>}
-                <StyledBtn onClick={() => handleOrder(item)}>Order again</StyledBtn>
-            </div>
+                <StyledBtn onClick={() => handleOrder(item)} disabled={disabled}>Order again</StyledBtn>
+            </RightColumn>
         </StyledSection>
     )
 };

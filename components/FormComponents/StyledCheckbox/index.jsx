@@ -37,32 +37,40 @@ const StyledRadioBtn = styled.span`
 
 const StyledInputText = styled.span`
     width: auto;
+    font-size: ${props => props.theme.fontSizes.s};
 `;
 
 const PriceSpan = styled.span`
     position: absolute;
-    right: 60px;
+    right: 50px;
     top: 14px;
     color: gray;
-    font-size: ${props => props.theme.fontSizes.s};
+    font-size: ${props => props.theme.fontSizes.xs};
 `;
 
-function StyledCheckbox({ inputValue, inputName, formRef, inputType, price, id, req }) {
+function StyledCheckbox({ 
+    inputValue, 
+    inputName, 
+    inputType, 
+    price, 
+    id, 
+    req, 
+    register }) {
+
 
     return(
         <>
-            <StyledLabel>
+            <StyledLabel tabIndex={0} htmlFor={id}>
                 <StyledInputText>{inputValue}</StyledInputText>
                 <StyledInput 
                     type={inputType} 
-                    name={inputName} 
                     value={inputValue} 
-                    ref={formRef}
                     id={id}
                     className={inputName}
                     checked={req}
+                    tabIndex={0}
+                    {...register(inputName)}
                 />
-                
                 {
                     price && <PriceSpan>{'+' + price}</PriceSpan>
                 }

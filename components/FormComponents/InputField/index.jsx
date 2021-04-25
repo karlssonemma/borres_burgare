@@ -23,7 +23,7 @@ function InputField({
     inputName, 
     inputId, 
     inputValue, 
-    formRef,
+    register,
     height
 }) {
 
@@ -34,10 +34,9 @@ function InputField({
                 type={inputType}
                 placeholder={inputPlaceholder}
                 id={inputId}
-                name={inputName}
-                ref={formRef}
                 value={inputValue}
                 style={{height: height}}
+                {...register(inputName)}
             />
         </>
     )

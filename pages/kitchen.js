@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import firebaseInstance from '../config/firebase';
 import styled from 'styled-components';
 import theme from '../utils/theme';
-import { ProductGrid } from '../components/ProductGrid';
+
 import { StyledBtn } from '../components/Buttons/StyledBtn';
-import firebaseInstance from '../config/firebase';
-import { Basket } from '../contexts/BasketContext';
 import KitchenNav from '../components/KitchenNav';
-import { ExtraSpan } from '../components/Text/ExtraSpan';
 import CartProduct from '../components/CartProduct';
+import { readCollection } from '../database/firebaseHelpers';
+import { readDocument } from '../database/firebaseHelpers';
 
 const StyledMain = styled.main`
     width: 100vw;
@@ -58,11 +58,11 @@ const Icon = styled.img`
 const KitchenPage = () => {
 
     const [currentOrders, setCurrentOrders] = useState(null);
-    const ordersInProcess = firebaseInstance.firestore().collection('orders_in_process');
     const ordersFinished = firebaseInstance.firestore().collection('orders_finished');
 
     useEffect(async () => {
-        await ordersInProcess.onSnapshot(snapshot => {
+        let coll = await readCollection('orders_in_process')
+        coll.onSnapshot(snapshot => {
             let orders = [];
             snapshot.forEach(doc => {
                 orders.push({
@@ -75,8 +75,8 @@ const KitchenPage = () => {
     }, [])
 
     const handleAccept = async (item) => {
-        console.log(item)
-        let document = await ordersInProcess.doc(item.id);
+
+        let document = await readDocument('orders_in_process', item.id)
 
         document.update({
             accepted: !item.accepted
@@ -88,8 +88,8 @@ const KitchenPage = () => {
     };
 
     const handleMark = async (item) => {
-        console.log(item)
-        let document = await ordersInProcess.doc(item.id);
+
+        let document = await readDocument('orders_in_process', item.id)
 
         document.update({
             finished: !item.finished
@@ -101,16 +101,17 @@ const KitchenPage = () => {
     };
 
     const handleFinalized = async (item) => {
-        console.log(item)
-        let document = await ordersInProcess.doc(item.id);
+
+        let document = await readDocument('orders_in_process', item.id)
 
         document.update({
             pickedUp: true
         })
-        .then( async () => {
-            ordersInProcess.doc(item.id).delete()
+        .then(async () => {
+            document.delete()
             ordersFinished.doc(item.id).set({
-                ...item
+                ...item,
+                pickedUp: true
             })
             
         })
@@ -121,7 +122,6 @@ const KitchenPage = () => {
         <>
         <KitchenNav />
         <StyledMain>
-            {/* <h1>Orders</h1> */}
                 <StyledBackground>
                 {
                     currentOrders && currentOrders.map(item => {

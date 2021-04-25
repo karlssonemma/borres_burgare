@@ -12,7 +12,7 @@ import { useBasket } from '../../contexts/BasketContext';
 const StyledNav = styled.nav`
     height: 120px;
     width: 100%;
-    padding: 0 3em;
+    padding: 0 2em;
     background-color: ${props => props.theme.colors.gray};
     display: flex;
     justify-content: space-between;
@@ -46,6 +46,10 @@ const CartBtn = styled(StyledBtn)`
     }
 `;
 
+const MenuLink = styled(StyledLink)`
+    padding-right: .8em;
+`;
+
 function Nav() {
 
     const basket = useBasket();
@@ -77,18 +81,18 @@ function Nav() {
 
         return(
             <StyledNav>
-                <PageTitle>Børres Burgare</PageTitle>
+                <PageTitle>BB</PageTitle>
                 <FlexDiv>
                     {
                         isAuthenticated && 
                             <>
                                 <Link href='/profile'>
-                                    <StyledLink>Profile</StyledLink>
+                                    <MenuLink>Profile</MenuLink>
                                 </Link>
                                 <Link href='/order'>
-                                    <StyledLink>Order</StyledLink>
+                                    <MenuLink>Order</MenuLink>
                                 </Link>
-                                <StyledLink onClick={() => handleSignOut()}>Log Out</StyledLink>
+                                <MenuLink onClick={() => handleSignOut()}>Log Out</MenuLink>
                                 {
                                     router.asPath === '/order' && <CartBtn onClick={() => findEl()} className='cart-btn'>{numberOfProducts !== 0 ? numberOfProducts : 0}<StyledImg src='/shopping-cart.png'/></CartBtn>
                                 }

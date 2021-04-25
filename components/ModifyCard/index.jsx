@@ -11,7 +11,7 @@ import Image from 'next/image';
 const StyledSection = styled.section`
     width: 100%;
     height: max-content;
-    padding: 2em;
+    padding: 1.5em;
     grid-column: 1 / span 3;
 
     display: flex;
@@ -61,8 +61,9 @@ const Description = styled.p`
 function ModifyCard({ menu_item, extras, patties }) {
 
     const extrasColl = firebaseInstance.firestore().collection('extras');
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const basket = useBasket();
+    const patt = watch('patty', 'Beyond')
 
     const handleAdd = (menu_item, patty, addOns, totalExtras) => {
             basket.addProduct({
@@ -162,7 +163,7 @@ function ModifyCard({ menu_item, extras, patties }) {
                                         inputValue={item.title} 
                                         key={item.id}
                                         inputName='patty'
-                                        formRef={register}
+                                        register={register}
                                         inputType='radio'
                                         id={item.id}
                                         req={true}
@@ -182,13 +183,14 @@ function ModifyCard({ menu_item, extras, patties }) {
                                     inputName='extras'
                                     inputValue={item.title}
                                     price={item.price}
-                                    formRef={register}
+                                    register={register}
                                     inputType='checkbox'
                                 />
                             )
                         })
                     }
                 </section>
+                {patt && <p>hello</p>}
                 <StyledBtn
                     key={Math.floor(Math.random() * 1000)} 
                     type='submit'

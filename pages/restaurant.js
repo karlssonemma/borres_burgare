@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import firebaseInstance from '../config/firebase';
-import { SecondaryTitle } from '../components/Text/SecondaryTitle';
-import { ThirdTitle } from '../components/Text/ThirdTitle';
 import theme from '../utils/theme';
+
+import { SecondaryTitle } from '../components/Text/SecondaryTitle';
 
 const StyledMain = styled.main`
     width: 100vw;

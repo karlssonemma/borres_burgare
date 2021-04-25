@@ -29,10 +29,8 @@ export function AuthProvider({ children }) {
     };
 
     const login = (email, password) => {
-        auth.setPersistence(firebaseInstance.auth.Auth.Persistence.SESSION)
-        .then(() => {
-            auth.signInWithEmailAndPassword(email, password)
-        })
+        return auth.signInWithEmailAndPassword(email, password)
+
     };
 
     const logout = () => {

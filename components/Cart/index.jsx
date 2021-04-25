@@ -16,18 +16,15 @@ const StyledCart = styled.section`
     width: auto; 
     height: auto;
     padding: 1.5em;
-    display: block;
-    
-    &.cart {
-        display: none;
-    };
+    display: none;
+
 
     &.show-cart {
         display: flex !important;
         flex-direction: column;
         align-items: center;
         background-color: white;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
@@ -40,8 +37,10 @@ const StyledCart = styled.section`
         display: block;
     }
 
-    @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
-        display: block !important;
+    @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
+        &.cart {
+            display: block;
+        };
 
         &.close_btn {
             display: none;

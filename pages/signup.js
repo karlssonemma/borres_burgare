@@ -1,21 +1,32 @@
 import React, { useRef, useState } from 'react';
-import InputField from '../components//FormComponents/InputField';
-import { PageTitle } from '../components/Text/PageTitle';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
-import { StyledBtn } from '../components/Buttons/StyledBtn';
-import { useForm } from 'react-hook-form';
-import { StyledForm } from '../components/FormComponents/StyledForm';
 import firebaseInstance from '../config/firebase';
 import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, string } from 'yup';
+
+import InputField from '../components//FormComponents/InputField';
+import { PageTitle } from '../components/Text/PageTitle';
+import { StyledBtn } from '../components/Buttons/StyledBtn';
+import { StyledForm } from '../components/FormComponents/StyledForm';
 import CenteredMain from '../components/CenteredMain';
 import Nav from '../components/Nav';
 import Link from 'next/link';
 import StyledLink from '../components/StyledLink';
  
+const schema = object().shape({
+    email: string().required('required'),
+    password: string().min(4).max(10).required('required'),
+    confirmPassword: string().min(4).max(10).required('required')
+})
 
 function SignUpPage() {
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        mode: 'onChange',
+        resolver: yupResolver(schema)
+    });
     const { signup, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -24,10 +35,11 @@ function SignUpPage() {
     const userColl = firebaseInstance.firestore().collection('users');
  
     const onSubmit = async (data) => {
-        console.log(data.confirm_password)
-        if(data.password !== data.confirm_password) {
+
+        if(data.password !== data.confirmPassword) {
             return setError('Passwords do not match');
         };
+        console.log(data)
 
         try {
             setError('');
@@ -56,33 +68,31 @@ function SignUpPage() {
             <StyledForm 
                 name='signup' 
                 id='signup' 
-                // action='/' 
-                // method='GET'
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <InputField 
                     inputType='email' 
                     inputName='email' 
                     labelText='Email'
-                    formRef={register}
+                    register={register}
                 />
                 <InputField 
                     inputType='password' 
                     inputName='password' 
                     labelText='Password'
-                    formRef={register} 
+                    register={register} 
                 />
                 <InputField 
                     inputType='password'
-                    inputName='confirm_password'
+                    inputName='confirmPassword'
                     labelText='Confirm Password'
-                    formRef={register} 
+                    register={register}
                 />
                 <StyledBtn
                     style={{width: '100%'}}
                     type='submit'
                     disabled={loading}
-                    onClick={console.log('submitted')}
+                    onClick={console.log(errors)}
                 >
                     Sign Up
                 </StyledBtn>
