@@ -28,7 +28,7 @@ const StyledLabel = styled.label`
 const StyledRadioBtn = styled.span`
     width: 25px;
     height: 25px;
-    margin: 1em;
+    margin: ${props => props.theme.space[3]};
     border-radius: 50%;
     background-color: #d8d8d8;
     position: absolute;

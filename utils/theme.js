@@ -40,7 +40,7 @@ const theme = {
         xl: '2rem',
         xxl: '3rem'
     },
-    space: ['0.25em', '0.5em', '0.75em', '1em']
+    space: ['0.25em', '0.5em', '0.75em', '1em', '1.5em', '2em']
 }
 
 export default theme;

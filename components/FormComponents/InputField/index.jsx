@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import React from 'react';
+import theme from '../../../utils/theme';
 
 const StyledInput = styled.input`
     width: auto;
-    padding: .5em;
-    margin: .3em 0;
+    padding: ${props => props.theme.space[1]};
+    margin: ${props => props.theme.space[0]} 0;
     background-color: white;
     border: none;
     border-radius: 5px;

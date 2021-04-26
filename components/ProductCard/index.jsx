@@ -18,13 +18,13 @@ const StyledSection = styled.li`
 
 const ButtonField = styled.section`
     background-color: rgba(255, 255, 255, 0.6);
-    padding: 1em;
+    padding: ${props => props.theme.space[3]};
     display: flex;
     justify-content: space-between;
 `;
 
 
-const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
+const ProductCard = ({ product, onBtnClick }) => {
 
     const basket = useBasket();
 
@@ -38,7 +38,7 @@ const ProductCard = ({ product, onBtnClick, onInfoBtnClick }) => {
                 total: product.price,
                 patty: 'Beef',
                 extras: [],
-                category: product.category
+                category: product.category,
             });
         } else {
             basket.addProduct({

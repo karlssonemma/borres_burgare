@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import React from 'react';
+import theme from '../../../utils/theme';
 
 const StyledInput = styled.textarea`
     max-width: 100%;
     min-width: 100%;
-    padding: .5em;
-    margin: .3em 0;
+    padding: ${props => props.theme.space[1]};
+    margin: ${props => props.theme.space[0]} 0;
     background-color: #eeeeee;
     border: none;
     border-radius: 5px;
@@ -13,8 +14,8 @@ const StyledInput = styled.textarea`
 `;
 
 const StyledLabel = styled.label`
-    font-size: .8rem;
-    margin-top: 1em;
+    font-size: ${props => props.theme.space[3]};
+    margin-top: ${props => props.theme.space[3]};
 `;
 
 function TextAreaField({ 

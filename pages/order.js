@@ -6,17 +6,15 @@ import { useBasket } from '../contexts/BasketContext';
 import theme from '../utils/theme';
 import { readCollection } from '../database/firebaseHelpers';
 
-import { Container } from '../components/Container';
 import ModifyCard from '../components/ModifyCard';
 import Cart from '../components/Cart';
 import styled from 'styled-components';
 import ProductCard from '../components/ProductCard';
-import { ProductGrid } from '../components/ProductGrid';
 import StyledLink from '../components/StyledLink';
 import Nav from '../components/Nav';
 
 const StyledMain = styled.main`
-    padding: 1em;
+    padding: ${props => props.theme.space[3]};
     width: 100vw;
     display: grid;
     grid-template-columns: 80px auto;
@@ -24,16 +22,32 @@ const StyledMain = styled.main`
     @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
         grid-template-columns: 110px auto 20vw;
     }
-    
 `;
 
+const Container = styled.section`
+    padding: ${props => props.theme.space[3]};
+    padding-top: ${props => props.theme.space[4]};
+`;
 
+const ProductGrid = styled.ul`
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding: ${props => props.theme.space[3]};
+
+    @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (min-width: ${props => props.theme.breakpoints[2]}) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+`;
 
 function OrderPage() {
     const router = useRouter();
     const { login, currentUser, isAuthenticated } = useAuth();
     const basket = useBasket();
-    const [chosen, setChosen] = useState(null);
+    const [modifyMe, setModifyMe] = useState(null);
     const [menuItems, setMenuItems] = useState(null);
     const [activeMenu, setActiveMenu] = useState(null);
     const [extras, setExtras] = useState(null);
@@ -104,7 +118,7 @@ function OrderPage() {
 
 
    function setMenu(e) {
-       setChosen(null);
+       setModifyMe(null);
        if(e.target.innerHTML === 'Fries') {
         setActiveMenu(menuItems.filter(item => item.category === 'fries'))
        }
@@ -116,10 +130,9 @@ function OrderPage() {
        }
    };
 
-   const handleSetChosen = (item) => {
-    console.log('clicked')
+   const handleModifyCard = (item) => {
     setActiveMenu(null);
-    setChosen(item);
+    setModifyMe(item);
    };
 
    
@@ -139,13 +152,13 @@ function OrderPage() {
                            <ProductCard 
                                 product={item}
                                 key={item.id}
-                                onBtnClick={() => handleSetChosen(item)}
+                                onBtnClick={() => handleModifyCard(item)}
                            />
                         )
                     })
                 }
                 {
-                    (activeMenu === null && chosen) && <ModifyCard extras={extras} patties={patties} menu_item={chosen} />
+                    (activeMenu === null && modifyMe) && <ModifyCard extras={extras} patties={patties} menu_item={modifyMe} />
                 }
             </ProductGrid>
             <Cart />

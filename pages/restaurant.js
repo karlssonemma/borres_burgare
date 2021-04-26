@@ -8,14 +8,16 @@ import { SecondaryTitle } from '../components/Text/SecondaryTitle';
 const StyledMain = styled.main`
     width: 100vw;
     height: 100vh;
-    padding: 2em;
+    padding: ${props => props.theme.space[5]};
+
     display: grid;
-    grid-gap: 2em;
+    grid-gap: ${props => props.theme.space[5]};
     grid-template-columns: repeat(2, 1fr);
 `;
 
 const StyledSection = styled.section`
-    padding: 2em;
+    padding: ${props => props.theme.space[5]};
+
     background-color: ${props => props.theme.colors.gray};
     border-radius: 20px;
 `;
@@ -23,9 +25,10 @@ const StyledSection = styled.section`
 const StyledNumber = styled.h2`
     width: max-content;
     height: max-content;
-    font-size: 2rem;
-    padding: 1em;
-    margin: 0 1em 1em 0;
+    padding: ${props => props.theme.space[3]};
+    margin: 0 ${props => props.theme.space[3]} ${props => props.theme.space[3]} 0;
+
+    font-size: ${props => props.theme.space[5]};
     border-radius: 10px;
     display: inline-block;
     background-color: ${props => props.theme.colors.buttons.orange.background};
@@ -36,8 +39,9 @@ const GreenNumber = styled(StyledNumber)`
 `;
 
 const CenteredTitle = styled(SecondaryTitle)`
+    margin-bottom: ${props => props.theme.space[3]};
+    
     text-align: center;
-    margin-bottom: 1em;
     font-size: ${props => props.theme.fontSizes.xl};
 
 `;

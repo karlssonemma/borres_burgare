@@ -4,12 +4,14 @@ import theme from '../../utils/theme';
 const StyledLink = styled.button`
     min-width: max-content;
     /* padding-right: 1em; */
+    border: none;
+    
     display: block;
-    cursor: pointer;
     font-size: ${props => props.theme.fontSizes.s};
     font-family: ${props => props.theme.fonts.spartan};
+
     background-color: transparent;
-    border: none;
+    cursor: pointer;
     
     & :hover {
         color: ${props => props.theme.colors.green};

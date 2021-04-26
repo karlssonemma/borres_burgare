@@ -14,24 +14,24 @@ const StyledMain = styled.main`
     min-height: 100vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 2em;
-    padding: 2em;
+    grid-gap: ${props => props.theme.space[5]};
+    padding:${props => props.theme.space[5]};
 `;
 
 const StyledSection = styled.section`
     width: 100%;
-    padding: 1em;
+    padding: ${props => props.theme.space[3]};
     background-color: white;
     border-radius: 10px;
     display: flex;
-    margin-bottom: 1em;
+    margin-bottom: ${props => props.theme.space[3]};
     justify-content: space-between;
 `;
 
 const StyledBackground = styled.section`
     background-color: green;
     border-radius: 10px;
-    padding: 1em;
+    padding: ${props => props.theme.space[3]};
     background-color: ${props => props.theme.colors.gray};
 `;
 
@@ -49,7 +49,7 @@ const FlexDiv = styled.div`
     align-items: flex-end;
 `;
 const Icon = styled.img`
-    margin-right: .4em;
+    margin-right: ${props => props.theme.space[1]};
     width: 20px;
     position: relative;
     bottom: -6px;

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { StyledBtn } from '../Buttons/StyledBtn';
-import { useBasket } from '../../contexts/BasketContext';
-import { SecondaryTitle } from '../Text/SecondaryTitle';
-import { ThirdTitle } from '../Text/ThirdTitle';
 import firebaseInstance from '../../config/firebase';
 import { useAuth } from '../../contexts/AuthContext';
-import TextAreaField from '../FormComponents/TextAreaField';
 import { useRouter } from 'next/router';
+import { useBasket } from '../../contexts/BasketContext';
+import styled from 'styled-components';
+import theme from '../../utils/theme';
+
+import { StyledBtn } from '../Buttons/StyledBtn';
+import { SecondaryTitle } from '../Text/SecondaryTitle';
+import { ThirdTitle } from '../Text/ThirdTitle';
+import TextAreaField from '../FormComponents/TextAreaField';
 import { CountBtn } from '../Buttons/CountBtn';
 import CartProduct from '../CartProduct';
 import Image from 'next/image'
@@ -15,7 +17,7 @@ import Image from 'next/image'
 const StyledCart = styled.section`
     width: auto; 
     height: auto;
-    padding: 1.5em;
+    padding: ${props => props.theme.space[4]};
     display: none;
 
 
@@ -53,12 +55,12 @@ const StyledItem = styled.li`
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin: 1.5em 0;
+    margin: ${props => props.theme.space[4]} 0;
 `;
 
 const CloseBtn = styled(StyledBtn)`
     position: absolute;
-    top: 2em;
+    top: ${props => props.theme.space[5]};
     right: 3em;
 `;
 

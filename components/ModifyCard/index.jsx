@@ -1,17 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
-import { StyledBtn } from '../Buttons/StyledBtn';
 import firebaseInstance from '../../config/firebase';
 import { useBasket } from '../../contexts/BasketContext';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+
+import { StyledBtn } from '../Buttons/StyledBtn';
 import StyledCheckbox from '../FormComponents/StyledCheckbox';
 import { SecondaryTitle } from '../Text/SecondaryTitle';
 import Image from 'next/image';
 
-const StyledSection = styled.section`
+const StyledSection = styled.li`
     width: 100%;
     height: max-content;
-    padding: 1.5em;
+    padding: ${props => props.theme.space[4]};
     grid-column: 1 / span 3;
 
     display: flex;
@@ -37,7 +38,7 @@ const StyledList = styled.ul`
 
 const StyledListItem = styled.li`
     display: inline-block;
-    margin-left: 0.5em;
+    margin-left: ${props => props.theme.space[1]};
 `;
 
 const StyledForm = styled.form`
@@ -46,7 +47,7 @@ const StyledForm = styled.form`
     gap: 20px;
     grid-template-columns: 1fr;
     border-top: 1px solid black;
-    padding-top: 1.5em;
+    padding-top: ${props => props.theme.space[4]};
 
     @media (min-width: ${props => props.theme.breakpoints[2]}) {
         grid-template-columns: repeat(2, 1fr);
@@ -54,7 +55,7 @@ const StyledForm = styled.form`
 `;
 
 const Description = styled.p`
-    padding: 1em 0;
+    padding: ${props => props.theme.space[3]} 0;
 `;
 
 
@@ -63,7 +64,6 @@ function ModifyCard({ menu_item, extras, patties }) {
     const extrasColl = firebaseInstance.firestore().collection('extras');
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const basket = useBasket();
-    const patt = watch('patty', 'Beyond')
 
     const handleAdd = (menu_item, patty, addOns, totalExtras) => {
             basket.addProduct({
@@ -103,39 +103,27 @@ function ModifyCard({ menu_item, extras, patties }) {
                 <span>Contains:</span>
                 {
                     menu_item.allergens.map(item => {
-                        if (item === 'egg') {
-                            return(
-                                <StyledListItem key={item}>
-                                    <Image 
-                                        src='/allergens-eggs.png'
-                                        width={25}
-                                        height={25}
-                                    />
-                                </StyledListItem>
-                            )
-                        };
-                        if (item === 'milk') {
-                            return(
-                                <StyledListItem key={item}>
-                                    <Image 
-                                        src='/allergens-milk.png'
-                                        width={25}
-                                        height={25}
-                                    />
-                                </StyledListItem>
-                            )
-                        };
-                        if (item === 'gluten') {
-                            return(
-                                <StyledListItem key={item}>
-                                    <Image 
-                                        src='/gluten.png'
-                                        width={25}
-                                        height={25}
-                                    />
-                                </StyledListItem>
-                            )
-                        };
+                        let imgSrc;
+                        switch(item) {
+                            case 'milk':
+                                imgSrc = '/allergens-milk.png';
+                                break;
+                            case 'egg':
+                                imgSrc = '/allergens-eggs.png';
+                                break;
+                            case 'gluten':
+                                imgSrc = '/gluten.png';
+                                break;
+                        }
+                        return(
+                            <StyledListItem key={item}>
+                                <Image 
+                                    src={imgSrc}
+                                    width={25}
+                                    height={25}
+                                />
+                            </StyledListItem>
+                        )
                     })
                 }
             </StyledList>
@@ -179,7 +167,7 @@ function ModifyCard({ menu_item, extras, patties }) {
                             return(
                                 <StyledCheckbox
                                     id={item.id}
-                                    key={Math.random() * 1000}
+                                    key={item.id}
                                     inputName='extras'
                                     inputValue={item.title}
                                     price={item.price}
@@ -190,12 +178,7 @@ function ModifyCard({ menu_item, extras, patties }) {
                         })
                     }
                 </section>
-                {patt && <p>hello</p>}
-                <StyledBtn
-                    key={Math.floor(Math.random() * 1000)} 
-                    type='submit'
-                    >Add
-                </StyledBtn>
+                <StyledBtn type='submit'>Add</StyledBtn>
             </StyledForm>
         </StyledSection>
     )

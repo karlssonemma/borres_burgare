@@ -6,45 +6,44 @@ import styled from 'styled-components';
 import { readCollection } from '../database/firebaseHelpers';
 
 import { SecondaryTitle } from '../components/Text/SecondaryTitle';
-import OldOrderItem from '../components/OldOrderItem';
-import { ProductGrid } from '../components/ProductGrid';
+import PreviousOrderItem from '../components/PreviousOrderItem';
 import Nav from '../components/Nav';
 import CartProduct from '../components/CartProduct';
 
 const StyledMain = styled.main`
     width: 100%;
     min-height: 100vh;
-    padding: 2em;
-
-/* 
-    @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
-        grid-template-columns: repeat(2, auto);
-    } */
+    padding: ${props => props.theme.space[5]};
 `;
 
 const StyledSection = styled.section`
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
+
     background-color: ${props => props.theme.colors.gray};
     border-radius: 10px;
+
     overflow: hidden;
 `;
 
 const FlexDiv = styled.div`
+    padding: ${props => props.theme.space[3]};
+
     display: grid;
     grid-template-columns: auto max-content;
-    padding: 1em;
 `;
 
 const Title = styled(SecondaryTitle)`
-    margin: 1em;
+    margin: ${props => props.theme.space[3]};
 `;
 
 const Status = styled.p`
+    padding: ${props => props.theme.space[3]};
+
     background-color: darkgray;
+
     position: relative;
-    padding: 1em;
     text-align: center; 
 `;
 
@@ -53,8 +52,9 @@ const GreenStatus = styled(Status)`
 `;
 
 const Icon = styled.img`
-    margin-right: .4em;
     width: 20px;
+    margin-right: ${props => props.theme.space[1]};
+
     position: relative;
     bottom: -6px;
 `;
@@ -70,8 +70,9 @@ const StyledGrid = styled.ul`
 `;
 
 const Text = styled.p`
+    padding-top: ${props => props.theme.space[3]};
+    
     font-size: ${props => props.theme.fontSizes.m};
-    padding-top: 1em;
     text-align: center;
 `;
 
@@ -80,7 +81,7 @@ function ProfilePage() {
 
     const { currentUser } = useAuth();
     const [currentOrder, setCurrentOrder] = useState(null);
-    const [oldOrders, setOldOrders] = useState(null);
+    const [previousOrders, setPreviousOrders] = useState(null);
     const [status, setStatus] = useState('');
 
     
@@ -109,7 +110,7 @@ function ProfilePage() {
            })
         })
         .then(() => {
-            if (order.length) setOldOrders(order)
+            if (order.length) setPreviousOrders(order)
         })
     }, [])
 
@@ -163,14 +164,14 @@ function ProfilePage() {
                 }
            
                 {
-                    oldOrders !== null &&
+                    previousOrders !== null &&
                     <div>
                     <Title style={{textAlign: 'center'}}>Previous orders</Title>
                         <StyledGrid>
                             {
-                                oldOrders.map(item => {
+                                previousOrders.map(item => {
                                     return(
-                                        <OldOrderItem item={item} key={item.id} disabled={currentOrder !== null} />
+                                        <PreviousOrderItem item={item} key={item.id} disabled={currentOrder !== null} />
                                     )
                                 })
                             } 
@@ -178,7 +179,7 @@ function ProfilePage() {
                     </div>
                 }
                 {
-                    (currentOrder == null && oldOrders == null) &&
+                    (currentOrder == null && previousOrders == null) &&
                     <Text>You have no current nor past orders!</Text>
                 }
         </StyledMain>

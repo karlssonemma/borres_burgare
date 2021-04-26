@@ -12,7 +12,7 @@ import { useBasket } from '../../contexts/BasketContext';
 const StyledNav = styled.nav`
     height: 120px;
     width: 100%;
-    padding: 0 2em;
+    padding: 0 ${props => props.theme.space[5]};
     background-color: ${props => props.theme.colors.gray};
     display: flex;
     justify-content: space-between;
@@ -27,18 +27,18 @@ const FlexDiv = styled.div`
     align-items: center;
 
     & a {
-        padding-right: 1em;
+        padding-right: ${props => props.theme.space[3]};
     }
 `;
 const StyledImg = styled.img`
-    height: 1.4rem;
+    height: ${props => props.theme.space[4]};
     position: relative;
     top: 4px;
-    margin-left: .6em;
+    margin-left: ${props => props.theme.space[1]};
 `;
 
 const CartBtn = styled(StyledBtn)`
-    padding: 1em;
+    padding: ${props => props.theme.space[3]};
     color: black;
 
     &:hover {

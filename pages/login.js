@@ -26,10 +26,14 @@ function LogInPage() {
         mode: 'onChange',
         resolver: yupResolver(schema)
     });
-    const { login, currentUser } = useAuth();
+    const { login, isAuthenticated } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+  
+    if(isAuthenticated) {
+      router.push('/order')
+    };
 
 
     const onSubmit = async (data) => {
@@ -38,7 +42,7 @@ function LogInPage() {
             setLoading(true);
             await login(data.email, data.password)
             router.push('/order');
-        } catch {
+        } catch (error) {
             setError('Failed to log in');
         };
         setLoading(false);
@@ -71,7 +75,6 @@ function LogInPage() {
                     style={{width: '100%'}}
                     type='submit'
                     disabled={loading}
-                    onClick={console.log(errors)}
                 >
                     Log In
                 </StyledBtn>

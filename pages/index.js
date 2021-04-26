@@ -1,12 +1,16 @@
+import React, { useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'next/router';
+
 import Link from 'next/link';
 import CenteredMain from '../components/CenteredMain';
 import styled from 'styled-components';
 import Nav from '../components/Nav'; 
 import StyledLink from '../components/StyledLink';
-import React, { useEffect } from 'react';
 
 const BigLink = styled(StyledLink)`
   font-size: ${props => props.theme.fontSizes.xl};
+  
   @media screen and (min-width: ${props => props.theme.breakpoints[1]}) {
     font-size: ${props => props.theme.fontSizes.xxl};
   }
@@ -30,6 +34,13 @@ const Container = styled.section`
   
 `;
 export default function Home() {
+
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+
+  if(isAuthenticated) {
+    router.push('/order')
+  };
 
   useEffect(() => {
     let msg = 'kitchen screen -> /kitchen\nrestaurant screen -> /restaurant'

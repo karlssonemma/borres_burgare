@@ -4,7 +4,7 @@ import firebaseInstance from '../config/firebase';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string } from 'yup';
+import { object, string, ref } from 'yup';
 
 import InputField from '../components//FormComponents/InputField';
 import { PageTitle } from '../components/Text/PageTitle';
@@ -17,29 +17,27 @@ import StyledLink from '../components/StyledLink';
  
 const schema = object().shape({
     email: string().required('required'),
-    password: string().min(4).max(10).required('required'),
-    confirmPassword: string().min(4).max(10).required('required')
+    password: string().min(4, 'Password must be at least 4 characters').required('required'),
+    confirmPassword: string().oneOf([ref('password')], 'Passwords must match').required('required')
 })
 
 function SignUpPage() {
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        mode: 'onChange',
+        mode: 'onSubmit',
         resolver: yupResolver(schema)
     });
-    const { signup, currentUser } = useAuth();
+    const { signup, currentUser, isAuthenticated } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-
     const router = useRouter();
     const userColl = firebaseInstance.firestore().collection('users');
  
-    const onSubmit = async (data) => {
+    if(isAuthenticated) {
+      router.push('/order')
+    };
 
-        if(data.password !== data.confirmPassword) {
-            return setError('Passwords do not match');
-        };
-        console.log(data)
+    const onSubmit = async (data) => {
 
         try {
             setError('');
@@ -64,7 +62,8 @@ function SignUpPage() {
         <Nav />
         <CenteredMain>
             <PageTitle>Sign up</PageTitle>
-            {error && <p style={{marginTop: '.5em'}}>{error}</p>}
+            {errors.password && <p style={{marginTop: '.5em'}}>{errors.password.message}</p>}
+            {errors.confirmPassword && <p style={{marginTop: '.5em'}}>{errors.confirmPassword.message}</p>}
             <StyledForm 
                 name='signup' 
                 id='signup' 

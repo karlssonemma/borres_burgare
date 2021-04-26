@@ -3,8 +3,8 @@ import theme from '../../../utils/theme';
 
 export const StyledBtn = styled.button`
     width: max-content;
-    padding: 1em;
-    margin: .5em 0;
+    padding: ${props => props.theme.space[3]};
+    margin: ${props => props.theme.space[1]} 0;
     font-size: ${props => props.theme.fontSizes.s};
     border: none;
     border-radius: 5px;
