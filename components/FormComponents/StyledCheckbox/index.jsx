@@ -14,6 +14,9 @@ const StyledInput = styled.input`
         background-position: center;
         background-repeat: no-repeat;
     }
+    &:focus ~ .check {
+        border: 2px solid orange;
+    }
 `;
 
 const StyledLabel = styled.label`
@@ -59,8 +62,7 @@ function StyledCheckbox({
 
 
     return(
-        <>
-            <StyledLabel tabIndex={0} htmlFor={id}>
+            <StyledLabel>
                 <StyledInputText>{inputValue}</StyledInputText>
                 <StyledInput 
                     type={inputType} 
@@ -68,16 +70,14 @@ function StyledCheckbox({
                     id={id}
                     className={inputName}
                     checked={req}
-                    tabIndex={0}
                     {...register(inputName)}
                 />
                 {
-                    price && <PriceSpan>{'+' + price}</PriceSpan>
+                    price && <PriceSpan aria-hidden='true'>{'+' + price}</PriceSpan>
                 }
                 <StyledRadioBtn className='check' />
                 
             </StyledLabel>
-        </>
     )
 }
 
